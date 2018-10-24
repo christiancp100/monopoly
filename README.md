@@ -10,7 +10,7 @@ En este proyecto se desarrollará una versión funcional y completa del juego cl
 * Jugador
 * Avatar
 
-`import monopoly`
+`package monopoly`
 ### principal (clase)
 * Main
 
