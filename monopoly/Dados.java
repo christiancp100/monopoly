@@ -18,7 +18,7 @@ public class Dados {
     
     //CONSTRUCTORES
     public Dados(){
-        this.dado=2;
+        this.dado=1;
     }
     
     //set dado no tiene sentido pq es un valor aleatorio en el que el usuario no toma ninguna decisión
