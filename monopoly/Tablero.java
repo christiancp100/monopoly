@@ -1,5 +1,4 @@
 package monopoly;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Tablero {
@@ -16,18 +15,18 @@ public class Tablero {
 
     //Constructores
 
-    public Tablero(ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores) {
+    public Tablero(/*ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores*/) {
         //Hay aliasing, pero nos interesa tenerlo
-        this.avatares = avatares;
-        this.jugadores = jugadores;
+        //this.avatares = avatares;
+        //this.jugadores = jugadores;
         this.casillas = new ArrayList<>();
 
         for(int i=0;i<4;i++){
             this.casillas.add(new ArrayList<Casilla>());
 
             for(int j=0; j<10;j++){ //posicion (N,S,E,O)
-
                 this.casillas.get(i).add(new Casilla());
+                this.casillas.get(i).get(j).setNombre(Valores.nombres[j + 10*i]); //Para recorrer el tablero del 0-39
 
                 if(j==0){ //Es el numero de casilla en cada posicion (N,S,E,O) del tablero
                     if(i==0){
@@ -91,7 +90,25 @@ public class Tablero {
     }
 
 
+    public void imprimir(){
 
+
+        for(int j=0;j<10;j++){
+            System.out.print("|"+(this.casillas.get(2).get(j).getNombre()+"             ").substring(0,16)+ "|" );
+            if(j == 9){
+                System.out.println("|" + (this.casillas.get(3).get(0).getNombre() + "          ").substring(0,16) + "|");
+            }
+        }
+        for(int i=9;i>=1;i--){
+            System.out.print("|"+(this.casillas.get(1).get(i).getNombre()+"                  ").substring(0,16)+ "|");
+            System.out.format("%162s", " ");
+            System.out.print("|" + (this.casillas.get(3).get(10-i).getNombre() + "               ").substring(0, 16) + "|\n");
+        }
+        System.out.print("|"+(this.casillas.get(1).get(0).getNombre()+"                  ").substring(0,16)+ "|");
+        for(int i=9;i>=0;i--) {
+            System.out.print("|"+(this.casillas.get(0).get(i).getNombre()+"                  ").substring(0,16)+ "|");
+        }
+    }
 
 
 
