@@ -11,21 +11,36 @@ package monopoly;
  */
 public class Casilla {
     //Atributos
-    String tipo;
-    String grupo;
-    private Valores precio;
-    boolean hipotecada;
-    int numeroCasas;
-    int numeroHoteles;
+    private String tipo; //solar, transporte, impuestos, suerte, comunidad, servicios, carcel, parking, salida, ir  a la carcel
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    private String grupo;
+    private String nombre;
+    private float precio; //Futura modificacion aqui
+    private boolean hipotecada;
+    private int numeroCasas;
+    private int numeroHoteles;
     
     public Casilla(String tipo){ 
-        
+
     }
     
     //Getters
-    public float getPrecio(){
-        return this.precio.getValorPropiedad();
-    }
 
     
     
@@ -33,7 +48,7 @@ public class Casilla {
     
     public void setPrecio(float precio){
         if(precio != 0){
-            this.precio.setValorPropiedad(precio);
+            this.precio = precio;
         }
     }
 }
