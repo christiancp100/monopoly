@@ -47,17 +47,30 @@ public class Casilla {
     }
 
     public float getPrecio() {
-        return precio;
-    }
-
-
-    
-    
-    //Setters
-    
-    public void setPrecio(float precio){
-        if(precio != 0){
-            this.precio = precio;
+        if(this.tipo == "transporte" || this.tipo == "solar" || this.tipo == "impuestos"){
+            return precio;
+        }
+        else{
+            return 0;
         }
     }
+
+    //Setters
+
+    public void setTipo(String tipo){
+        this.tipo = tipo;
+    }
+
+    public void setColor(String color){
+        this.color = color;
+    }
+
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public void setPrecio(float precio){
+        this.precio = precio;
+    }
+
 }
