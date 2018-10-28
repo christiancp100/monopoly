@@ -1,4 +1,5 @@
 package monopoly;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Tablero {
@@ -6,6 +7,7 @@ public class Tablero {
     public static final float precioInicialPropiedades = 500000000;
 
     //Atributos
+    private ArrayList<Avatar> avatares;
     private ArrayList<Jugador> jugadores;
     private ArrayList<Casilla> casillas;
     private ArrayList<Tarjeta> tarjetas;
@@ -14,11 +16,19 @@ public class Tablero {
 
     //Constructores
 
-    public Tablero(ArrayList<Jugador> jugadores, ArrayList<Casilla> casillas) {
+    public Tablero(ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores, ArrayList<Casilla> casillas) {
         //Hay aliasing, pero nos interesa tenerlo
+        this.avatares = avatares;
         this.jugadores = jugadores;
         this.casillas = casillas;
     }
+
+
+
+
+
+
+
 
 
     //Cuando TODOS los jugadores realizan 4 vueltas incrementamos el precio de las casillas
