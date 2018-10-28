@@ -12,16 +12,23 @@ package monopoly;
 public class Casilla {
     //Atributos
     private String tipo; //solar, transporte, impuestos, suerte, comunidad, servicios, carcel, parking, salida, ir  a la carcel
-    private String grupo;
+    private String color;
     private String nombre;
     private float precio; //Futura modificacion aqui
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
+
+    public Casilla(){
+        this.tipo = "";
+        this.color = Valores.NEGRO;
+        this.nombre = "";
+        this.precio = 0;
+    }
     
-    public Casilla(String tipo, String grupo, String nombre, float precio){
+    public Casilla(String tipo, String color, String nombre, float precio){
         this.tipo = tipo;
-        this.grupo = grupo;
+        this.color = color;
         this.nombre = nombre;
         this.precio = precio;
     }
@@ -31,8 +38,8 @@ public class Casilla {
         return tipo;
     }
 
-    public String getGrupo() {
-        return grupo;
+    public String getColor() {
+        return color;
     }
 
     public String getNombre() {

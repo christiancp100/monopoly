@@ -16,12 +16,19 @@ public class Tablero {
 
     //Constructores
 
-    public Tablero(ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores, ArrayList<Casilla> casillas) {
+    public Tablero(ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores) {
         //Hay aliasing, pero nos interesa tenerlo
         this.avatares = avatares;
         this.jugadores = jugadores;
-        this.casillas = casillas;
+        this.casillas = new ArrayList<>();
+        for(int i=0;i<40;i++){
+            this.casillas.add(new Casilla());
+        }
+
+
     }
+
+
 
 
 
