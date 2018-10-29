@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package monopoly;
-
 /**
  *
  * @author christiancp
@@ -67,14 +66,6 @@ public class Casilla {
     }
 
     public void setColor(String color){
-
-        /*if(this.nombre == "Solar"){
-            this.color = Valores.FONDO_BLANCO + color;
-        }
-        else{
-            this.color = Valores.FONDO_BLANCO + Valores.NEGRO;
-        }*/
-
         this.color=  color;
     }
 
@@ -82,8 +73,7 @@ public class Casilla {
         this.nombre = nombre;
     }
 
-    public void setPrecio(float precio){
-        this.precio = precio;
+    public void setPrecio(int grupo) {
+        this.precio= (float) (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))));
     }
-
 }

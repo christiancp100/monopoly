@@ -28,4 +28,9 @@ public class Valores {
                                             "Aeropuerto", "China", "Suerte 2", "Japón", "India", "Ir a Cárcel",
                                             "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
                                             "Suerte 3", "E.Árabes", "Qatar"};
+
+
+    public static final float PRECIOINICIALGRUPO1 = 1200;
 }
+
+

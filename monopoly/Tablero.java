@@ -87,7 +87,7 @@ public class Tablero {
 
 
         }
-        //Establecemos los COLORES y los GRUPOS de Casillas
+        //Establecemos los ATRIBUTOS de las Casillas
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
                 if(this.casillas.get(i).get(j).getTipo() == "Solar") {
@@ -96,37 +96,48 @@ public class Tablero {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.NEGRO);
                             this.casillas.get(i).get(j).setGrupo(1);
+                            this.casillas.get(i).get(j).setPrecio(1);
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.CIAN);
                             this.casillas.get(i).get(j).setGrupo(2);
+                            this.casillas.get(i).get(j).setPrecio(2);
+
                         }
                     }
                     if (i == 1) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.MAGENTA);
                             this.casillas.get(i).get(j).setGrupo(3);
+                            this.casillas.get(i).get(j).setPrecio(3);
 
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.AMARILLO);
                             this.casillas.get(i).get(j).setGrupo(4);
+                            this.casillas.get(i).get(j).setPrecio(4);
                         }
                     }
                     if (i == 2) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.ROJO);
                             this.casillas.get(i).get(j).setGrupo(5);
+                            this.casillas.get(i).get(j).setPrecio(5);
+
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.BLANCO);
                             this.casillas.get(i).get(j).setGrupo(6);
+                            this.casillas.get(i).get(j).setPrecio(6);
                         }
                     }
                     if (i == 3) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.VERDE);
                             this.casillas.get(i).get(j).setGrupo(7);
+                            this.casillas.get(i).get(j).setPrecio(7);
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.AZUL);
                             this.casillas.get(i).get(j).setGrupo(8);
+                            this.casillas.get(i).get(j).setPrecio(8);
+
                         }
                     }
                 }
