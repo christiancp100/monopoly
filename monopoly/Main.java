@@ -6,6 +6,6 @@ public class Main {
 
         Tablero tablero = new Tablero();
         tablero.imprimir();
-
+        //System.out.println(Valores.AZUL + "Hola");
     }
 }

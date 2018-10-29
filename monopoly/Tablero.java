@@ -82,31 +82,73 @@ public class Tablero {
                     this.casillas.get(i).get(j).setTipo("Solar");
                 }
             }
+
+
         }
+        //Establecemos los COLORES de los GRUPOS de Casillas
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(this.casillas.get(i).get(j).getTipo() == "Solar") {
 
-
-
-
+                    if (i == 0) {
+                        if (j < 5) { //Antes que la casilla de transporte
+                            this.casillas.get(i).get(j).setColor(Valores.NEGRO);
+                        } else {
+                            this.casillas.get(i).get(j).setColor(Valores.CIAN);
+                        }
+                    }
+                    if (i == 1) {
+                        if (j < 5) { //Antes que la casilla de transporte
+                            this.casillas.get(i).get(j).setColor(Valores.MAGENTA);
+                        } else {
+                            this.casillas.get(i).get(j).setColor(Valores.AMARILLO);
+                        }
+                    }
+                    if (i == 2) {
+                        if (j < 5) { //Antes que la casilla de transporte
+                            this.casillas.get(i).get(j).setColor(Valores.ROJO);
+                        } else {
+                            this.casillas.get(i).get(j).setColor(Valores.BLANCO);
+                        }
+                    }
+                    if (i == 3) {
+                        if (j < 5) { //Antes que la casilla de transporte
+                            this.casillas.get(i).get(j).setColor(Valores.VERDE);
+                        } else {
+                            this.casillas.get(i).get(j).setColor(Valores.AZUL);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
     public void imprimir(){
 
 
-        for(int j=0;j<10;j++){
-            System.out.print("|"+(this.casillas.get(2).get(j).getNombre()+"             ").substring(0,16)+ "|" );
+        for(int j=0;j<10;j++){//Parte norte del tablero + casilla Ir a la Cárcel
+            System.out.print("|"+ this.casillas.get(2).get(j).getColor() +
+                    (this.casillas.get(2).get(j).getNombre()+"             ").substring(0,16)+ Valores.RESET +"|");
             if(j == 9){
-                System.out.println("|" + (this.casillas.get(3).get(0).getNombre() + "          ").substring(0,16) + "|");
+                System.out.println("|" + this.casillas.get(3).get(0).getColor() +
+                        (this.casillas.get(3).get(0).getNombre() + "          ").substring(0,16) + Valores.RESET+ "|");
             }
         }
-        for(int i=9;i>=1;i--){
-            System.out.print("|"+(this.casillas.get(1).get(i).getNombre()+"                  ").substring(0,16)+ "|");
+        for(int i=9;i>=1;i--){//Este y Oeste del tablero
+            System.out.print("|"+ this.casillas.get(1).get(i).getColor() +
+                    (this.casillas.get(1).get(i).getNombre()+"                  ").substring(0,16)+ Valores.RESET + "|" );
             System.out.format("%162s", " ");
-            System.out.print("|" + (this.casillas.get(3).get(10-i).getNombre() + "               ").substring(0, 16) + "|\n");
+            System.out.print("|" + this.casillas.get(3).get(10-i).getColor() +
+                    (this.casillas.get(3).get(10-i).getNombre() + "               ").substring(0, 16) + Valores.RESET + "|\n");
         }
-        System.out.print("|"+(this.casillas.get(1).get(0).getNombre()+"                  ").substring(0,16)+ "|");
+        //Parte Sur del tableto + Cárcel y Salida
+        System.out.print("|"+ this.casillas.get(1).get(0).getColor() +
+                (this.casillas.get(1).get(0).getNombre()+"                  ").substring(0,16)+ Valores.RESET +"|");
+
         for(int i=9;i>=0;i--) {
-            System.out.print("|"+(this.casillas.get(0).get(i).getNombre()+"                  ").substring(0,16)+ "|");
+            System.out.print("|"+ this.casillas.get(0).get(i).getColor() +
+                    (this.casillas.get(0).get(i).getNombre()+"                  ").substring(0,16)+Valores.RESET+ "|");
         }
     }
 

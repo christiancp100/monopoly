@@ -62,7 +62,15 @@ public class Casilla {
     }
 
     public void setColor(String color){
-        this.color = color;
+
+        /*if(this.nombre == "Solar"){
+            this.color = Valores.FONDO_BLANCO + color;
+        }
+        else{
+            this.color = Valores.FONDO_BLANCO + Valores.NEGRO;
+        }*/
+
+        this.color=color;
     }
 
     public void setNombre(String nombre){

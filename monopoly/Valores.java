@@ -27,6 +27,7 @@ public class Valores {
     public static final String CIAN =  "\u001b[36m";
     public static final String BLANCO =  "\u001b[37m";
     public static final String RESET =  "\u001b[0m";
+    public static final String FONDO_BLANCO = "\u001B[47m";
 
     public static final String[] nombres = {"Salida", "Nueva Zelanda","Caja 1", "Australia",
                                             "Impuestos 1", "RENFE", "Sudáfrica",
@@ -35,6 +36,6 @@ public class Valores {
                                             "Canadá", "Caja 2", "Estados Unidos", "México", "Parking",
                                             "Finlandia", "REPSOL", "Rusia", "Estonia",
                                             "Aeropuerto", "China", "Suerte 2", "Japón", "India", "Ir a la Cárcel",
-                                            "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Francia",
+                                            "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
                                             "Suerte 3", "E.Árabes", "Qatar"};
 }
