@@ -31,6 +31,7 @@ public class Tablero {
                 if(j==0){ //Es el numero de casilla en cada posicion (N,S,E,O) del tablero
                     if(i==0){
                         this.casillas.get(i).get(j).setTipo("Salida");
+
                     }
                     if(i==1){
                         this.casillas.get(i).get(j).setTipo("Carcel");
@@ -41,6 +42,7 @@ public class Tablero {
                     if(i==3){
                         this.casillas.get(i).get(j).setTipo("IrCarcel");
                     }
+                    this.casillas.get(i).get(j).setGrupo(10); //Este es el grupo de las casillas especiales
                 }
                 if(j==1){
                     this.casillas.get(i).get(j).setTipo("Solar");
@@ -85,7 +87,7 @@ public class Tablero {
 
 
         }
-        //Establecemos los COLORES de los GRUPOS de Casillas
+        //Establecemos los COLORES y los GRUPOS de Casillas
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
                 if(this.casillas.get(i).get(j).getTipo() == "Solar") {
@@ -93,31 +95,43 @@ public class Tablero {
                     if (i == 0) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.NEGRO);
+                            this.casillas.get(i).get(j).setGrupo(1);
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.CIAN);
+                            this.casillas.get(i).get(j).setGrupo(2);
                         }
                     }
                     if (i == 1) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.MAGENTA);
+                            this.casillas.get(i).get(j).setGrupo(3);
+
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.AMARILLO);
+                            this.casillas.get(i).get(j).setGrupo(4);
                         }
                     }
                     if (i == 2) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.ROJO);
+                            this.casillas.get(i).get(j).setGrupo(5);
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.BLANCO);
+                            this.casillas.get(i).get(j).setGrupo(6);
                         }
                     }
                     if (i == 3) {
                         if (j < 5) { //Antes que la casilla de transporte
                             this.casillas.get(i).get(j).setColor(Valores.VERDE);
+                            this.casillas.get(i).get(j).setGrupo(7);
                         } else {
                             this.casillas.get(i).get(j).setColor(Valores.AZUL);
+                            this.casillas.get(i).get(j).setGrupo(8);
                         }
                     }
+                }
+                else{
+                    this.casillas.get(i).get(j).setColor(Valores.NEGRO);
                 }
             }
         }
@@ -138,7 +152,7 @@ public class Tablero {
         for(int i=9;i>=1;i--){//Este y Oeste del tablero
             System.out.print("|"+ this.casillas.get(1).get(i).getColor() +
                     (this.casillas.get(1).get(i).getNombre()+"                  ").substring(0,16)+ Valores.RESET + "|" );
-            System.out.format("%162s", " ");
+            System.out.format(Valores.FONDO+ "%166s", " "+Valores.RESET);
             System.out.print("|" + this.casillas.get(3).get(10-i).getColor() +
                     (this.casillas.get(3).get(10-i).getNombre() + "               ").substring(0, 16) + Valores.RESET + "|\n");
         }
@@ -147,7 +161,7 @@ public class Tablero {
                 (this.casillas.get(1).get(0).getNombre()+"                  ").substring(0,16)+ Valores.RESET +"|");
 
         for(int i=9;i>=0;i--) {
-            System.out.print("|"+ this.casillas.get(0).get(i).getColor() +
+            System.out.print("|" + this.casillas.get(0).get(i).getColor() +
                     (this.casillas.get(0).get(i).getNombre()+"                  ").substring(0,16)+Valores.RESET+ "|");
         }
     }

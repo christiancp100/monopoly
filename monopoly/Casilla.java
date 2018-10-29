@@ -13,6 +13,7 @@ public class Casilla {
     //Atributos
     private String tipo; //solar, transporte, impuestos, suerte, comunidad, servicios, carcel, parking, salida, ir  a la carcel
     private String color;
+    private int grupo;
     private String nombre;
     private float precio; //Futura modificacion aqui
     private boolean hipotecada;
@@ -57,6 +58,10 @@ public class Casilla {
 
     //Setters
 
+    public void setGrupo(int grupo){
+        this.grupo = grupo;
+    }
+
     public void setTipo(String tipo){
         this.tipo = tipo;
     }
@@ -70,7 +75,7 @@ public class Casilla {
             this.color = Valores.FONDO_BLANCO + Valores.NEGRO;
         }*/
 
-        this.color=color;
+        this.color=  color;
     }
 
     public void setNombre(String nombre){

@@ -5,18 +5,6 @@ import java.util.ArrayList;
 
 public class Valores {
 
-    /*
-    Black: \u001b[30m
-    Red: \u001b[31m
-    Green: \u001b[32m
-    Yellow: \u001b[33m
-    Blue: \u001b[34m
-    Magenta: \u001b[35m
-    Cyan: \u001b[36m
-    White: \u001b[37m
-    Reset: \u001b[0m
-    */
-
     //Colores
     public static final String NEGRO =  "\u001b[30m";
     public static final String ROJO =  "\u001b[31m";
@@ -27,15 +15,17 @@ public class Valores {
     public static final String CIAN =  "\u001b[36m";
     public static final String BLANCO =  "\u001b[37m";
     public static final String RESET =  "\u001b[0m";
-    public static final String FONDO_BLANCO = "\u001B[47m";
+    public static final String SUBRAYADO = "\033[4;37m";
+    public static final String FONDO = "\033[47m";
 
-    public static final String[] nombres = {"Salida", "Nueva Zelanda","Caja 1", "Australia",
+
+    public static final String[] nombres = {"Salida", "N.Zelanda","Caja 1", "Australia",
                                             "Impuestos 1", "RENFE", "Sudáfrica",
                                             "Suerte 1", "Kenia", "Cabo Verde", "Carcel", "Brasil",
                                             "IBERDROLA", "Argentina", "Venezuela", "Puerto",
-                                            "Canadá", "Caja 2", "Estados Unidos", "México", "Parking",
+                                            "Canadá", "Caja 2", "EE.UU", "México", "Parking",
                                             "Finlandia", "REPSOL", "Rusia", "Estonia",
-                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "Ir a la Cárcel",
+                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "Ir a Cárcel",
                                             "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
                                             "Suerte 3", "E.Árabes", "Qatar"};
 }
