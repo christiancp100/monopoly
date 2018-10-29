@@ -11,36 +11,68 @@ En este proyecto se desarrollará una versión funcional y completa del juego cl
 * Avatar
 
 `package monopoly`
+
 ### principal (clase)
 * Main
 
 ## Descripción de las clases de `monopoly`
 
-```java
-public Class Casilla{
-    private String tipo;
-    private String grupo;
-    private Valores precio;
+### Casilla:
+
+* Atributos:
+
+  * ```java
+    private String tipo; //solar, transporte, impuestos, suerte, comunidad, servicios, carcel, parking, salida, ir  a la carcel
+    private String color;
+    private int grupo;
+    private String nombre;
+    private float precio; //Futura modificacion aqui
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
-    //Getters y Setters
-    public float getPrecio();
-    public void setPrecio();
-}
+    ```
 
-```
-```java
-public Class Casilla{
-    private String tipo;
-    private String grupo;
-    private Valores precio;
-    private boolean hipotecada;
-    private int numeroCasas;
-    private int numeroHoteles;
-}
+* Constructores:
 
-```
+  * ```java
+    public Casilla()
+    
+    public Casilla(String tipo, String color, String nombre, float precio)
+    ```
+
+* Getters:
+
+* ```java
+  public String getTipo()
+  public String getColor() 
+  public String getNombre()
+  public String getGrupo()
+  public float setPrecio(int grupo)
+  ```
+
+* Setters:
+
+* ```java
+  public void setGrupo(int grupo)
+  public void setTipo(String tipo)
+  public void setColor(String color)
+  public void setNombre(String nombre)
+  public void setPrecio(int grupo)
+  ```
+
+### Tablero:
+
+* Constructor:
+
+  * ```java
+    public Tablero(ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores)
+    ```
+
+* Métodos:
+
+  * ```java
+    public void imprimir()
+    ```
 
 
 ## License
