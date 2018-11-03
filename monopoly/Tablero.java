@@ -1,4 +1,5 @@
 package monopoly;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Tablero {
@@ -15,10 +16,10 @@ public class Tablero {
 
     //Constructores
 
-    public Tablero(/*ArrayList<Avatar> avatares, ArrayList<Jugador> jugadores*/) {
-        //Hay aliasing, pero nos interesa tenerlo
-        //this.avatares = avatares;
-        //this.jugadores = jugadores;
+    public Tablero(ArrayList<Avatar> avatares) {
+
+        this.avatares = avatares;
+
         this.casillas = new ArrayList<>();
 
         for(int i=0;i<4;i++){
@@ -146,42 +147,104 @@ public class Tablero {
                 }
             }
         }
+
+
+        //Ponemos los avatares en la casilla de salida
+        for(int i=0;i<this.avatares.size();i++){
+            this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(0).get(0));
+            this.avatares.get(i).getJugador().setFortuna(precioTotalSolares()/3);
+        }
+
     }
 
+    //Getters
 
-    public void imprimir(){
+    public Casilla getCasilla(int i, int j){
+        return this.casillas.get(i).get(j);
+    }
 
+    //Metodos
 
-        for(int j=0;j<10;j++){//Parte norte del tablero + casilla Ir a la Cárcel
-            System.out.print("|"+ this.casillas.get(2).get(j).getColor() +
-                    (this.casillas.get(2).get(j).getNombre()+"             ").substring(0,16)+ Valores.RESET +"|");
-            if(j == 9){
-                System.out.println("|" + this.casillas.get(3).get(0).getColor() +
-                        (this.casillas.get(3).get(0).getNombre() + "          ").substring(0,16) + Valores.RESET+ "|");
+    @Override
+    public String toString() {
+
+        StringBuffer salida = new StringBuffer();
+
+        for (int j = 0; j < 10; j++) {//Parte norte del tablero + casilla Ir a la Cárcel
+            salida.append ("|" + this.casillas.get(2).get(j).getColor() +
+                    (this.casillas.get(2).get(j).getNombre() + "             ").substring(0, 16)+
+                    //Si el avatar esta en esta casilla se imprime
+                    AvatarEnCasilla(this.casillas.get(2).get(j)) +
+                    Valores.RESET + "|");
+            if (j == 9) {
+                salida.append("|" + this.casillas.get(3).get(0).getColor() +
+                        (this.casillas.get(3).get(0).getNombre() + "          ").substring(0, 16)+
+                        AvatarEnCasilla(this.casillas.get(3).get(0)) +
+                        Valores.RESET + "|\n");
             }
         }
-        for(int i=9;i>=1;i--){//Este y Oeste del tablero
-            System.out.print("|"+ this.casillas.get(1).get(i).getColor() +
-                    (this.casillas.get(1).get(i).getNombre()+"                  ").substring(0,16)+ Valores.RESET + "|" );
-            System.out.format(Valores.FONDO+ "%166s", " "+Valores.RESET);
-            System.out.print("|" + this.casillas.get(3).get(10-i).getColor() +
-                    (this.casillas.get(3).get(10-i).getNombre() + "               ").substring(0, 16) + Valores.RESET + "|\n");
+
+        for (int i = 9; i >= 1; i--) {//Este y Oeste del tablero
+            salida.append("|" + this.casillas.get(1).get(i).getColor() +
+                    (this.casillas.get(1).get(i).getNombre() + "                  ").substring(0, 16) +
+                    AvatarEnCasilla(this.casillas.get(1).get(i)) +
+                    Valores.RESET + "|");
+
+            salida.append(String.format(Valores.FONDO + "%" + ((32*8)+18) + "s", "" + Valores.RESET));
+
+            salida.append("|" + this.casillas.get(3).get(10 - i).getColor() +
+                    (this.casillas.get(3).get(10 - i).getNombre() + "               ").substring(0, 16) +
+                    AvatarEnCasilla(this.casillas.get(3).get(10 - i)) +
+                    Valores.RESET + "|\n");
         }
         //Parte Sur del tableto + Cárcel y Salida
-        System.out.print("|"+ this.casillas.get(1).get(0).getColor() +
-                (this.casillas.get(1).get(0).getNombre()+"                  ").substring(0,16)+ Valores.RESET +"|");
+        salida.append("|" + this.casillas.get(1).get(0).getColor() +
+                (this.casillas.get(1).get(0).getNombre() + "                  ").substring(0, 16) +
+                AvatarEnCasilla(this.casillas.get(1).get(0)) +
+                Valores.RESET + "|");
 
-        for(int i=9;i>=0;i--) {
-            System.out.print("|" + this.casillas.get(0).get(i).getColor() +
-                    (this.casillas.get(0).get(i).getNombre()+"                  ").substring(0,16)+Valores.RESET+ "|");
+        for (int i = 9; i >= 0; i--) {
+            salida.append("|" + this.casillas.get(0).get(i).getColor() +
+                    (this.casillas.get(0).get(i).getNombre() + "                  ").substring(0, 16) +
+                    AvatarEnCasilla(this.casillas.get(0).get(i)) +
+                    Valores.RESET + "|");
         }
+
+        return salida.toString();
+    }
+
+    private String AvatarEnCasilla(Casilla casilla){
+
+        StringBuffer aux = new StringBuffer();
+
+        for(int i=0;i< this.avatares.size() ;i++){
+            if(avatares.get(i).getJugador().getCasillaActual().equals(casilla)){
+                aux.append(Valores.VERDE +"&" + Valores.RESET + avatares.get(i).getSimbolo());
+            }
+            else{
+                //aux.append(" ");
+            }
+        }
+        aux.append(String.format("%"+ (12-aux.length()) + "s", ""));
+        return aux.toString();
     }
 
 
-
-
-
-
+    private float precioTotalSolares() {
+        Casilla aux;
+        float precioTotal = 0;
+        //Iteramos sobre el arraylist de arraylist de casillas
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 10; j++) {
+                //Comprobamos que la casilla sea de tipo solar
+                aux = this.getCasilla(i, j);
+                if (aux.getTipo().equals("Solar")) {
+                    precioTotal += aux.getPrecio();
+                }
+            }
+        //salida.appendln( "\n" + precioTotal + "\n");
+        return precioTotal;
+    }
 
 
     //Cuando TODOS los jugadores realizan 4 vueltas incrementamos el precio de las casillas

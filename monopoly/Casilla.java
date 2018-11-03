@@ -14,16 +14,21 @@ public class Casilla {
     private String color;
     private int grupo;
     private String nombre;
-    private float precio; //Futura modificacion aqui
+    private float precio;
+    private Avatar avatarEnEstaCasilla;
+
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
+
+
 
     public Casilla(){
         this.tipo = "";
         this.color = Valores.NEGRO;
         this.nombre = "";
         this.precio = 0;
+        avatarEnEstaCasilla = null;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -31,6 +36,7 @@ public class Casilla {
         this.color = color;
         this.nombre = nombre;
         this.precio = precio;
+        avatarEnEstaCasilla = null;
     }
 
 
@@ -47,8 +53,8 @@ public class Casilla {
     }
 
     public float getPrecio() {
-        if(this.tipo == "transporte" || this.tipo == "solar" || this.tipo == "impuestos"){
-            return precio;
+        if(this.tipo == "Transporte" || this.tipo == "Solar" || this.tipo == "Impuestos"){
+            return this.precio;
         }
         else{
             return 0;

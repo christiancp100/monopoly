@@ -31,6 +31,7 @@ public class Valores {
 
 
     public static final float PRECIOINICIALGRUPO1 = 1200;
+
 }
 
 
