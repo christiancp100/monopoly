@@ -8,7 +8,7 @@ public class Avatar {
     //Atributos
     private Jugador jugador;
 
-    private String simbolo;
+    private char simbolo;
 
     public Avatar(){
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
@@ -23,14 +23,14 @@ public class Avatar {
         return this.jugador;
     }
 
-    public String getSimbolo(){return this.simbolo;}
+    public char getSimbolo(){return this.simbolo;}
     //Setters
 
     public void setJugador(Jugador jugador){
         this.jugador = jugador;
     }
 
-    public void setSimbolo(String simbolo){
+    public void setSimbolo(char simbolo){
         this.simbolo = simbolo;
     }
 
@@ -47,12 +47,10 @@ public class Avatar {
     }
 
 
-    private String generarSimboloAleatorio(){
+    private char generarSimboloAleatorio(){
         Random rand = new Random();
-        int  codigoNumerico = rand.nextInt(255) + 0;
-        String strAscii = Character.toString( (char)codigoNumerico);
-        //System.out.println("\n" +strAscii+"\n");
-        return strAscii;
+        char  codigoNumerico = (char) (rand.nextInt(255) + 0);
+        return codigoNumerico;
     }
 
 
