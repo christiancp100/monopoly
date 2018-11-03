@@ -219,13 +219,10 @@ public class Tablero {
 
         for(int i=0;i< this.avatares.size() ;i++){
             if(avatares.get(i).getJugador().getCasillaActual().equals(casilla)){
-                aux.append(Valores.VERDE +"&" + Valores.RESET + avatares.get(i).getSimbolo());
-            }
-            else{
-                //aux.append(" ");
+                aux.append(" &" + avatares.get(i).getSimbolo());
             }
         }
-        aux.append(String.format("%"+ (12-aux.length()) + "s", ""));
+        aux.append(String.format("%"+ (12-aux.length()) + "s", " "));
         return aux.toString();
     }
 

@@ -31,8 +31,8 @@ public class Main {
         Scanner reader = new Scanner(System.in);  // Reading from System.in
 
 
-        //System.out.println(tablero);
-        //System.out.println(av1.getSimbolo() +" y "+ av2.getSimbolo()+  " .");
+        System.out.println(tablero);
+        System.out.println(av1.getSimbolo() +" y "+ av2.getSimbolo()+  " .");
 
 
         /*
