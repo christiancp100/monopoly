@@ -1,5 +1,6 @@
 
 package monopoly;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,18 +14,20 @@ public class Jugador {
     private Casilla casillaActual;
     private float fortuna;
 
-    private Casilla[] propiedades;
+    private ArrayList<Casilla> propiedades;
 
     public Jugador(Avatar avatar,float fortuna){
         this.avatar = avatar;
         this.fortuna = fortuna;
         this.casillaActual = null;
+        this.propiedades = new ArrayList<>();
 
     }
 
     public Jugador(Avatar avatar){
         this.avatar = avatar;
         this.casillaActual = null;
+        this.propiedades = new ArrayList<>();
 
     }
 
@@ -32,7 +35,14 @@ public class Jugador {
         this.avatar = avatar;
         this.casillaActual = casilla;
         this.fortuna = fortuna;
-        this.propiedades = null;
+        this.propiedades = new ArrayList<>();
+    }
+
+    public Jugador(){
+        this.avatar = null;
+        this.casillaActual = null;
+        this.fortuna = Float.POSITIVE_INFINITY ;
+        this.propiedades = new ArrayList<>();
     }
 
 
@@ -47,6 +57,10 @@ public class Jugador {
         return this.fortuna;
     }
 
+    public ArrayList<Casilla> getPropiedades(){
+        return this.propiedades;
+    }
+
     //Setters
 
     public void setCasillaActual(Casilla casilla){
@@ -56,6 +70,32 @@ public class Jugador {
     public void setFortuna(float fortuna){
         this.fortuna = fortuna;
     }
+
+    public void setPropiedades(Casilla casilla){
+        this.propiedades.add(casilla);
+    }
+
+    public void quitarPropiedad(Casilla casilla){
+        this.propiedades.remove(casilla);
+    }
+
+    @Override
+    public String toString() {
+        String aux;
+
+        aux = "Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
+        if(this.propiedades.size() != 0){
+            aux += "Propiedades: \n";
+            for(int i=0; i<this.propiedades.size();i++){
+                aux += "\t->" + this.propiedades.get(i).toString();
+            }
+        }
+        else aux +=Valores.ROJO + "-> El usuario no tiene propiedades, debería ponerse las pilas...\n" + Valores.RESET;
+
+        return aux;
+    }
+
+
 
 
 }

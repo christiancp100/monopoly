@@ -12,6 +12,7 @@ public class Tablero {
     private ArrayList<ArrayList<Casilla>> casillas;
     private ArrayList<Tarjeta> tarjetas;
     private float precioTotalPropiedades;
+    private Jugador banca;
 
 
     //Constructores
@@ -21,6 +22,8 @@ public class Tablero {
         this.avatares = avatares;
 
         this.casillas = new ArrayList<>();
+
+        this.banca = new Jugador();
 
         for(int i=0;i<4;i++){
             this.casillas.add(new ArrayList<Casilla>());
@@ -92,6 +95,8 @@ public class Tablero {
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
                 if(this.casillas.get(i).get(j).getTipo() == "Solar") {
+                    //Las creamos con disponibilidad de compra
+                    this.casillas.get(i).get(j).setDisponibilidad(true);
 
                     if (i == 0) {
                         if (j < 5) { //Antes que la casilla de transporte
@@ -143,6 +148,10 @@ public class Tablero {
                     }
                 }
                 else{
+                    if(this.casillas.get(i).get(j).getTipo().equals("Transportes")){
+                        //Las creamos con disponibilidad de compra
+                        this.casillas.get(i).get(j).setDisponibilidad(true);
+                    }
                     this.casillas.get(i).get(j).setColor(Valores.NEGRO);
                 }
             }
@@ -153,6 +162,15 @@ public class Tablero {
         for(int i=0;i<this.avatares.size();i++){
             this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(0).get(0));
             this.avatares.get(i).getJugador().setFortuna(precioTotalSolares()/3);
+        }
+
+        //Creamos la banca
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(this.casillas.get(i).get(j).getDisponibilidad()){
+                    this.banca.setPropiedades(this.casillas.get(i).get(j));
+                }
+            }
         }
 
     }

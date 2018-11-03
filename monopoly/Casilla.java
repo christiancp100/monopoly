@@ -16,6 +16,7 @@ public class Casilla {
     private String nombre;
     private float precio;
     private Avatar avatarEnEstaCasilla;
+    private boolean sePuedeComprar;
 
     private boolean hipotecada;
     private int numeroCasas;
@@ -29,6 +30,7 @@ public class Casilla {
         this.nombre = "";
         this.precio = 0;
         avatarEnEstaCasilla = null;
+        this.sePuedeComprar = false;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -37,6 +39,9 @@ public class Casilla {
         this.nombre = nombre;
         this.precio = precio;
         avatarEnEstaCasilla = null;
+        if(tipo.equals("Solar") || tipo.equals("Transporte")){
+            this.sePuedeComprar = true;
+        }
     }
 
 
@@ -61,6 +66,10 @@ public class Casilla {
         }
     }
 
+    public boolean getDisponibilidad(){
+        return this.sePuedeComprar;
+    }
+
     //Setters
 
     public void setGrupo(int grupo){
@@ -81,5 +90,25 @@ public class Casilla {
 
     public void setPrecio(int grupo) {
         this.precio= (float) (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))));
+    }
+
+    public void setDisponibilidad(boolean disponibilidad){
+        this.sePuedeComprar = disponibilidad;
+    }
+
+
+    //Metodos
+    @Override
+    public String toString(){
+        String aux;
+
+        aux = "Nombre: " + this.nombre;
+        aux += "\n        -Tipo: " + this.tipo;
+        aux += "\n        -Grupo: " + this.grupo;
+        aux += "\n        -precio:" + this.precio;
+        if(sePuedeComprar) aux+= Valores.VERDE +"\n        ->Se puede comprar\n\n" + Valores.RESET;
+        else aux += Valores.ROJO + "\n        ->La propiedad no está disponible\n\n" + Valores.RESET;
+
+        return aux;
     }
 }
