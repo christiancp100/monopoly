@@ -33,15 +33,14 @@ public class Dados {
         
         int max=6;
         int min=1;
-        
-        Random r=new Random();      
+        Random r=new Random();
         return r.nextInt(max-min+1)+min;
     }
     
     public void comparar(Dados d2){
         
         if(this.dado==d2.getDado()){
-            System.out.println("Doble, lance otra vez.");
+            System.out.println("Puedes salir de la Cárcel.");
         }
     }
     

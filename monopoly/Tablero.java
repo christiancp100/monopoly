@@ -1,4 +1,6 @@
 package monopoly;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -148,7 +150,8 @@ public class Tablero {
                     }
                 }
                 else{
-                    if(this.casillas.get(i).get(j).getTipo().equals("Transportes")){
+                    if(this.casillas.get(i).get(j).getTipo().equals("Transportes")
+                    || this.casillas.get(i).get(j).getTipo().equals("Servicio")){
                         //Las creamos con disponibilidad de compra
                         this.casillas.get(i).get(j).setDisponibilidad(true);
                     }
@@ -172,7 +175,6 @@ public class Tablero {
                 }
             }
         }
-
     }
 
     //Getters

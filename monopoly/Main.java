@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Avatar av1 = new Avatar();
-        Avatar av2 = new Avatar();
+        Avatar av1 = new Avatar("coche", 1, "Pedro");
+        Avatar av2 = new Avatar("esfinge", 2, "Pedro");
 
         ArrayList<Avatar> avatares = new ArrayList<>();
         avatares.add(av1); avatares.add(av2);
@@ -29,6 +29,7 @@ public class Main {
 
         System.out.println(tablero);
 
+        System.out.println(av1);
         /*System.out.println("\n->");
         String n = reader.next(); // Scans the next token of the input as an int.
         reader.close();

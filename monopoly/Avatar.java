@@ -7,14 +7,20 @@ public class Avatar {
 
     //Atributos
     private Jugador jugador;
-
     private char simbolo;
+    private String tipo;
+    private int turno;
 
-    public Avatar(){
+    public Avatar(String tipo, int turno, String nombreJugador){
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
         //Se establecen desde el tablero
-        this.jugador = new Jugador(this);
+        this.jugador = new Jugador(this, nombreJugador );
         this.simbolo = generarSimboloAleatorio();
+        this.turno = turno;
+        if(tipo != "pelota" || tipo != "coche" || tipo != "esfinge" || tipo != "sombrero") {
+            this.tipo = tipo;
+        }
+
     }
 
 
@@ -25,6 +31,9 @@ public class Avatar {
     }
 
     public char getSimbolo(){return this.simbolo;}
+
+    public int getTurno(){return this.turno;}
+
     //Setters
 
     public void setJugador(Jugador jugador){
@@ -33,6 +42,10 @@ public class Avatar {
 
     public void setSimbolo(char simbolo){
         this.simbolo = simbolo;
+    }
+
+    public void setTurno(int turno){
+        this.turno = turno;
     }
 
     //Métodos
@@ -49,9 +62,9 @@ public class Avatar {
     }
 
 
-    private char generarSimboloAleatorio(){
+    public char generarSimboloAleatorio(){
         //Generamos una letra mayuscula aleatoria
-        int max=91, min=65;
+        int max=90, min=65;
         Random rand = new Random();
         int  codigoNumerico = rand.nextInt(max-min +1) + min;
         char ascii = (char) codigoNumerico;
