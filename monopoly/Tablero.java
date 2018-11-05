@@ -160,13 +160,6 @@ public class Tablero {
             }
         }
 
-
-        //Ponemos los avatares en la casilla de salida
-        for(int i=0;i<this.avatares.size();i++){
-            this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(0).get(0));
-            this.avatares.get(i).getJugador().setFortuna(precioTotalSolares()/3);
-        }
-
         //Creamos la banca
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
@@ -318,6 +311,14 @@ public class Tablero {
 
                 this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(coordenada).get(posicion));
             }
+        }
+    }
+
+    public void avataresEnSalida(){
+        //Ponemos los avatares en la casilla de salida
+        for(int i=0;i<this.avatares.size();i++){
+            this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(0).get(0));
+            this.avatares.get(i).getJugador().setFortuna(precioTotalSolares()/3);
         }
     }
 

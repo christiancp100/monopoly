@@ -1,17 +1,18 @@
 package monopoly;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InterpreteComandos {
 
-    private Tablero tablero;
+
     private Jugador jugador;
     private ArrayList<Avatar> avatares;
     
-    public InterpreteComandos(Tablero tablero){
-        this.tablero=tablero;
-        this.avatares=tablero.getAvatares();
+    public InterpreteComandos(ArrayList<Avatar> avatares){
+
+        this.avatares= avatares;
     }
     
     public String input(){
@@ -19,7 +20,7 @@ public class InterpreteComandos {
         Scanner reader=new Scanner(System.in);  // Reading from System.in
         
            System.out.println("\n->");
-           String n = reader.next(); // Scans the next token of the input as an int.
+           String n = reader.nextLine(); // Scans the next token of the input as an int.
            reader.close();
            
         return n;
@@ -33,24 +34,25 @@ public class InterpreteComandos {
         if(eleccion.contains("crear jugador")){
             aux=eleccion.split("\\s+");
             darAltaJugador(aux[2],aux[3]);
+            System.out.println( this.avatares.get( this.avatares.size() -1 ) );
         }
         
         if(eleccion=="jugador"){
-            jugadorTurno();
+            //jugadorTurno();
         }
     }
     
     public void darAltaJugador(String nombre,String tipo){
-        
-        jugador.setNombreJugador(nombre);
-        avatares.add(new Avatar(tipo,avatares.size(),nombre));
-        
-        System.out.println(avatares.get(avatares.size()-1));
+
+        this.avatares.add(new Avatar(tipo,this.avatares.size() + 1,nombre));
     }
     
-    public void jugadorTurno(){ 
+    /*public void jugadorTurno(){
         System.out.println("Nombre: "+jugador.getNombreJugador());
         //System.out.println("Avatar "+avatar.getSimbolo());
-    }
+    }*/
+
+
+
 
 }

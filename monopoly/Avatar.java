@@ -14,13 +14,12 @@ public class Avatar {
     public Avatar(String tipo, int turno, String nombreJugador){
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
         //Se establecen desde el tablero
-        this.jugador = new Jugador(this, nombreJugador );
-        this.simbolo = generarSimboloAleatorio();
-        this.turno = turno;
-        if(tipo != "pelota" || tipo != "coche" || tipo != "esfinge" || tipo != "sombrero") {
-            this.tipo = tipo;
+            this.jugador = new Jugador(this, nombreJugador );
+            this.simbolo = generarSimboloAleatorio();
+            this.turno = turno;
+            if(tipo != "pelota" || tipo != "coche" || tipo != "esfinge" || tipo != "sombrero") {
+                this.tipo = tipo;
         }
-
     }
 
 
