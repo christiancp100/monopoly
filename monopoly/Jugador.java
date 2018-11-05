@@ -56,6 +56,10 @@ public class Jugador {
         return this.propiedades;
     }
 
+    public String getNombreJugador(){
+        return this.nombreJugador;
+    }
+
     //Setters
 
     public void setNombreJugador(String nombreJugador){
