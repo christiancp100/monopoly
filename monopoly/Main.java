@@ -25,7 +25,11 @@ public class Main {
 
         System.out.println(tablero);
 
-        System.out.println("\n->");
+        tablero.desplazarAvatar(av1, 5);
+
+        System.out.println(tablero);
+
+        /*System.out.println("\n->");
         String n = reader.next(); // Scans the next token of the input as an int.
         reader.close();
         if(n.equals("info")){
@@ -33,7 +37,7 @@ public class Main {
         }
         else{
             System.out.println("hola");
-        }
+        }*/
 
     }
 }

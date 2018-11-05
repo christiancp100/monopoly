@@ -181,6 +181,29 @@ public class Tablero {
         return this.casillas.get(i).get(j);
     }
 
+    private int getCoordenadaCasilla(Casilla casilla){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(casilla.equals(this.casillas.get(i).get(j))){
+                    return i;
+                }
+            }
+        }
+        return 5; //Fuera de rango
+    }
+    private int getPosicionCasilla(Casilla casilla){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(casilla.equals(this.casillas.get(i).get(j))){
+                    return j;
+                }
+            }
+        }
+        return 5; //Fuera de rango
+    }
+
+    //Setters
+
     //Metodos
 
     @Override
@@ -259,6 +282,37 @@ public class Tablero {
             }
         //salida.appendln( "\n" + precioTotal + "\n");
         return precioTotal;
+    }
+
+    public void desplazarAvatar(Avatar avatar, int cantidadDesplazamiento){
+
+        int coordenada = 0;
+        int posicion = 0;
+        //Recorremos el array de avatares en busca del que queremos mover
+        for(int i = 0; i< this.avatares.size();i++){
+            if(avatar.equals(this.avatares.get(i))){
+                //Establecemos la posicion de la casilla en la que se encuentra
+                posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
+                coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                //hacemos el modulo porque no puede ser mayor que 10, ya que las secciones N S E O tienen 10 casillas
+                //Si es mayor que 10, le sumamos uno a coordenada
+
+                if( (posicion + cantidadDesplazamiento) > 9){
+                    posicion = (posicion+cantidadDesplazamiento)%10;
+                    if((posicion+cantidadDesplazamiento)>20){ //Si se da que esta en la posicion 9 y sacamos un 12 tendriamos que sumar 2
+                        coordenada +=2;
+                    }
+                    else{
+                        coordenada+=1;
+                    }
+                }
+                else{
+                    posicion+=cantidadDesplazamiento;
+                }
+
+                this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(coordenada).get(posicion));
+            }
+        }
     }
 
 
