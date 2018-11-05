@@ -10,7 +10,7 @@ public class Monopoly {
     public Monopoly(){
         avatares  = new ArrayList<>();
         tablero = new Tablero(this.avatares);
-        interprete  = new InterpreteComandos(this.avatares);
+        interprete  = new InterpreteComandos(this.avatares, this.tablero);
 
         System.out.println(tablero);
     }

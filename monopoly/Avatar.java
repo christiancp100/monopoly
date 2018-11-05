@@ -17,7 +17,7 @@ public class Avatar {
             this.jugador = new Jugador(this, nombreJugador );
             this.simbolo = generarSimboloAleatorio();
             this.turno = turno;
-            if(tipo != "pelota" || tipo != "coche" || tipo != "esfinge" || tipo != "sombrero") {
+            if(tipo == "pelota" || tipo == "coche" || tipo == "esfinge" || tipo == "sombrero") {
                 this.tipo = tipo;
         }
     }

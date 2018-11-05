@@ -7,12 +7,12 @@ import java.util.Scanner;
 public class InterpreteComandos {
 
 
-    private Jugador jugador;
     private ArrayList<Avatar> avatares;
-    
-    public InterpreteComandos(ArrayList<Avatar> avatares){
+    private Tablero tablero;
+    public InterpreteComandos(ArrayList<Avatar> avatares, Tablero tablero){
 
         this.avatares= avatares;
+        this.tablero = tablero;
     }
     
     public String input(){
@@ -34,7 +34,8 @@ public class InterpreteComandos {
         if(eleccion.contains("crear jugador")){
             aux=eleccion.split("\\s+");
             darAltaJugador(aux[2],aux[3]);
-            System.out.println( this.avatares.get( this.avatares.size() -1 ) );
+            System.out.println("Nombre: " + this.avatares.get(this.avatares.size()-1).getJugador().getNombreJugador());
+            System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
         }
         
         if(eleccion=="jugador"){
@@ -44,7 +45,9 @@ public class InterpreteComandos {
     
     public void darAltaJugador(String nombre,String tipo){
 
-        this.avatares.add(new Avatar(tipo,this.avatares.size() + 1,nombre));
+        Avatar avatarCreado = new Avatar(tipo, this.avatares.size(), nombre);
+        avatarCreado.getJugador().setCasillaActual(this.tablero.getCasilla(0,0));
+        this.avatares.add(avatarCreado);
     }
     
     /*public void jugadorTurno(){
