@@ -6,19 +6,20 @@ public class Monopoly {
     private ArrayList<Avatar> avatares;
     private InterpreteComandos interprete;
     private Tablero tablero;
+    private Turno turno;
 
     public Monopoly(){
-        avatares  = new ArrayList<>();
-        tablero = new Tablero(this.avatares);
-        interprete  = new InterpreteComandos(this.avatares, this.tablero);
-
+        this.avatares  = new ArrayList<>();
+        this.tablero = new Tablero(this.avatares);
+        this.interprete  = new InterpreteComandos(this.avatares, this.tablero);
         System.out.println(tablero);
     }
 
     public void inicializar (){
         interprete.eleccion();
         tablero.avataresEnSalida();
-        System.out.println(tablero);
+        this.turno = new Turno(this.avatares);
+        tablero.refrescarTablero(turno);
     }
 
 }

@@ -16,10 +16,14 @@ public class Tablero {
     private float precioTotalPropiedades;
     private Jugador banca;
 
+    private int incrementosRealizados;
+
 
     //Constructores
 
     public Tablero(ArrayList<Avatar> avatares) {
+
+        this.incrementosRealizados = 0;
 
         this.avatares = avatares;
 
@@ -324,24 +328,40 @@ public class Tablero {
 
 
     //Cuando TODOS los jugadores realizan 4 vueltas incrementamos el precio de las casillas
-    /*public void incrementoPrecioCasillas(){
-        int jugadoresCon4Vueltas = 0;
-        for(int i=0; i<jugadores.size();i++){
-            if(jugadores.get(i).getNumeroVueltas()%4 == 0){
-                jugadoresCon4Vueltas++;
+    public void incrementoPrecioCasillas(){
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(this.casillas.get(i).get(j).getDisponibilidad() && this.casillas.get(i).get(j).getTipo().equals("Solar")){
+                    this.casillas.get(i).get(j).setPrecio( this.casillas.get(i).get(j).getPrecio() * 1.05f);
+                }
             }
         }
-        if(jugadoresCon4Vueltas == jugadores.size()){
-            for(int i=0;i<40;i++){
-                //Incrementamos el precio de cada casilla en un 5%
-                casillas.get(i).setPrecio(casillas.get(i).getPrecio()*1.05f);
-            }
-        }
+
     }
-    
-    public void refrescarTablero(){
+
+    public void refrescarTablero(Turno turno){
+        float bonusPorVuelta = 0, menorNumeroVueltas = 0;
         //Comprobar si los jugadores llevan 4 vueltas para incrementar los precios
-        this.incrementoPrecioCasillas();
+        System.out.println(this);
+        if(this.avatares.get(turno.getTurno()-1).getJugador().getCasillaActual().getNombre().equals("Salida")){
+            this.avatares.get(turno.getTurno()-1).getJugador().setNumeroVueltas(1); //Le suma 1 al numero vueltas al jugador
+            if(this.avatares.get(turno.getTurno()-1).getJugador().getNumeroVueltas() > 0){
+                //Sumamos la media del valor total de los solares a la fortuna del jugador
+                this.avatares.get(turno.getTurno()-1).getJugador().setFortuna(precioTotalSolares()/22, 1);
+                //Comprobamos que jugador tiene menos vueltas
+                for(int i=0;i<this.avatares.size();i++){
+                    if((this.avatares.get(i).getJugador().getNumeroVueltas() > menorNumeroVueltas)){
+                        menorNumeroVueltas = this.avatares.get(i).getJugador().getNumeroVueltas();
+                    }
+                }
+                //Comprobamos que el usuario con menor numero de vueltas es modulo de 4 y restringimos a una ejecucion por multiplo
+                if((menorNumeroVueltas % 4) == 0 && menorNumeroVueltas != 4*(incrementosRealizados+1)){
+
+                }
+            }
+        }
+
+        //System.out.println(this.avatares.get(turno.getTurno()-1).getJugador().getNumeroVueltas());
         //Imprimir tablero de nuevo con todos los cambios
-    }*/
+    }
 }

@@ -92,6 +92,10 @@ public class Casilla {
         this.precio= (float) (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))));
     }
 
+    public void setPrecio(float precio){
+        this.precio = precio;
+    }
+
     public void setDisponibilidad(boolean disponibilidad){
         this.sePuedeComprar = disponibilidad;
     }

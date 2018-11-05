@@ -10,6 +10,7 @@ public class Jugador {
     private Avatar avatar;
     private Casilla casillaActual;
     private float fortuna;
+    private int numeroVueltas;
 
     private ArrayList<Casilla> propiedades;
 
@@ -18,7 +19,7 @@ public class Jugador {
         this.fortuna = fortuna;
         this.casillaActual = null;
         this.propiedades = new ArrayList<>();
-
+        this.numeroVueltas = -1; //Le damos el valor de -1 para que cuando se cree, al estar en la casilla de salida, sea 0
     }
 
     public Jugador(Avatar avatar, String nombreJugador){
@@ -26,6 +27,8 @@ public class Jugador {
         this.casillaActual = null;
         this.propiedades = new ArrayList<>();
         this.nombreJugador = nombreJugador;
+        this.numeroVueltas = -1;
+
     }
 
     public Jugador(Avatar avatar,Casilla casilla, float fortuna){
@@ -33,6 +36,8 @@ public class Jugador {
         this.casillaActual = casilla;
         this.fortuna = fortuna;
         this.propiedades = new ArrayList<>();
+        this.numeroVueltas = -1;
+
     }
 
     public Jugador(){ //Constructor de la banca
@@ -60,6 +65,10 @@ public class Jugador {
         return this.nombreJugador;
     }
 
+    public int getNumeroVueltas(){
+        return this.numeroVueltas;
+    }
+
     //Setters
 
     public void setNombreJugador(String nombreJugador){
@@ -74,12 +83,21 @@ public class Jugador {
         this.fortuna = fortuna;
     }
 
+    public void setFortuna(float valor, int operacion ){ //1 para incremento y 0 para decremento
+        if(operacion == 1) this.fortuna += valor;
+        if(operacion == 0) this.fortuna -= valor;
+    }
+
     public void setPropiedades(Casilla casilla){
         this.propiedades.add(casilla);
     }
 
     public void quitarPropiedad(Casilla casilla){
         this.propiedades.remove(casilla);
+    }
+
+    public void setNumeroVueltas(int numeroVueltas){
+        this.numeroVueltas += numeroVueltas;
     }
 
     @Override
