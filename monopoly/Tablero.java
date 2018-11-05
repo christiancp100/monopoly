@@ -183,6 +183,10 @@ public class Tablero {
         return this.casillas.get(i).get(j);
     }
 
+    public ArrayList<Avatar> getAvatares(){
+        return this.avatares;
+    }
+
     private int getCoordenadaCasilla(Casilla casilla){
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
