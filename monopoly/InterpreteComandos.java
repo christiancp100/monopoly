@@ -9,7 +9,8 @@ public class InterpreteComandos {
 
     private ArrayList<Avatar> avatares;
     private Tablero tablero;
-    private int k;//aumenta cada vez que creamos un jugador, para saber que turno le corresponde
+    private int k; //aumenta cada vez que creamos un jugador, para saber que turno le corresponde
+    private Turno turno;
     
     public InterpreteComandos(ArrayList<Avatar> avatares, Tablero tablero){
 
@@ -74,18 +75,19 @@ public class InterpreteComandos {
         
         if(eleccion.contains("salir carcel")){
             //hay que comprobar que jugador tiene el turno
-            for(int i=0;i<this.avatares.size();i++){
-                if(this.avatares.get(i).getJugador().getCasillaActual().equals("Carcel")){
-                    
-                    if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
-                        System.out.println("El jugador no tiene suficiente dinero para salir de la cárcel. Pierde el turno.");
-                    }
-                    else{
-                        this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
-                        System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
-                        System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
-                        //lanzarDados();
-                    }
+
+            int i = turno.getTurno();
+
+            if(this.avatares.get(i).getJugador().getCasillaActual().equals("Carcel")){
+
+                if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
+                    System.out.println("El jugador no tiene suficiente dinero para salir de la cárcel. Pierde el turno.");
+                }
+                else{
+                    this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
+                    System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
+                    System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
+                    //lanzarDados();
                 }
             }
         }

@@ -53,12 +53,9 @@ public class Avatar {
 
     @Override
     public String toString(){
-
         String info;
         info = "Representación en tablero: " + this.simbolo + "\n";
         info += this.jugador.toString();
-
-
         return info;
     }
 

@@ -26,7 +26,7 @@ public class Casilla {
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
-    private int bote;
+    private double bote;
 
 
 
@@ -76,7 +76,7 @@ public class Casilla {
         return this.sePuedeComprar;
     }
     //establecemos la cantidad de dinero que hay en el bote del Parking
-    public int getBote(){
+    public double getBote(){
         return this.bote;
     }
     //contamos cuantos jugadores hay en la casilla
@@ -96,7 +96,6 @@ public class Casilla {
     }
 
     //Setters
-
     public void setGrupo(int grupo){
         this.grupo = grupo;
     }

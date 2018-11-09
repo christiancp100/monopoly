@@ -116,7 +116,7 @@ public class Jugador {
         String aux;
 
         aux = "Nombre del Jugador: " + this.nombreJugador + "\n";
-        aux += "Avavatar del Jugador: " + this.avatar + "\n";
+        aux += "Avatar del Jugador: " + this.avatar + "\n";
         aux += "Casilla actual: " + this.casillaActual.getNombre() + "\n";
         aux += "Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
         if(this.propiedades.size() != 0){
