@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class InterpreteComandos {
 
 
@@ -76,7 +77,7 @@ public class InterpreteComandos {
         if(eleccion.contains("salir carcel")){
             //hay que comprobar que jugador tiene el turno
 
-            int i = turno.getTurno();
+            int i = turno.getTurno() -1;
 
             if(this.avatares.get(i).getJugador().getCasillaActual().equals("Carcel")){
 
@@ -129,13 +130,13 @@ public class InterpreteComandos {
         if(eleccion.contains("describir avatar")){
             
             aux=eleccion.split("\\s+");
-            /*char av=aux.charAt(2);
+            char av=aux[2].charAt(0);
             //buscamos al usuario e imprimimos sus datos
             for(int i=0;i<this.avatares.size();i++){
-                if(this.avatares.get(i).getSimbolo()==aux[2]){
+                if(av == this.avatares.get(i).getSimbolo() ){
                     System.out.println(this.avatares.get(i).imprimirDatos());
                 }
-            }*/
+            }
         }
         
         if(eleccion.contains("comprar")){
