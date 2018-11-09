@@ -79,7 +79,7 @@ public class Avatar {
         datos="ID: "+this.simbolo+"\n";
         datos+="Tipo: "+this.tipo+"\n";
         datos+="Casilla: "+this.jugador.getCasillaActual()+"\n";
-        datos+="Jugador: "+this.jugador+"\n";
+        datos+="Jugador: "+this.jugador.getNombreJugador()+"\n";
         
         return datos;
     }

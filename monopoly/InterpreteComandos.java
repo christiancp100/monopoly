@@ -36,23 +36,19 @@ public class InterpreteComandos {
         if(eleccion.contains("crear jugador")){
             
             aux=eleccion.split("\\s+");
-            int numJugadores=0;
-            if(numJugadores(numJugadores)<6){
-                darAltaJugador(aux[2],aux[3]);
-                System.out.println("Nombre: " + this.avatares.get(this.avatares.size()-1).getJugador().getNombreJugador());
-                System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
-            }
-            
+            darAltaJugador(aux[2],aux[3]);
+            System.out.println("Nombre: " + this.avatares.get(this.avatares.size()-1).getJugador().getNombreJugador());
+            System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
         }
         
-        if(eleccion=="jugador"){
+        if(eleccion.contains("jugador")){
                        
             //jugadorTurno(metodo de lanzarDados, indicar quien tiene el turno actualmente)
             System.out.println("Nombre: ");
             System.out.println("Avatar: ");
         }
         
-        if(eleccion=="listar jugadores"){
+        if(eleccion.contains("listar jugadores")){
             for(int i=0;i<this.avatares.size();i++){
                 System.out.println("{");
                 System.out.println(this.avatares.get(i).getJugador());
@@ -60,7 +56,7 @@ public class InterpreteComandos {
             }
         }
         
-        if(eleccion=="listar avatares"){
+        if(eleccion.contains("listar avatares")){
             for(int i=0;i<this.avatares.size();i++){
                 System.out.println("{");
                 System.out.println(this.avatares.get(i).imprimirDatos());
@@ -68,15 +64,16 @@ public class InterpreteComandos {
             }
         }
         
-        if(eleccion=="lanzar dados"){
+        if(eleccion.contains("lanzar dados")){
             //lanzarDados
         }
         
-        if(eleccion=="acabar turno"){
+        if(eleccion.contains("acabar turno")){
             //turnoActual
         }
         
-        if(eleccion=="salir carcel"){
+        if(eleccion.contains("salir carcel")){
+            //hay que comprobar que jugador tiene el turno
             for(int i=0;i<this.avatares.size();i++){
                 if(this.avatares.get(i).getJugador().getCasillaActual().equals("Carcel")){
                     
@@ -93,23 +90,25 @@ public class InterpreteComandos {
             }
         }
         
-        if(eleccion=="describir"){
+        if(eleccion.contains("describir")){
             aux=eleccion.split("\\s+");
-            Casilla casilla=new Casilla();
-            casilla.setNombre(aux[1]);
-            
-            if(casilla.getTipo()=="Solar"){
-                System.out.println(casilla);
-            }
-            
-            if(casilla.getTipo()=="Parking"){
-                System.out.println("Bote: " +casilla.getBote());
-                System.out.println(casilla.getJugadoresCasilla());
-            }
-            
-            if(casilla.getTipo()=="Carcel"){
-                System.out.println("Precio salida: "+Valores.PAGOSALIRCARCEL);
-                System.out.println(casilla.getJugadoresCasilla());
+
+            for(int i=0;i<4;i++){
+                for(int j=0;j<10;j++){
+                    if(this.tablero.getCasilla(i,j).getTipo()=="Solar"){
+                        System.out.println(this.tablero.getCasilla(i,j));
+                    }
+
+                    if(this.tablero.getCasilla(i,j).getTipo()=="Parking"){
+                        System.out.println("Bote: " +this.tablero.getCasilla(i,j).getBote());
+                        System.out.println(this.tablero.getCasilla(i,j).getJugadoresCasilla());
+                    }
+
+                    if(this.tablero.getCasilla(i,j).getTipo()=="Carcel"){
+                        System.out.println("Precio salida: "+Valores.PAGOSALIRCARCEL);
+                        System.out.println(this.tablero.getCasilla(i,j).getJugadoresCasilla());
+                    }
+                }  
             }
 
         }
@@ -137,14 +136,14 @@ public class InterpreteComandos {
             }*/
         }
         
-        if(eleccion=="comprar"){
+        if(eleccion.contains("comprar")){
         }
         
-        if(eleccion=="listar enventa"){
+        if(eleccion.contains("listar enventa")){
             this.tablero.imprimirCasillasDisponibles();
         }
         
-        if(eleccion=="ver tablero"){
+        if(eleccion.contains("ver tablero")){
             System.out.println(tablero);
         }
     }
@@ -157,18 +156,4 @@ public class InterpreteComandos {
         avatarCreado.setTurno(k);
         k++;
     }
-    
-    public int numJugadores(int numJugadores){
-        if(numJugadores>=6){
-            System.out.println("El tablero está completo, no se pueden registrar más jugadores.");
-            return numJugadores;
-        }
-        else{
-            return numJugadores++;
-        }
-    }
-
-
-
-
 }
