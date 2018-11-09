@@ -66,6 +66,9 @@ public class Jugador {
     }
 
     public int getNumeroVueltas(){
+        //incrementamos el num de vueltas y la fortuna en caso de que el jugador pase por la casilla de salida (es decir, de la fila 3 o 4 a la 1 o 2)
+        
+        
         return this.numeroVueltas;
     }
 
@@ -99,12 +102,21 @@ public class Jugador {
     public void setNumeroVueltas(int numeroVueltas){
         this.numeroVueltas += numeroVueltas;
     }
+    
+    public boolean enCarcel() {
+        //Si todavía no ha empezado la partida o la casilla actual no es de tipo cárcel => es que no está en la carcel.
+        if(!(casillaActual.equals("Carcel"))){
+                return false;
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
         String aux;
 
         aux = "Nombre del Jugador: " + this.nombreJugador + "\n";
+        aux += "Avavatar del Jugador: " + this.avatar + "\n";
         aux += "Casilla actual: " + this.casillaActual.getNombre() + "\n";
         aux += "Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
         if(this.propiedades.size() != 0){
@@ -113,6 +125,9 @@ public class Jugador {
                 aux += "\t->" + this.propiedades.get(i).toString();
             }
         }
+        
+        //Hipotecas
+        //Edificios
         else aux +=Valores.ROJO + "-> El usuario no tiene propiedades, debería ponerse las pilas...\n" + Valores.RESET;
 
         return aux;

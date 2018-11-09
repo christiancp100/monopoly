@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package monopoly;
+
+import java.util.ArrayList;
+
 /**
  *
  * @author christiancp
@@ -14,13 +17,16 @@ public class Casilla {
     private String color;
     private int grupo;
     private String nombre;
-    private float precio;
+    private double precio;
     private Avatar avatarEnEstaCasilla;
     private boolean sePuedeComprar;
+    
+    private ArrayList<Avatar> avatares;
 
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
+    private int bote;
 
 
 
@@ -57,7 +63,7 @@ public class Casilla {
         return nombre;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         if(this.tipo == "Transporte" || this.tipo == "Solar" || this.tipo == "Impuestos"){
             return this.precio;
         }
@@ -68,6 +74,25 @@ public class Casilla {
 
     public boolean getDisponibilidad(){
         return this.sePuedeComprar;
+    }
+    //establecemos la cantidad de dinero que hay en el bote del Parking
+    public int getBote(){
+        return this.bote;
+    }
+    //contamos cuantos jugadores hay en la casilla
+    public StringBuffer getJugadoresCasilla(){
+        
+        StringBuffer jugadoresCasilla=new StringBuffer();
+        
+        System.out.print("[");
+        for(int i=0;i<this.avatares.size();i++){
+            if(this.avatares.get(i).getJugador().getCasillaActual().equals(nombre)){
+                jugadoresCasilla.append(this.avatares.get(i).getJugador().getNombreJugador()+" ");
+            }
+        }
+        System.out.println("]");
+        
+        return jugadoresCasilla;
     }
 
     //Setters
@@ -92,7 +117,7 @@ public class Casilla {
         this.precio= (float) (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))));
     }
 
-    public void setPrecio(float precio){
+    public void setPrecio(double precio){
         this.precio = precio;
     }
 

@@ -3,6 +3,8 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Tablero {
     
@@ -109,7 +111,8 @@ public class Tablero {
                             this.casillas.get(i).get(j).setColor(Valores.NEGRO);
                             this.casillas.get(i).get(j).setGrupo(1);
                             this.casillas.get(i).get(j).setPrecio(1);
-                        } else {
+                        } 
+                        else {
                             this.casillas.get(i).get(j).setColor(Valores.CIAN);
                             this.casillas.get(i).get(j).setGrupo(2);
                             this.casillas.get(i).get(j).setPrecio(2);
@@ -149,15 +152,17 @@ public class Tablero {
                             this.casillas.get(i).get(j).setColor(Valores.AZUL);
                             this.casillas.get(i).get(j).setGrupo(8);
                             this.casillas.get(i).get(j).setPrecio(8);
-
                         }
                     }
                 }
-                else{
-                    if(this.casillas.get(i).get(j).getTipo().equals("Transportes")
-                    || this.casillas.get(i).get(j).getTipo().equals("Servicio")){
-                        //Las creamos con disponibilidad de compra
+                else{//Las creamos con disponibilidad de compra y con el precio inicial
+                    if(this.casillas.get(i).get(j).getTipo().equals("Transportes")){
                         this.casillas.get(i).get(j).setDisponibilidad(true);
+                        this.casillas.get(i).get(j).setPrecio(Valores.PRECIOTRANSPORTES);
+                    }
+                    if(this.casillas.get(i).get(j).getTipo().equals("Servicio")){
+                        this.casillas.get(i).get(j).setDisponibilidad(true);
+                        this.casillas.get(i).get(j).setPrecio(Valores.PRECIOSERVICIOS);
                     }
                     this.casillas.get(i).get(j).setColor(Valores.NEGRO);
                 }
@@ -271,7 +276,7 @@ public class Tablero {
     }
 
 
-    private float precioTotalSolares() {
+    public float precioTotalSolares() {
         Casilla aux;
         float precioTotal = 0;
         //Iteramos sobre el arraylist de arraylist de casillas
@@ -313,7 +318,7 @@ public class Tablero {
                     posicion+=cantidadDesplazamiento;
                 }
 
-                this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(coordenada).get(posicion));
+                this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada).get(posicion));
             }
         }
     }
@@ -321,7 +326,7 @@ public class Tablero {
     public void avataresEnSalida(){
         //Ponemos los avatares en la casilla de salida
         for(int i=0;i<this.avatares.size();i++){
-            this.avatares.get(i).getJugador().setCasillaActual( this.casillas.get(0).get(0));
+            this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(0).get(0));
             this.avatares.get(i).getJugador().setFortuna(precioTotalSolares()/3);
         }
     }
@@ -363,5 +368,18 @@ public class Tablero {
 
         //System.out.println(this.avatares.get(turno.getTurno()-1).getJugador().getNumeroVueltas());
         //Imprimir tablero de nuevo con todos los cambios
+    }
+    
+    public void imprimirCasillasDisponibles(){
+        
+        for(int i=0;i<this.casillas.size();i++){//numero de filas
+            for(int j=0;j<this.casillas.get(0).size();i++){//numero de columnas
+                if(this.casillas.get(i).get(j).getDisponibilidad()==true){
+                    System.out.println("{");
+                    System.out.println(this.casillas.get(i).get(j));
+                    System.out.println("}");
+                }
+            }
+        }
     }
 }

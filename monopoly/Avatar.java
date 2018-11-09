@@ -31,7 +31,9 @@ public class Avatar {
 
     public char getSimbolo(){return this.simbolo;}
 
-    public int getTurno(){return this.turno;}
+    public int getTurno(){ 
+        return this.turno;
+    }
 
     //Setters
 
@@ -68,6 +70,18 @@ public class Avatar {
         int  codigoNumerico = rand.nextInt(max-min +1) + min;
         char ascii = (char) codigoNumerico;
         return ascii;
+    }
+    
+    public String imprimirDatos(){
+        
+        String datos;
+        
+        datos="ID: "+this.simbolo+"\n";
+        datos+="Tipo: "+this.tipo+"\n";
+        datos+="Casilla: "+this.jugador.getCasillaActual()+"\n";
+        datos+="Jugador: "+this.jugador+"\n";
+        
+        return datos;
     }
 
 }

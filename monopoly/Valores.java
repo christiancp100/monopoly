@@ -30,8 +30,22 @@ public class Valores {
                                             "Suerte 3", "E.Árabes", "Qatar"};
 
 
+    //Precios de las casillas (iniciales) que se mantienen constantes
+    public static final double PRECIOTOTALSOLARES = 78895.51;
     public static final float PRECIOINICIALGRUPO1 = 1200;
-
+    public static final double PRECIOJUGADORVUELTA = PRECIOTOTALSOLARES/22;
+    public static final double PRECIOTRANSPORTES = PRECIOJUGADORVUELTA;
+    public static final double PRECIOSERVICIOS = (PRECIOJUGADORVUELTA*0.75);   
+    
+    //Precios de las casillas servicios y transporte (a pagar)
+    public static final double FACTORSERVICIO = PRECIOJUGADORVUELTA-200;
+    public static final double OPERACIONTRANSPORTE = PRECIOJUGADORVUELTA;
+    
+    //Casillas de impuestos
+    public static final double TASAIMPUESTOS1 = PRECIOJUGADORVUELTA;
+    public static final double TASAIMPUESTOS2 = PRECIOJUGADORVUELTA/2;
+    
+    //Tasa para salir de la cárcel
+    public static final double PAGOSALIRCARCEL = PRECIOJUGADORVUELTA*25;
 }
-
-
+    

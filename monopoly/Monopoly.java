@@ -1,6 +1,7 @@
 package monopoly;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Monopoly {
     private ArrayList<Avatar> avatares;
@@ -16,10 +17,20 @@ public class Monopoly {
     }
 
     public void inicializar (){
-        interprete.eleccion();
-        tablero.avataresEnSalida();
-        this.turno = new Turno(this.avatares);
-        tablero.refrescarTablero(turno);
-    }
 
+        String opcion;
+
+        do {
+
+            interprete.eleccion();
+            tablero.avataresEnSalida();
+            this.turno = new Turno(this.avatares);
+            tablero.refrescarTablero(turno);
+
+            System.out.println("Pulse S si quiere salir y C para continuar.");
+            Scanner sc=new Scanner(System.in);
+            opcion=sc.nextLine(); 
+
+        }while(opcion!="S");
+    }
 }
