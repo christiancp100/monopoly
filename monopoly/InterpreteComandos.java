@@ -17,6 +17,7 @@ public class InterpreteComandos {
 
         this.avatares= avatares;
         this.tablero = tablero;
+        this.k=0;//contador del numero de usuarios en el sistema
     }
     
     public String input(){
@@ -39,8 +40,13 @@ public class InterpreteComandos {
             
             aux=eleccion.split("\\s+");
             darAltaJugador(aux[2],aux[3]);
-            System.out.println("Nombre: " + this.avatares.get(this.avatares.size()-1).getJugador().getNombreJugador());
-            System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
+            if(k>6){
+                System.out.println("No se pueden registrar más jugadores.¿Listos para jugar?\n");
+            }
+            else{
+                System.out.println("Nombre: " + this.avatares.get(this.avatares.size()-1).getJugador().getNombreJugador());
+                System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
+            }
         }
         
         if(eleccion.contains("jugador")){
@@ -148,7 +154,7 @@ public class InterpreteComandos {
                     if(this.tablero.getCasilla(i,j).getDisponibilidad()==true && this.tablero.getCasilla(i,j).equals(aux[1])){
                         if(this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna()>=this.tablero.getCasilla(i,j).getPrecio()){
                         //le quitamos el dinero al jugador, le asignamos la propiedad y la establecemos como no disponible
-                        this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().setFortuna((float) this.avatares.get(i).getJugador().getCasillaActual().getPrecio(),-1);
+                        this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().setFortuna(this.avatares.get(i).getJugador().getCasillaActual().getPrecio(),-1);
                         this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().setPropiedades(this.avatares.get(i).getJugador().getCasillaActual());
                         this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getCasillaActual().setDisponibilidad(false);
                         //la variable turno representa al jugador en el array de jugadores (orden en el que fueron registrados)
@@ -157,7 +163,7 @@ public class InterpreteComandos {
                             System.out.println("Su fortuna actual es: "+this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
                         }
                         else{
-                            System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.");
+                            System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
                         }
                     }
                     else{
@@ -182,7 +188,6 @@ public class InterpreteComandos {
         Avatar avatarCreado = new Avatar(tipo, this.avatares.size(), nombre);
         avatarCreado.getJugador().setCasillaActual(this.tablero.getCasilla(0,0));
         this.avatares.add(avatarCreado);
-        avatarCreado.setTurno(k);
         k++;
     }
 }
