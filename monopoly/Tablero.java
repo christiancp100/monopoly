@@ -383,15 +383,10 @@ public class Tablero {
                             int p=0;
                             double factor=1;
                         
-                            for(int k=0;k<4;k++){
-                                for(int l=0;l<10;l++){
-                                    if(this.casillas.get(k).get(l).getTipo().equals("Transporte") && 
-                                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
-                                                    this.casillas.get(k).get(l).getPropietario().getNombreJugador())){
-                                        p++;
-                                    }
-                                }
-                            } 
+                            //llamamos a la funcion que cuenta cuantas casillas de transporte posee el usuario
+                            p=poseerTransportes();
+                            
+                            //dependiendo del numero de casillas que se posea se cobra una tasa u otra.
                             if(p==1) factor=0.25;
                             if(p==2) factor=0.5;
                             if(p==3) factor=0.75;
@@ -465,6 +460,25 @@ public class Tablero {
                 }
             }
         }
+    }
+    
+    public int poseerTransportes(){
+        
+        int p=0;
+        
+        for(int i = 0; i< this.avatares.size();i++){
+
+            for(int k=0;k<4;k++){
+                for(int l=0;l<10;l++){
+                    if(this.casillas.get(k).get(l).getTipo().equals("Transporte") && 
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
+                                    this.casillas.get(k).get(l).getPropietario().getNombreJugador())){
+                        p++;
+                    }
+                }
+            }
+        }
+        return p;
     }
 
 }

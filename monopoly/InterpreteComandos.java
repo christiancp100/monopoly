@@ -202,14 +202,20 @@ public class InterpreteComandos {
     
     public void lanzarDados(){
         dados.tirarDados();
+        
+        double auxParking=0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")){
+            auxParking=this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getBote();
+        }
+        
         System.out.print("\nEl avatar "+this.avatares.get(this.turno.getTurno()).getSimbolo()+
                 " avanza "+this.dados.getValorSuma()+
                 " posiciones, desde "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre()+
                 " hasta ");
-        this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),dados.getValorSuma());
+        this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
         System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre()+"\n");
         
-        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("Solar") 
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar") 
                 && this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==false 
                 && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
                         this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())){
@@ -226,10 +232,48 @@ public class InterpreteComandos {
             }
             
         }
-        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("Parking")){
-            
-        } 
-
         
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")){
+            System.out.println("El jugador "+this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador()+" obtiene "
+            +auxParking+"€, el bote de la banca.\n");
+        } 
+        
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Impuestos")){        
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")){
+                System.out.println("El jugador paga "+Valores.TASAIMPUESTOS1);
+            }
+            else{
+                System.out.println("El jugador paga "+Valores.TASAIMPUESTOS2);
+            }
+        }
+        
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){ 
+            System.out.println("El avatar se sitúa en la casilla Cárcel.\n");
+        }       
+        
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")){ 
+            
+            int p=0;
+            double factor=0;
+            
+            p=this.tablero.poseerTransportes();
+                if(p==1) factor=0.25;
+                if(p==2) factor=0.5;
+                if(p==3) factor=0.75;
+                
+            System.out.println("Se han pagado "+Valores.OPERACIONTRANSPORTE*factor+" de alquiler.\n");
+        }
+        
+        if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")){ 
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")){
+                System.out.println("Se han pagado "+4*Valores.FACTORSERVICIO*this.dados.getValorSuma()+" de alquiler\n");
+            }
+            else{
+                System.out.println("Se han pagado "+10*Valores.FACTORSERVICIO*this.dados.getValorSuma()+" de alquiler\n");
+
+            }
+        }
+
+
     }
 }

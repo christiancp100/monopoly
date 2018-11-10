@@ -13,7 +13,7 @@ public class Monopoly {
 
     public Monopoly(){
         this.avatares  = new ArrayList<>();
-        this.tablero = new Tablero(this.avatares);
+        this.tablero = new Tablero(this.avatares,dados);
         this.interprete  = new InterpreteComandos(this.avatares,this.tablero,this.turno,this.dados);
         this.menu = new Menu(this.interprete, this.tablero, this.avatares,this.turno);
 
