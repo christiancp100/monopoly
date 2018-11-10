@@ -168,7 +168,7 @@ public class InterpreteComandos {
 
         }
         
-        if(eleccion.contains("listar enventa")){
+        if(eleccion.contains("listar en venta")){
             this.tablero.imprimirCasillasDisponibles();
         }
         

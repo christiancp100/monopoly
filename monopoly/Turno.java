@@ -4,20 +4,24 @@ import java.util.ArrayList;
 
 public class Turno {
 
-    private int numeroTurnos;
-    private int numeroTiradas;
+    private int numeroJugadores;
+    private int turnoActual;
 
     public Turno(ArrayList<Avatar> avatares){
-        numeroTiradas = 0;
-        this.numeroTurnos = avatares.size();
+        this.numeroJugadores = avatares.size();
+        this.turnoActual = 0;
     }
 
-    public void setNumeroTiradas(int tirada){
-        numeroTiradas += tirada;
-    }
+    //Getters
 
     public int getTurno(){
-        return ((this.numeroTiradas%this.numeroTurnos) + 1);
+        return this.turnoActual;
+    }
+
+    //Setters
+    public int setTurno(int numeroTiradas){
+        this.turnoActual = numeroTiradas%this.numeroJugadores;
+        return this.turnoActual;
     }
 
 }
