@@ -116,7 +116,7 @@ public class Casilla {
         return null;
     }
     
-    //establecemos la cantidad de dinero que hay en el bote del Parking
+    //accedemos a la cantidad de dinero que hay en el bote del Parking
     public double getBote(){
         return this.bote;
     }
@@ -137,7 +137,7 @@ public class Casilla {
         return jugadoresCasilla;
     }
     
-    //accedemos al precio de alquiler de esa casilla
+    //accedemos al precio de alquiler de esa casilla (siempre solar)
     public double getAlquiler(){//hay que revisar para que no aumente el 5%
         return this.precio*0.1;//10% de su precio inicial
     }
@@ -189,6 +189,16 @@ public class Casilla {
     
     public void setCasas(int numeroCasas){
         this.numeroCasas+=numeroCasas;
+    }
+    
+    //establecemos la cantidad de dinero que hay en el Parking
+    public void setBote(double bote){
+        if(bote==0){
+            this.bote=0;
+        }
+        else{
+            this.bote+=bote;
+        }
     }
 
 

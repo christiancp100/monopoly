@@ -17,17 +17,20 @@ public class Tablero {
     private ArrayList<Tarjeta> tarjetas;
     private float precioTotalPropiedades;
     private Jugador banca;
+    private Dados dados;
 
     private int incrementosRealizados;
 
 
     //Constructores
 
-    public Tablero(ArrayList<Avatar> avatares) {
+    public Tablero(ArrayList<Avatar> avatares,Dados dados) {
 
         this.incrementosRealizados = 0;
 
         this.avatares = avatares;
+        
+        this.dados=dados;
 
         this.casillas = new ArrayList<>();
 
@@ -180,6 +183,10 @@ public class Tablero {
     }
 
     //Getters
+    
+    public Jugador getBanca(){
+        return this.banca;
+    }
 
     public Casilla getCasilla(int i, int j){
         return this.casillas.get(i).get(j);
@@ -320,23 +327,81 @@ public class Tablero {
 
                 this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada).get(posicion));
                 
+                //IR A LA CARCEL
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
                 if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){
                     this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(3).get(0));
                 }
                 
-                //ALQUILER CASILLAS CON DUEÑO
-                //comprobamos si la nueva casilla en la que se situa el jugador pertenece a algun usuario
-                if(this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad()==false){
-                    //si el propietario posee todas las casillas de un grupo entonces cobra el doble
-                    if(this.avatares.get(i).getJugador().getCasillaActual().getPropietario().poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())==true){
-                        this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),-1);
-                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),1); 
+                //CASILLA PARKING
+                else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Parking")){
+                    //comprobamos que haya dinero en el parking y se lo damos al usuario
+                    if(this.avatares.get(i).getJugador().getCasillaActual().getBote()>0){
+                        this.avatares.get(i).getJugador().setFortuna(this.avatares.get(i).getJugador().getCasillaActual().getBote(),1);
+                        this.avatares.get(i).getJugador().getCasillaActual().setBote(0);
+                    }
+                }
+                
+                //CASILLA IMPUESTOS
+                else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Impuestos")){
+                    if(this.avatares.get(i).getJugador().getCasillaActual().getNombre().contains("1")){
+                        this.avatares.get(i).getJugador().setFortuna(Valores.TASAIMPUESTOS1,-1);
+                        this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS1);
                     }
                     else{
-                        this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),-1);
-                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),1);
+                        this.avatares.get(i).getJugador().setFortuna(Valores.TASAIMPUESTOS2,-1);
+                        this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS2);
+
                     }
+                }
+                //ALQUILER CASILLAS CON DUEÑO (CASILLAS DE SERVICIO,SOLAR O TRANSPORTE
+                //comprobamos si la nueva casilla en la que se situa el jugador pertenece a algun usuario
+                else if(this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad()==false){//falta meter en caso de que esté hipotecada
+                    //si el propietario posee todas las casillas de un grupo entonces cobra el doble
+                    if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar")){
+                        if(this.avatares.get(i).getJugador().getCasillaActual().getPropietario().poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())==true){
+                            this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),-1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),1); 
+                        }
+                        else{
+                            this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),-1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),1);
+                        }
+                    }
+                    else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")){
+                        if(this.casillas.get(1).get(2).getPropietario().getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario().getNombreJugador())){
+                            this.avatares.get(i).getJugador().setFortuna(10*Valores.FACTORSERVICIO*this.dados.getValorSuma(),-1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(10*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
+                        }
+                        else{
+                            this.avatares.get(i).getJugador().setFortuna(4*Valores.FACTORSERVICIO*this.dados.getValorSuma(),-1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(4*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
+                        }
+                    }
+                    else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transporte")){
+                            //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
+                            int p=0;
+                            double factor=1;
+                        
+                            for(int k=0;k<4;k++){
+                                for(int l=0;l<10;l++){
+                                    if(this.casillas.get(k).get(l).getTipo().equals("Transporte") && 
+                                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
+                                                    this.casillas.get(k).get(l).getPropietario().getNombreJugador())){
+                                        p++;
+                                    }
+                                }
+                            } 
+                            if(p==1) factor=0.25;
+                            if(p==2) factor=0.5;
+                            if(p==3) factor=0.75;
+                            
+                            this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE*factor,-1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
+
+                    }
+
+                        
                 }
             }
         }        

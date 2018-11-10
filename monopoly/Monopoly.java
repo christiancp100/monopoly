@@ -8,21 +8,26 @@ public class Monopoly {
     private InterpreteComandos interprete;
     private Tablero tablero;
     private Turno turno;
+    private Dados dados;
+    private Menu menu;
 
     public Monopoly(){
         this.avatares  = new ArrayList<>();
         this.tablero = new Tablero(this.avatares);
-        this.interprete  = new InterpreteComandos(this.avatares, this.tablero);
-        System.out.println(tablero);
+        this.interprete  = new InterpreteComandos(this.avatares,this.tablero,this.turno,this.dados);
+        this.menu = new Menu(this.interprete, this.tablero, this.avatares,this.turno);
+
     }
 
-    public void inicializar (){
+    public void inicializar () {
 
-        String opcion;
 
-        interprete.eleccion();
-        tablero.avataresEnSalida();
-        this.turno = new Turno(this.avatares);
-        tablero.refrescarTablero(turno);
+
+    }
+
+    public void refrescarTablero(){
+        System.out.println(this.tablero);
+        menu.start();
+
     }
 }
