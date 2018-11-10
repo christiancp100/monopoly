@@ -319,8 +319,27 @@ public class Tablero {
                 }
 
                 this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada).get(posicion));
+                
+                //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
+                if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){
+                    this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(3).get(0));
+                }
+                
+                //ALQUILER CASILLAS CON DUEÑO
+                //comprobamos si la nueva casilla en la que se situa el jugador pertenece a algun usuario
+                if(this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad()==false){
+                    //si el propietario posee todas las casillas de un grupo entonces cobra el doble
+                    if(this.avatares.get(i).getJugador().getCasillaActual().getPropietario().poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())==true){
+                        this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),-1);
+                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),1); 
+                    }
+                    else{
+                        this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),-1);
+                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),1);
+                    }
+                }
             }
-        }
+        }        
     }
 
     public void avataresEnSalida(){
@@ -382,4 +401,5 @@ public class Tablero {
             }
         }
     }
+
 }

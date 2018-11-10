@@ -1,6 +1,7 @@
 package monopoly;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 
 public class Jugador {
@@ -9,7 +10,7 @@ public class Jugador {
     private String nombreJugador;
     private Avatar avatar;
     private Casilla casillaActual;
-    private float fortuna;
+    private double fortuna;
     private int numeroVueltas;
 
     private ArrayList<Casilla> propiedades;
@@ -53,7 +54,7 @@ public class Jugador {
         return this.casillaActual;
     }
 
-    public float getFortuna(){
+    public double getFortuna(){
         return this.fortuna;
     }
 
@@ -82,11 +83,11 @@ public class Jugador {
         this.casillaActual = casilla;
     }
 
-    public void setFortuna(float fortuna){
+    public void setFortuna(double fortuna){
         this.fortuna = fortuna;
     }
 
-    public void setFortuna(float valor, int operacion ){ //1 para incremento y 0 para decremento
+    public void setFortuna(double valor, int operacion ){ //1 para incremento y 0 para decremento
         if(operacion == 1) this.fortuna += valor;
         if(operacion == 0) this.fortuna -= valor;
     }
@@ -110,6 +111,37 @@ public class Jugador {
         }
         return true;
     }
+    
+    //MÉTODOS
+    public void desHipotecar(){
+        //si tiene suficiente dinero => puede deshipotecar la propiedad
+        if(this.avatar.getJugador().getFortuna()>=(this.avatar.getJugador().getCasillaActual().getHipoteca()*1.1)){
+            this.avatar.getJugador().setFortuna((float) (this.avatar.getJugador().getCasillaActual().getHipoteca()*1.1),-1);   
+        }
+    }
+    
+    public boolean poseerGrupo(int grupo){
+        
+        int g=0;
+        
+        for(int i=0;i<this.propiedades.size();i++){
+            if(this.propiedades.get(i).getTipo().equals("Solar")){
+                if(this.propiedades.get(i).getGrupo()==grupo){
+                    g++;
+                }
+            }
+        }
+        if(g==3){//si g=3 entonces el usuario posee todas las casillas del grupo
+            return true;
+        }
+        else if((grupo==1||grupo==7) && g==2){//comprobamos si es un grupo formado por solo 2 casillas
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
 
     @Override
     public String toString() {

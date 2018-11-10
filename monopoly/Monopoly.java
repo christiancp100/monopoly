@@ -20,17 +20,9 @@ public class Monopoly {
 
         String opcion;
 
-        do {
-
-            interprete.eleccion();
-            tablero.avataresEnSalida();
-            this.turno = new Turno(this.avatares);
-            tablero.refrescarTablero(turno);
-
-            System.out.println("Pulse S si quiere salir y C para continuar.");
-            Scanner sc=new Scanner(System.in);
-            opcion=sc.nextLine(); 
-
-        }while(opcion!="S");
+        interprete.eleccion();
+        tablero.avataresEnSalida();
+        this.turno = new Turno(this.avatares);
+        tablero.refrescarTablero(turno);
     }
 }

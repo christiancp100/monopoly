@@ -140,6 +140,32 @@ public class InterpreteComandos {
         }
         
         if(eleccion.contains("comprar")){
+            
+            aux=eleccion.split("\\s+");
+
+            for(int i=0;i<4;i++){
+                for(int j=0;j<10;j++){
+                    if(this.tablero.getCasilla(i,j).getDisponibilidad()==true && this.tablero.getCasilla(i,j).equals(aux[1])){
+                        if(this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna()>=this.tablero.getCasilla(i,j).getPrecio()){
+                        //le quitamos el dinero al jugador, le asignamos la propiedad y la establecemos como no disponible
+                        this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().setFortuna((float) this.avatares.get(i).getJugador().getCasillaActual().getPrecio(),-1);
+                        this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().setPropiedades(this.avatares.get(i).getJugador().getCasillaActual());
+                        this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getCasillaActual().setDisponibilidad(false);
+                        //la variable turno representa al jugador en el array de jugadores (orden en el que fueron registrados)
+                            System.out.println("El jugador "+this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getNombreJugador()
+                                    +" compra la casilla "+this.tablero.getCasilla(i,j).getNombre()+" por "+this.tablero.getCasilla(i,j).getPrecio());
+                            System.out.println("Su fortuna actual es: "+this.tablero.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
+                        }
+                        else{
+                            System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.");
+                        }
+                    }
+                    else{
+                        System.out.println("La casilla es propiedad de: "+this.avatares.get(i).getJugador().getCasillaActual().getPropietario());
+                    }
+                }
+            }         
+
         }
         
         if(eleccion.contains("listar enventa")){

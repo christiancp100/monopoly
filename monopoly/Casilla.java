@@ -26,6 +26,8 @@ public class Casilla {
     private boolean hipotecada;
     private int numeroCasas;
     private int numeroHoteles;
+    private int numeroPiscinas;
+    private int numeroPistasDep;
     private double bote;
 
 
@@ -37,6 +39,7 @@ public class Casilla {
         this.precio = 0;
         avatarEnEstaCasilla = null;
         this.sePuedeComprar = false;
+        this.numeroCasas=0;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -48,11 +51,17 @@ public class Casilla {
         if(tipo.equals("Solar") || tipo.equals("Transporte")){
             this.sePuedeComprar = true;
         }
+        this.numeroCasas=0;
+
     }
 
 
     public String getTipo() {
         return tipo;
+    }
+    
+    public int getGrupo(){
+        return grupo;
     }
 
     public String getColor() {
@@ -71,14 +80,47 @@ public class Casilla {
             return 0;
         }
     }
+    
+    public double getHipoteca(){
+        
+        if(this.tipo.equals("Solar")){
+            return (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))))/2;
+        }
+        else if(this.tipo.equals("Servicio")){
+            return Valores.PRECIOSERVICIOS/2;
+        }
+        else if(this.tipo.equals("Transporte")){
+            return Valores.PRECIOTRANSPORTES/2;
+        }
+        else{
+            return 0;
+        }
+    }
 
     public boolean getDisponibilidad(){
         return this.sePuedeComprar;
     }
+    
+     //devolvemos el nombre del jugador que posee la casilla en caso de que no esté disponible
+    public Jugador getPropietario(){
+        
+        if(this.sePuedeComprar==false){
+            for(int k=0;k<this.avatares.size();k++){//buscamos que jugador posee la propiedad
+                for(int j=0;j<this.avatares.get(k).getJugador().getPropiedades().size();j++){
+                    if(this.avatares.get(k).getJugador().getPropiedades().get(j).getNombre().equals(nombre)){
+                        return this.avatares.get(k).getJugador();
+                    }
+                }        
+            }
+        }    
+        return null;
+    }
+    
     //establecemos la cantidad de dinero que hay en el bote del Parking
     public double getBote(){
         return this.bote;
     }
+    
     //contamos cuantos jugadores hay en la casilla
     public StringBuffer getJugadoresCasilla(){
         
@@ -93,6 +135,27 @@ public class Casilla {
         System.out.println("]");
         
         return jugadoresCasilla;
+    }
+    
+    //accedemos al precio de alquiler de esa casilla
+    public double getAlquiler(){//hay que revisar para que no aumente el 5%
+        return this.precio*0.1;//10% de su precio inicial
+    }
+    
+    public int getNumeroCasas(){
+        return this.numeroCasas;
+    }
+    
+    public int getNumeroHoteles(){
+        return this.numeroHoteles;
+    }
+    
+    public int getNumeroPiscinas(){
+        return this.numeroPiscinas;
+    }
+    
+    public int getNumeroPistasDep(){
+        return this.numeroPistasDep;
     }
 
     //Setters
@@ -122,6 +185,10 @@ public class Casilla {
 
     public void setDisponibilidad(boolean disponibilidad){
         this.sePuedeComprar = disponibilidad;
+    }
+    
+    public void setCasas(int numeroCasas){
+        this.numeroCasas+=numeroCasas;
     }
 
 
