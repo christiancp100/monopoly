@@ -6,24 +6,14 @@ public class Menu {
 
     private InterpreteComandos interprete;
     private ArrayList<Avatar> avatares;
-    private Tablero tablero;
     private boolean partidaIniciada;
-    private Turno turno;
 
-    //menu para inicio
+
+    //menu para el desarrollo del juego
     public Menu(InterpreteComandos interprete, ArrayList<Avatar> avatares){
         this.interprete = interprete;
         this.avatares = avatares;
         this.partidaIniciada=false;
-    }
-    
-    //menu para el desarrollo del juego
-    public Menu(InterpreteComandos interprete, Tablero tablero, ArrayList<Avatar> avatares,Turno turno){
-        this.interprete = interprete;
-        this.avatares = avatares;
-        this.tablero = tablero;
-        this.partidaIniciada=false;
-        this.turno=turno;
     }
 
     public void start(){
@@ -63,13 +53,13 @@ public class Menu {
                         "   -ver tablero\n"+
                         "   -iniciar partida\n"
                         );
-                
+
                 opcion=interprete.input();
-                
+                interprete.eleccion(opcion);
+
                 if(opcion.contains("iniciar partida")){
                     partidaIniciada=true;
-                    desarrolloPartida();
-                }      
+                }
             }
         }while(partidaIniciada==false);
         

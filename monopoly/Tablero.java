@@ -18,19 +18,22 @@ public class Tablero {
     private float precioTotalPropiedades;
     private Jugador banca;
     private Dados dados;
+    private Turno turno;
 
     private int incrementosRealizados;
 
 
     //Constructores
 
-    public Tablero(ArrayList<Avatar> avatares,Dados dados) {
+    public Tablero(ArrayList<Avatar> avatares,Dados dados, Turno turno) {
 
         this.incrementosRealizados = 0;
 
         this.avatares = avatares;
         
         this.dados=dados;
+
+        this.turno = turno;
 
         this.casillas = new ArrayList<>();
 
@@ -335,11 +338,9 @@ public class Tablero {
                 
                 //CASILLA PARKING
                 else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Parking")){
-                    //comprobamos que haya dinero en el parking y se lo damos al usuario
-                    if(this.avatares.get(i).getJugador().getCasillaActual().getBote()>0){
-                        this.avatares.get(i).getJugador().setFortuna(this.avatares.get(i).getJugador().getCasillaActual().getBote(),1);
-                        this.avatares.get(i).getJugador().getCasillaActual().setBote(0);
-                    }
+                    //comprobamos que haya dinero en el parking y se lo damos al usuario, si es 0 se suma 0
+                    this.avatares.get(i).getJugador().setFortuna(this.avatares.get(i).getJugador().getCasillaActual().getBote(),1);
+
                 }
                 
                 //CASILLA IMPUESTOS
@@ -379,27 +380,53 @@ public class Tablero {
                         }
                     }
                     else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transporte")){
-                            //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
-                            int p=0;
-                            double factor=1;
-                        
-                            //llamamos a la funcion que cuenta cuantas casillas de transporte posee el usuario
-                            p=poseerTransportes();
-                            
-                            //dependiendo del numero de casillas que se posea se cobra una tasa u otra.
-                            if(p==1) factor=0.25;
-                            if(p==2) factor=0.5;
-                            if(p==3) factor=0.75;
-                            
-                            this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE*factor,-1);
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
+                        //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
+                        int p=0;
+                        double factor=1;
 
+                        //llamamos a la funcion que cuenta cuantas casillas de transporte posee el usuario
+                        p=poseerTransportes();
+
+                        //dependiendo del numero de casillas que se posea se cobra una tasa u otra.
+                        if(p==1) factor=0.25;
+                        if(p==2) factor=0.5;
+                        if(p==3) factor=0.75;
+
+                        this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE*factor,-1);
+                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
                     }
-
-                        
                 }
             }
         }        
+    }
+
+    public void comprarPropiedad(String nombrePropiedad){
+
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+
+                if( this.getCasilla(i,j).getNombre().equals(nombrePropiedad)) {
+
+                    if (this.getCasilla(i, j).getDisponibilidad() == true) {
+                        if (this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna() >= this.getCasilla(i, j).getPrecio()) {
+                            //le quitamos el dinero al jugador, le asignamos la propiedad y la establecemos como no disponible
+                            this.getAvatares().get(this.turno.getTurno()).getJugador().pagar(this.banca, this.getCasilla(i, j).getPrecio());
+                            this.banca.cedePropiedad(this.getCasilla(i, j));
+                            this.getBanca().cedePropiedad(this.getCasilla(i, j));
+                            this.getAvatares().get(this.turno.getTurno()).getJugador().nuevaPropiedad(this.getCasilla(i, j)); //Ya pone disponibilidad a false
+
+                            System.out.println("El jugador " + this.getAvatares().get(this.turno.getTurno()).getJugador().getNombreJugador()
+                                    + " compra la casilla " + this.getCasilla(i, j).getNombre() + " por " + this.getCasilla(i, j).getPrecio());
+                            System.out.println("Su fortuna actual es: " + this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
+                        } else {
+                            System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
+                        }
+                    } else {
+                        System.out.println("La casilla es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario());
+                    }
+                }
+            }
+        }
     }
 
     public void avataresEnSalida(){
@@ -451,11 +478,11 @@ public class Tablero {
     
     public void imprimirCasillasDisponibles(){
         
-        for(int i=0;i<this.casillas.size();i++){//numero de filas
-            for(int j=0;j<this.casillas.get(0).size();i++){//numero de columnas
-                if(this.casillas.get(i).get(j).getDisponibilidad()==true){
+        for(int p=0;p<4;p++){//numero de filas
+            for(int q=0;q<10;q++){//numero de columnas
+                if(this.getCasilla(p,q).getDisponibilidad()==true){
                     System.out.println("{");
-                    System.out.println(this.casillas.get(i).get(j));
+                    System.out.println(this.getCasilla(p,q));
                     System.out.println("}");
                 }
             }

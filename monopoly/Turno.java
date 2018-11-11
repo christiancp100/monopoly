@@ -18,10 +18,17 @@ public class Turno {
         return this.turnoActual;
     }
 
+    public int getNumeroJugadores() {
+        return  this.numeroJugadores;
+    }
+
     //Setters
-    public int setTurno(int numeroTiradas){
+    public void setTurno(int numeroTiradas){
         this.turnoActual = numeroTiradas%this.numeroJugadores;
-        return this.turnoActual;
+    }
+
+    public void setNumeroJugadores(int otro){
+        this.numeroJugadores += otro;
     }
 
 }

@@ -12,8 +12,10 @@ public class Dados {
 
     private ArrayList<Integer> valorDados;
     private int numeroTiradas;
+    private Random r;
 
     public Dados(){
+        r = new Random();
         this.numeroTiradas=0;
         valorDados = new ArrayList<>();
         valorDados.add(0);
@@ -37,7 +39,6 @@ public class Dados {
 
     public ArrayList<Integer> tirarDados(){
         int max=6,min=1;
-        Random r = new Random();
         this.valorDados.set(0, r.nextInt((max - min + 1) + min));
         this.valorDados.set(1, r.nextInt((max - min + 1) + min));
 

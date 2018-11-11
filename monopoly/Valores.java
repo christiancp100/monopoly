@@ -21,13 +21,13 @@ public class Valores {
 
     public static final String[] nombres = {"Salida", "N.Zelanda","Caja 1", "Australia",
                                             "Impuestos 1", "RENFE", "Sudáfrica",
-                                            "Suerte 1", "Kenia", "Cabo Verde", "Carcel", "Brasil",
+                                            "Suerte1", "Kenia", "CaboVerde", "Carcel", "Brasil",
                                             "IBERDROLA", "Argentina", "Venezuela", "Puerto",
                                             "Canadá", "Caja 2", "EE.UU", "México", "Parking",
                                             "Finlandia", "REPSOL", "Rusia", "Estonia",
-                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "Ir a Cárcel",
-                                            "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
-                                            "Suerte 3", "E.Árabes", "Qatar"};
+                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "IrCárcel",
+                                            "España", "Caja3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
+                                            "Suerte3", "E.Árabes", "Qatar"};
 
 
     //Precios de las casillas (iniciales) que se mantienen constantes

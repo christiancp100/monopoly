@@ -13,15 +13,21 @@ public class Monopoly {
 
     public Monopoly(){
         this.avatares  = new ArrayList<>();
-        this.tablero = new Tablero(this.avatares,dados);
+        this.dados = new Dados();
+        this.turno = new Turno(this.avatares);
+        this.tablero = new Tablero(this.avatares,this.dados, this.turno);
         this.interprete  = new InterpreteComandos(this.avatares,this.tablero,this.turno,this.dados);
-        this.menu = new Menu(this.interprete, this.tablero, this.avatares,this.turno);
+        this.menu = new Menu(this.interprete, this.avatares);
+
 
     }
 
     public void inicializar () {
-
-
+        menu.start();
+        do{
+            menu.desarrolloPartida();
+        }
+        while (avatares.size() > 1);
 
     }
 

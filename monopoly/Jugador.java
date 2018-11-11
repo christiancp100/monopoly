@@ -12,6 +12,7 @@ public class Jugador {
     private Casilla casillaActual;
     private double fortuna;
     private int numeroVueltas;
+    private boolean puedeTirarOtraVez;
 
     private ArrayList<Casilla> propiedades;
 
@@ -21,6 +22,8 @@ public class Jugador {
         this.casillaActual = null;
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1; //Le damos el valor de -1 para que cuando se cree, al estar en la casilla de salida, sea 0
+        puedeTirarOtraVez = false;
+
     }
 
     public Jugador(Avatar avatar, String nombreJugador){
@@ -29,6 +32,8 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         this.nombreJugador = nombreJugador;
         this.numeroVueltas = -1;
+        puedeTirarOtraVez = false;
+
 
     }
 
@@ -38,13 +43,17 @@ public class Jugador {
         this.fortuna = fortuna;
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1;
+        puedeTirarOtraVez = false;
+
 
     }
 
     public Jugador(){ //Constructor de la banca
         this.fortuna = Float.POSITIVE_INFINITY ;
         this.propiedades = new ArrayList<>();
+        puedeTirarOtraVez = false;
     }
+
 
 
 
@@ -89,7 +98,7 @@ public class Jugador {
 
     public void setFortuna(double valor, int operacion ){ //1 para incremento y 0 para decremento
         if(operacion == 1) this.fortuna += valor;
-        if(operacion == 0) this.fortuna -= valor;
+        if(operacion == -1) this.fortuna -= valor;
     }
 
     public void setPropiedades(Casilla casilla){
@@ -98,7 +107,18 @@ public class Jugador {
 
     public void quitarPropiedad(Casilla casilla){
         this.propiedades.remove(casilla);
+        casilla.setDisponibilidad(true);
+    } //Pone disponibilidad a true
+
+    public void nuevaPropiedad(Casilla propiedad){
+        this.propiedades.add(propiedad);
+        propiedad.setDisponibilidad(false);
+    } //Pone disponibilidad a false
+
+    public void cedePropiedad(Casilla propiedad){
+        this.propiedades.remove(propiedad);
     }
+
 
     public void setNumeroVueltas(int numeroVueltas){
         this.numeroVueltas += numeroVueltas;
@@ -148,7 +168,7 @@ public class Jugador {
         String aux;
 
         aux = "Nombre del Jugador: " + this.nombreJugador + "\n";
-        aux += "Avatar del Jugador: " + this.avatar + "\n";
+        //aux += "Avatar del Jugador: " + this.avatar + "\n";
         aux += "Casilla actual: " + this.casillaActual.getNombre() + "\n";
         aux += "Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
         if(this.propiedades.size() != 0){
@@ -165,6 +185,11 @@ public class Jugador {
         return aux;
     }
 
+
+    public void pagar(Jugador jugadorRecibe, double cantidad){
+        this.setFortuna(cantidad, -1);
+        jugadorRecibe.setFortuna(cantidad, 1);
+    }
 
 
 

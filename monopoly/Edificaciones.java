@@ -3,13 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package monopoly;
-
-/**
- * 
- * @author María Caseiro <mariacaseiro24@gmail.com>
- */
 public class Edificaciones {
 
     private String nombre;
