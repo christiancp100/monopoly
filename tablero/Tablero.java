@@ -1,21 +1,14 @@
-package monopoly;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+package tablero;
+import monopoly.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Tablero {
-    
-    public static final float precioInicialPropiedades = 500000000;
 
     //Atributos
     private ArrayList<Avatar> avatares;
-    private ArrayList<Jugador> jugadores;
     private ArrayList<ArrayList<Casilla>> casillas;
     private ArrayList<Tarjeta> tarjetas;
-    private float precioTotalPropiedades;
     private Jugador banca;
     private Dados dados;
     private Turno turno;
@@ -328,7 +321,7 @@ public class Tablero {
                     posicion+=cantidadDesplazamiento;
                 }
 
-                this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada).get(posicion));
+                this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada%4).get(posicion));
                 
                 //IR A LA CARCEL
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel

@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package monopoly;
+package tablero;
+
+import monopoly.Avatar;
+import monopoly.Jugador;
+import monopoly.Valores;
 
 import java.util.ArrayList;
 
@@ -54,6 +58,7 @@ public class Casilla {
         this.numeroCasas=0;
 
     }
+
 
 
     public String getTipo() {
@@ -207,10 +212,17 @@ public class Casilla {
     public String toString(){
         String aux;
 
-        aux = "Nombre: " + this.nombre;
+        aux = "{\nNombre: " + this.nombre;
         aux += "\n        -Tipo: " + this.tipo;
         aux += "\n        -Grupo: " + this.grupo;
-        aux += "\n        -precio:" + this.precio;
+        aux += "\n        -precio: " + this.precio;
+        if(getPropietario()!=null){
+            aux += "\n       -Propietario: "+ getPropietario().getNombreJugador();
+        }
+        aux += "\n       -Alquiler: " + getAlquiler();
+        aux += "\n       -Valor hotel: " + "Imprimir valor hotel";
+        aux += "\n       -Valor casa: " + "Imprimir valor casa";
+        aux += "\n       -Valor piscina: " + "Imprimir valor piscina";
         if(sePuedeComprar) aux+= Valores.VERDE +"\n        ->Se puede comprar\n\n" + Valores.RESET;
         else aux += Valores.ROJO + "\n        ->La propiedad no está disponible\n\n" + Valores.RESET;
 

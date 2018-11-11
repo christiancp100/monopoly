@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package monopoly;
+
+import tablero.Casilla;
+
 public class Edificaciones {
 
     private String nombre;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package monopoly;
+package tablero;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
@@ -39,8 +39,8 @@ public class Dados {
 
     public ArrayList<Integer> tirarDados(){
         int max=6,min=1;
-        this.valorDados.set(0, r.nextInt((max - min + 1) + min));
-        this.valorDados.set(1, r.nextInt((max - min + 1) + min));
+        this.valorDados.set(0, r.nextInt((max - min) + 1) + min);
+        this.valorDados.set(1, r.nextInt((max - min) + 1) + min);
 
         return this.valorDados;
 

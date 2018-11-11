@@ -1,6 +1,8 @@
 package monopoly;
 
-import java.lang.reflect.Array;
+import tablero.Dados;
+import tablero.Tablero;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -61,18 +63,14 @@ public class InterpreteComandos {
         }
         
         else if(eleccion.contains("listar jugadores")){
-            for(int i=0;i<this.avatares.size();i++){
-                System.out.println("{");
-                System.out.println(this.avatares.get(i).getJugador());
-                System.out.println("}");
+            for (Avatar avatare : this.avatares) {
+                System.out.println(avatare.getJugador());
             }
         }
         
         else if(eleccion.contains("listar avatares")){
-            for(int i=0;i<this.avatares.size();i++){
-                System.out.println("{");
-                System.out.println(this.avatares.get(i).imprimirDatos());
-                System.out.println("}");
+            for (Avatar avatare : this.avatares) {
+                System.out.println(avatare.imprimirDatos());
             }
         }
         
@@ -91,9 +89,10 @@ public class InterpreteComandos {
 
                 int i=turno.getTurno();
 
-                if(this.avatares.get(i).getJugador().getCasillaActual().equals("Carcel")){
+                if(this.avatares.get(i).getJugador().getCasillaActual().getNombre().equals("Carcel")){
 
-                    if(this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
+                    if(this.dados.getValorDados().get(0) == this.dados.getValorDados().get(1)){
+
                         this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
                     }
                     else if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
@@ -108,49 +107,50 @@ public class InterpreteComandos {
                     }
                 }
         }
-        
-        else if(eleccion.equals("describir")){
+        //Describir {nombre de la casilla}
+        else if(eleccion.split("\\s+")[0].equals("describir") &&
+                !eleccion.split("\\s+")[1].equals("avatar") &&
+                !eleccion.split("\\s+")[1].equals("jugador")){
+
             aux=eleccion.split("\\s+");
 
             for(int i=0;i<4;i++){
                 for(int j=0;j<10;j++){
-                    if(this.tablero.getCasilla(i,j).getTipo()=="Solar"){
+
+                    if(this.tablero.getCasilla(i,j).getNombre().equals(aux[1]) &&
+                            !aux[1].contains("IrACarcel") ||
+                            !aux[1].contains("Suerte") ||
+                            !aux[1].contains("Caja")  ||
+                            !aux[1].contains("Comjnidad"))
+                    {
+
                         System.out.println(this.tablero.getCasilla(i,j));
                     }
 
-                    if(this.tablero.getCasilla(i,j).getTipo()=="Parking"){
-                        System.out.println("Bote: " +this.tablero.getCasilla(i,j).getBote());
-                        System.out.println(this.tablero.getCasilla(i,j).getJugadoresCasilla());
-                    }
-
-                    if(this.tablero.getCasilla(i,j).getTipo()=="Carcel"){
-                        System.out.println("Precio salida: "+Valores.PAGOSALIRCARCEL);
-                        System.out.println(this.tablero.getCasilla(i,j).getJugadoresCasilla());
-                    }
-                }  
+                }
             }
 
         }
         
-        else if(eleccion.contains("describir jugador")){
+        else if(eleccion.split("\\s+")[0].equals("describir") && eleccion.split("\\s+")[1].equals("jugador")){
             
             aux=eleccion.split("\\s+");
             //buscamos al usuario e imprimimos sus datos
-            for(int i=0;i<this.avatares.size();i++){
-                if(this.avatares.get(i).getJugador().getNombreJugador().equals(aux[2])){
-                    System.out.println(this.avatares.get(i).getJugador());
+            for (Avatar avatare : this.avatares) {
+                if (avatare.getJugador().getNombreJugador().equals(aux[2])) {
+                    System.out.println(avatare.getJugador());
                 }
             }
         }
         
-        else if(eleccion.contains("describir avatar")){
+        else if(eleccion.split("\\s+")[0].equals("describir") && eleccion.split("\\s+")[1].equals("avatar")){
             
             aux=eleccion.split("\\s+");
             char av=aux[2].charAt(0);
             //buscamos al usuario e imprimimos sus datos
-            for(int i=0;i<this.avatares.size();i++){
-                if(av == this.avatares.get(i).getSimbolo() ){
-                    System.out.println(this.avatares.get(i).imprimirDatos());
+            for (Avatar avatare : this.avatares) {
+                if (av == avatare.getSimbolo()) {
+                    System.out.println(avatare.imprimirDatos());
                 }
             }
         }
@@ -188,7 +188,7 @@ public class InterpreteComandos {
 
         System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
 
-        if(!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Carcel")){
+        if(!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Carcel") ){
 
             double auxParking=0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
             if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")){
@@ -203,15 +203,18 @@ public class InterpreteComandos {
             System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre()+"\n");
 
             if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
-                    && this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==false
+                    && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
                     && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
                     this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())){
+
                 System.out.print("Se han pagado ");
+
                 //comprobamos si el jugador propietario posee todo el grupo para indicar que paga el doble
                 if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().poseerGrupo(
-                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getGrupo())==true){
-                    System.out.print((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler())*2+" de alquiler a "+
-                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario()+"\n");
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getGrupo())){
+
+                    System.out.print(((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler()) * 2) + " de alquiler a " +
+                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario() + "\n");
                 }
                 else{
                     System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler()+" de alquiler a "+
@@ -240,10 +243,9 @@ public class InterpreteComandos {
 
             if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")){
 
-                int p=0;
                 double factor=0;
 
-                p=this.tablero.poseerTransportes();
+                int p = this.tablero.poseerTransportes();
                 if(p==1) factor=0.25;
                 if(p==2) factor=0.5;
                 if(p==3) factor=0.75;

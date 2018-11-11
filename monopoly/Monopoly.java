@@ -1,7 +1,9 @@
 package monopoly;
 
+import tablero.Dados;
+import tablero.Tablero;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Monopoly {
     private ArrayList<Avatar> avatares;

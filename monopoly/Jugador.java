@@ -1,7 +1,7 @@
 package monopoly;
-import java.lang.reflect.Array;
+import tablero.Casilla;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 
 
 public class Jugador {
