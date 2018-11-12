@@ -89,15 +89,6 @@ public class InterpreteComandos {
             System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
         }
 
-        else if(eleccion.contains("acabar turno")){
-            //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
-            this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
-            this.dados.setNumeroTiradas(1);
-            this.turno.setTurno(this.dados.getNumeroTiradas());
-            this.dados.setRepetidos(0);
-            System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
-        }
-
         else if(eleccion.contains("salir carcel")){
 
             int i=turno.getTurno();

@@ -429,12 +429,9 @@ public class Tablero {
                                 this.turno.setNumeroJugadores(-1);
                             }
                         }
-<<<<<<< HEAD
                     }
                     else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")){
-=======
                     } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
->>>>>>> 09a6994d93412c0e8b982ce37757209c45a2ee2f
                         //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
                         int p = 0;
                         double factor = 1;

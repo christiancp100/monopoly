@@ -80,8 +80,7 @@ public class Menu {
                         "   -lanzar dados\n"+
                         "   -listar jugadores\n"+
                         "   -listar avatares\n"+
-                        "   -describir casilla {nombreCasilla}\n"+
-                        "   -describir jugador {nombreJugador}\n"+
+                        "   -describir {nombreCasilla}\n"+
                         "   -describir avatar {simboloAvatar}\n"+
                         "   -comprar {propiedad}\n"+
                         "   -salir carcel\n"+
