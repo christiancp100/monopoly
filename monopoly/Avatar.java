@@ -60,6 +60,8 @@ public class Avatar {
         Random rand = new Random();
         int  codigoNumerico = rand.nextInt(max-min +1) + min;
         char ascii = (char) codigoNumerico;
+        System.out.println("hola");
+
         return ascii;
     }
 
