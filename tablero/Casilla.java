@@ -76,7 +76,7 @@ public class Casilla {
     }
 
     public double getPrecio() {
-        if(this.tipo == "Transporte" || this.tipo == "Solar" || this.tipo == "Impuestos"){
+        if(this.tipo == "Transportes" || this.tipo == "Solar" || this.tipo == "Impuestos" || this.tipo == "Servicio"){
             return this.precio;
         }
         else{

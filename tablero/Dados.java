@@ -39,8 +39,8 @@ public class Dados {
 
     public ArrayList<Integer> tirarDados(){
         int max=6,min=1;
-        this.valorDados.set(0,r.nextInt((max - min) + 1) + min);
-        this.valorDados.set(1,r.nextInt((max - min) + 1) + min);
+        this.valorDados.set(0,6/*r.nextInt((max - min) + 1) + min*/);
+        this.valorDados.set(1,6/*r.nextInt((max - min) + 1) + min*/);
 
         return this.valorDados;
 

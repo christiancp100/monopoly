@@ -207,7 +207,16 @@ public class InterpreteComandos {
         else if(eleccion.contains("comprar")){
             
             aux=eleccion.split("\\s+");
-            tablero.comprarPropiedad(aux[1]);
+            if(!aux[1].equals("Carcel") && !aux[1].equals("IrCarcel") &&
+                    !aux[1].equals("Parking") && !aux[1].contains("Suerte") &&
+                    !aux[1].contains("Impuestos") && !aux[1].contains("Caja") &&
+                    !aux[1].equals("Salida")){
+
+                tablero.comprarPropiedad(aux[1]);
+            }
+            else{
+                System.out.println("Esta casilla no se puede comprar");
+            }
 
         }
         
@@ -221,6 +230,7 @@ public class InterpreteComandos {
         }
         if(eleccion.equals("iniciar partida")){
             this.tablero.setPartidaIniciada(true);
+            System.out.println(this.tablero);
         }
     }
     
