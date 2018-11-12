@@ -194,21 +194,24 @@ public class Jugador {
     public String toString() {
         String aux;
 
-        aux = "Nombre del Jugador: " + this.nombreJugador + "\n";
+        aux = "{\n    Nombre: " + this.nombreJugador + "\n";
         //aux += "Avatar del Jugador: " + this.avatar + "\n";
-        aux += "Casilla actual: " + this.casillaActual.getNombre() + "\n";
-        aux += "Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
+        aux += "    Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
+        aux += "    Casilla actual: " + this.casillaActual.getNombre() + "\n";
+
         if(this.propiedades.size() != 0){
-            aux += "Propiedades: \n";
+            aux += "Propiedades: [";
             for(int i=0; i<this.propiedades.size();i++){
-                aux += "\t->" + this.propiedades.get(i).toString();
+                aux += " "+ this.propiedades.get(i).getNombre().toString()+ " ";
             }
+            aux += "]";
         }
         
         //Hipotecas
         //Edificios
         else aux +=Valores.ROJO + "-> El usuario no tiene propiedades, debería ponerse las pilas...\n" + Valores.RESET;
 
+        aux += "\n}\n";
         return aux;
     }
 
