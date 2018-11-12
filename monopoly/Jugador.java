@@ -149,13 +149,18 @@ public class Jugador {
         this.estarCarcel=estarCarcel;
     }
     
-    public void setNumDobles(int numDobles){
+    public void setNumDobles(int numDobles,int situacion){
         //contamos cuantas veces saca dobles, y como solo nos interesa para la carcel desde aqui establecemos el valor a 0 cuando llega a 3
-        if(this.numDobles==3){
-            this.numDobles=0;
+        if(situacion==1){
+            if(this.numDobles==3){
+                this.numDobles=0;
+            }
+            else{
+                this.numDobles+=numDobles;
+            }
         }
-        else{
-            this.numDobles+=numDobles;
+        else if(situacion==2){
+            this.numDobles=numDobles;
         }
     }
     

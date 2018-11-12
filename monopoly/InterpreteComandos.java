@@ -99,13 +99,14 @@ public class InterpreteComandos {
 
                         this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
                         this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
 
                     }
                     else {
                         System.out.println("El usuario todavía no ha sacado 3 veces dobles, lance los dados.\n");
                         lanzarDados();
                         if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
-                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1);
+                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
                         }
                     }
                         
@@ -118,6 +119,7 @@ public class InterpreteComandos {
                         System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
                         System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
                         this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
                         lanzarDados();
                     }
                 }
