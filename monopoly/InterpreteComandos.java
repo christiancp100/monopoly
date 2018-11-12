@@ -138,7 +138,7 @@ public class InterpreteComandos {
                 for(int j=0;j<10;j++){
 
                     if(this.tablero.getCasilla(i,j).getNombre().equals(aux[1]) &&
-                            !aux[1].contains("IrACarcel") ||
+                            !aux[1].contains("IrCarcel") ||
                             !aux[1].contains("Suerte") ||
                             !aux[1].contains("Caja")  ||
                             !aux[1].contains("Comunidad"))
@@ -282,16 +282,15 @@ public class InterpreteComandos {
 
                     }
                 }
+                if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Carcel") 
+                        && this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
+                    System.out.println("El jugador se encuentra en la cárcel.\n");
+                }
                 if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
                 } else this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
             } else {
-                if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
-                    System.out.println("El jugador sacó dobles y por lo tanto, sale de la cárcel, se lanzarán los dados de nuevo\n");
-                    lanzarDados();
-                } else {
-                    System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
-                }
+                System.out.println("El avatar está en la cárcel.\n");
             }
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
