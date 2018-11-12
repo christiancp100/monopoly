@@ -368,23 +368,23 @@ public class Tablero {
                 else if(this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad()==false){//falta meter en caso de que esté hipotecada
                     //si el propietario posee todas las casillas de un grupo entonces cobra el doble
                     if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar")){
-                        if(this.avatares.get(i).getJugador().getCasillaActual().getPropietario().poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())==true){
+                        if(this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())==true){
                             this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),-1);
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),1); 
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()*2),1);
                         }
                         else{
                             this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),-1);
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()),1);
                         }
                     }
                     else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")){
-                        if(this.casillas.get(1).get(2).getPropietario().getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario().getNombreJugador())){
+                        if(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador())){
                             this.avatares.get(i).getJugador().setFortuna(10*Valores.FACTORSERVICIO*this.dados.getValorSuma(),-1);
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(10*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(10*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
                         }
                         else{
                             this.avatares.get(i).getJugador().setFortuna(4*Valores.FACTORSERVICIO*this.dados.getValorSuma(),-1);
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(4*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(4*Valores.FACTORSERVICIO*this.dados.getValorSuma(),1);
                         }
                     }
                     else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transporte")){
@@ -401,7 +401,7 @@ public class Tablero {
                         if(p==2) factor=0.75;
 
                         this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE*factor,-1);
-                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
+                        this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
                     }
                 }
 
@@ -428,7 +428,7 @@ public class Tablero {
                             this.banca.cedePropiedad(this.getCasilla(i, j));
                             this.getBanca().cedePropiedad(this.getCasilla(i, j));
                             this.getAvatares().get(this.turno.getTurno()).getJugador().nuevaPropiedad(this.getCasilla(i, j)); //Ya pone disponibilidad a false
-
+                            this.getCasilla(i,j).setJugadorQueTieneLaCasilla(this.getAvatares().get(this.turno.getTurno()).getJugador());
                             System.out.println("El jugador " + this.getAvatares().get(this.turno.getTurno()).getJugador().getNombreJugador()
                                     + " compra la casilla " + this.getCasilla(i, j).getNombre() + " por " + this.getCasilla(i, j).getPrecio());
                             System.out.println("Su fortuna actual es: " + this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
@@ -436,7 +436,7 @@ public class Tablero {
                             System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
                         }
                     } else {
-                        System.out.println("La casilla es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario());
+                        System.out.println("La casilla es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares));
                     }
                 }
             }
@@ -487,8 +487,8 @@ public class Tablero {
             for(int k=0;k<4;k++){
                 for(int l=0;l<10;l++){
                     if(this.casillas.get(k).get(l).getTipo().equals("Transporte") && 
-                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
-                                    this.casillas.get(k).get(l).getPropietario().getNombreJugador())){
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
+                                    this.casillas.get(k).get(l).getPropietario(this.avatares).getNombreJugador())){
                         p++;
                     }
                 }
