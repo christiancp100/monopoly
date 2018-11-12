@@ -40,7 +40,7 @@ public class InterpreteComandos {
         
         String[] aux;
         
-        if(eleccion.contains("crear jugador")){
+        if(eleccion.contains("crear jugador") && this.tablero.getPartidaIniciada()){
             
             aux=eleccion.split("\\s+");
             darAltaJugador(aux[2],aux[3]);
@@ -66,23 +66,26 @@ public class InterpreteComandos {
             for (Avatar avatare : this.avatares) {
                 System.out.println(avatare.getJugador());
             }
+            System.out.println(tablero);
         }
         
         else if(eleccion.contains("listar avatares")){
             for (Avatar avatare : this.avatares) {
                 System.out.println(avatare.imprimirDatos());
             }
+            System.out.println(tablero);
         }
         
-        //////////////////////////////////////////////////////////acabar
         else if(eleccion.contains("lanzar dados")){
             lanzarDados();//funcion auxiliar
+            System.out.println(tablero);
         }
         
         else if(eleccion.contains("acabar turno")){
             //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
+            this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
         }
         
         else if(eleccion.contains("salir carcel")){
@@ -103,8 +106,10 @@ public class InterpreteComandos {
                         System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
                         System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
                         lanzarDados();
-                        
                     }
+                }
+                else{
+                    System.out.println("El jugador no está en la cárcel");
                 }
         }
         //Describir {nombre de la casilla}
@@ -123,7 +128,6 @@ public class InterpreteComandos {
                             !aux[1].contains("Caja")  ||
                             !aux[1].contains("Comjnidad"))
                     {
-
                         System.out.println(this.tablero.getCasilla(i,j));
                     }
 
@@ -168,6 +172,10 @@ public class InterpreteComandos {
         
         else if(eleccion.contains("ver tablero")){
             System.out.println(tablero);
+            System.out.print("\033[H\033[2J");
+        }
+        if(eleccion.equals("iniciar partida")){
+            this.tablero.setPartidaIniciada(true);
         }
         else{
             System.out.println("Opción no válida.\n");
@@ -182,100 +190,99 @@ public class InterpreteComandos {
         k++;
     }
     
-    public void lanzarDados(){
+    public void lanzarDados() {
 
         dados.tirarDados();
 
-        System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
+        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
 
-        if(!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Carcel") ){
 
-            double auxParking=0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")){
-                auxParking=this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getBote();
-            }
+            System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
 
-            System.out.print("\nEl avatar "+this.avatares.get(this.turno.getTurno()).getSimbolo()+
-                    " avanza "+this.dados.getValorSuma()+
-                    " posiciones, desde "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre()+
-                    " hasta ");
-            this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
-            System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre()+"\n");
+            if (!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Carcel")) {
 
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
-                    && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
-                    && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
-                    this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())){
-
-                System.out.print("Se han pagado ");
-
-                //comprobamos si el jugador propietario posee todo el grupo para indicar que paga el doble
-                if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().poseerGrupo(
-                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getGrupo())){
-
-                    System.out.print(((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler()) * 2) + " de alquiler a " +
-                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario() + "\n");
-                }
-                else{
-                    System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler()+" de alquiler a "+
-                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario()+"\n");
+                double auxParking = 0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
+                    auxParking = this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getBote();
                 }
 
-            }
+                System.out.print("\nEl avatar " + this.avatares.get(this.turno.getTurno()).getSimbolo() +
+                        " avanza " + this.dados.getValorSuma() +
+                        " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() +
+                        " hasta ");
+                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+                System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
 
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")){
-                System.out.println("El jugador "+this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador()+" obtiene "
-                        +auxParking+"€, el bote de la banca.\n");
-            }
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
+                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
+                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().getNombreJugador().equals(
+                        this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())) {
 
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Impuestos")){
-                if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")){
-                    System.out.println("El jugador paga "+Valores.TASAIMPUESTOS1);
-                }
-                else{
-                    System.out.println("El jugador paga "+Valores.TASAIMPUESTOS2);
-                }
-            }
+                    System.out.print("Se han pagado ");
 
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){
-                System.out.println("El avatar se sitúa en la casilla Cárcel.\n");
-            }
+                    //comprobamos si el jugador propietario posee todo el grupo para indicar que paga el doble
+                    if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario().poseerGrupo(
+                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getGrupo())) {
 
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")){
-
-                double factor=0;
-
-                int p = this.tablero.poseerTransportes();
-                if(p==1) factor=0.25;
-                if(p==2) factor=0.5;
-                if(p==3) factor=0.75;
-
-                System.out.println("Se han pagado "+Valores.OPERACIONTRANSPORTE*factor+" de alquiler.\n");
-            }
-
-            if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")){
-                if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")){
-                    System.out.println("Se han pagado "+4*Valores.FACTORSERVICIO*this.dados.getValorSuma()+" de alquiler\n");
-                }
-                else{
-                    System.out.println("Se han pagado "+10*Valores.FACTORSERVICIO*this.dados.getValorSuma()+" de alquiler\n");
+                        System.out.print(((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler()) * 2) + " de alquiler a " +
+                                this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario() + "\n");
+                    } else {
+                        System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getAlquiler() + " de alquiler a " +
+                                this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario() + "\n");
+                    }
 
                 }
-            }
-            if(dados.getValorDados().get(0) == dados.getValorDados().get(1)){
-                System.out.println("Has sacado dados dobles, se volverán a lanzar los dados");
-                lanzarDados();
-            }
-        }
 
-        else{
-            if(dados.getValorDados().get(0) == dados.getValorDados().get(1)){
-                System.out.println("El jugador sacó dobles y por lo tanto, sale de la cárcel, se lanzarán los dados de nuevo\n");
-                lanzarDados();
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
+                    System.out.println("El jugador " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador() + " obtiene "
+                            + auxParking + "€, el bote de la banca.\n");
+                }
+
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Impuestos")) {
+                    if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")) {
+                        System.out.println("El jugador paga " + Valores.TASAIMPUESTOS1);
+                    } else {
+                        System.out.println("El jugador paga " + Valores.TASAIMPUESTOS2);
+                    }
+                }
+
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("IrCarcel")) {
+                    System.out.println("El avatar se sitúa en la casilla Cárcel.\n");
+                }
+
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
+
+                    double factor = 0;
+
+                    int p = this.tablero.poseerTransportes();
+                    if (p == 1) factor = 0.25;
+                    if (p == 2) factor = 0.5;
+                    if (p == 3) factor = 0.75;
+
+                    System.out.println("Se han pagado " + Valores.OPERACIONTRANSPORTE * factor + " de alquiler.\n");
+                }
+
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")) {
+                    if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")) {
+                        System.out.println("Se han pagado " + 4 * Valores.FACTORSERVICIO * this.dados.getValorSuma() + " de alquiler\n");
+                    } else {
+                        System.out.println("Se han pagado " + 10 * Valores.FACTORSERVICIO * this.dados.getValorSuma() + " de alquiler\n");
+
+                    }
+                }
+                if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
+                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
+                } else this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
+            } else {
+                if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
+                    System.out.println("El jugador sacó dobles y por lo tanto, sale de la cárcel, se lanzarán los dados de nuevo\n");
+                    lanzarDados();
+                } else {
+                    System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
+                }
             }
-            else{
-                System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
-            }
+        }else{
+            System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
         }
     }
 }

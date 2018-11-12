@@ -57,7 +57,7 @@ public class Menu {
                 opcion=interprete.input();
                 interprete.eleccion(opcion);
 
-                if(opcion.contains("iniciar partida")){
+             if(opcion.contains("iniciar partida")){
                     partidaIniciada=true;
                 }
             }
@@ -71,44 +71,29 @@ public class Menu {
         String opcion;        
     
         do{
-            System.out.println("Opciones:\n"+
-                            "   -describir jugador {nombreJugador}\n"+
-                            "   -jugador (muestra quien tiene el turno)\n"+
-                            "   -lanzar dados\n"+
-                            "   -listar jugadores\n"+
-                            "   -listar avatares\n"+
-                            "   -describir casilla {nombreCasilla}\n"+
-                            "   -describir jugador {nombreJugador}\n"+
-                            "   -describir avatar {simboloAvatar}\n"+
-                            "   -comprar propiedad\n"+
-                            "   -salir carcel\n"+
-                            "   -listar enventa\n"+
-                            "   -ver tablero\n"+
-                            "   -acabar turno\n"
-                            );  
-                opcion=interprete.input();
+            System.out.println("->ver opciones");
+            opcion=interprete.input();
+
+            if(opcion.equals("ver opciones")){
+                System.out.println("Opciones:\n"+
+                        "   -describir jugador {nombreJugador}\n"+
+                        "   -jugador (muestra quien tiene el turno)\n"+
+                        "   -lanzar dados\n"+
+                        "   -listar jugadores\n"+
+                        "   -listar avatares\n"+
+                        "   -describir casilla {nombreCasilla}\n"+
+                        "   -describir jugador {nombreJugador}\n"+
+                        "   -describir avatar {simboloAvatar}\n"+
+                        "   -comprar propiedad\n"+
+                        "   -salir carcel\n"+
+                        "   -listar enventa\n"+
+                        "   -ver tablero\n"+
+                        "   -acabar turno\n");
+
+            }else{
                 interprete.eleccion(opcion);
-        }while(!opcion.equals("acabar turno")) ;       
-        
-        /*if(this.avatares.get(turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar") && jugadorMovido==true){
-            if(this.avatares.get(turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==true){
-                
             }
-            else{
-                //comprobamos que la casilla en la que esta el jugador sea suya y en caso de poseer todo el grupo le ofrece comprar casitas
-                if(this.avatares.get(turno.getTurno()).getJugador().getCasillaActual().getPropietario().getNombreJugador()
-                        .equals((this.avatares.get(turno.getTurno()).getJugador().getNombreJugador()))){
-                    if(this.avatares.get(turno.getTurno()).getJugador().poseerGrupo(this.avatares.get(turno.getTurno()).getJugador().getCasillaActual().getGrupo())){
-                        //opcion de comprar casa/hotel...
-                    }
-                    else{
-                        
-                    }
-                }
-                else{
-                    
-                }
-            }
-        }*/
+
+        }while(!opcion.equals("acabar turno")) ;
     }
 }

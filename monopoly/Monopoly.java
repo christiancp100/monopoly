@@ -13,6 +13,7 @@ public class Monopoly {
     private Dados dados;
     private Menu menu;
 
+
     public Monopoly(){
         this.avatares  = new ArrayList<>();
         this.dados = new Dados();
@@ -20,6 +21,7 @@ public class Monopoly {
         this.tablero = new Tablero(this.avatares,this.dados, this.turno);
         this.interprete  = new InterpreteComandos(this.avatares,this.tablero,this.turno,this.dados);
         this.menu = new Menu(this.interprete, this.avatares);
+
 
 
     }

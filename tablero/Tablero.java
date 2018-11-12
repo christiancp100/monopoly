@@ -12,6 +12,7 @@ public class Tablero {
     private Jugador banca;
     private Dados dados;
     private Turno turno;
+    private boolean partidaIniciada;
 
     private int incrementosRealizados;
 
@@ -19,6 +20,8 @@ public class Tablero {
     //Constructores
 
     public Tablero(ArrayList<Avatar> avatares,Dados dados, Turno turno) {
+
+        this.partidaIniciada = false;
 
         this.incrementosRealizados = 0;
 
@@ -192,6 +195,8 @@ public class Tablero {
         return this.avatares;
     }
 
+    public boolean getPartidaIniciada(){ return this.partidaIniciada;}
+
     private int getCoordenadaCasilla(Casilla casilla){
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
@@ -214,6 +219,10 @@ public class Tablero {
     }
 
     //Setters
+
+    public void setPartidaIniciada(boolean iniciada){
+        this.partidaIniciada = iniciada;
+    }
 
     //Metodos
 
@@ -443,31 +452,6 @@ public class Tablero {
 
     }
 
-    public void refrescarTablero(Turno turno){
-        float bonusPorVuelta = 0, menorNumeroVueltas = 0;
-        //Comprobar si los jugadores llevan 4 vueltas para incrementar los precios
-        System.out.println(this);
-        if(this.avatares.get(turno.getTurno()-1).getJugador().getCasillaActual().getNombre().equals("Salida")){
-            this.avatares.get(turno.getTurno()-1).getJugador().setNumeroVueltas(1); //Le suma 1 al numero vueltas al jugador
-            if(this.avatares.get(turno.getTurno()-1).getJugador().getNumeroVueltas() > 0){
-                //Sumamos la media del valor total de los solares a la fortuna del jugador
-                this.avatares.get(turno.getTurno()-1).getJugador().setFortuna(precioTotalSolares()/22, 1);
-                //Comprobamos que jugador tiene menos vueltas
-                for(int i=0;i<this.avatares.size();i++){
-                    if((this.avatares.get(i).getJugador().getNumeroVueltas() > menorNumeroVueltas)){
-                        menorNumeroVueltas = this.avatares.get(i).getJugador().getNumeroVueltas();
-                    }
-                }
-                //Comprobamos que el usuario con menor numero de vueltas es modulo de 4 y restringimos a una ejecucion por multiplo
-                if((menorNumeroVueltas % 4) == 0 && menorNumeroVueltas != 4*(incrementosRealizados+1)){
-
-                }
-            }
-        }
-
-        //System.out.println(this.avatares.get(turno.getTurno()-1).getJugador().getNumeroVueltas());
-        //Imprimir tablero de nuevo con todos los cambios
-    }
     
     public void imprimirCasillasDisponibles(){
         

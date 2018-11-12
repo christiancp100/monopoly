@@ -32,7 +32,7 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         this.nombreJugador = nombreJugador;
         this.numeroVueltas = -1;
-        puedeTirarOtraVez = false;
+        puedeTirarOtraVez = true;
 
 
     }
@@ -43,7 +43,7 @@ public class Jugador {
         this.fortuna = fortuna;
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1;
-        puedeTirarOtraVez = false;
+        puedeTirarOtraVez = true;
 
 
     }
@@ -51,7 +51,6 @@ public class Jugador {
     public Jugador(){ //Constructor de la banca
         this.fortuna = Float.POSITIVE_INFINITY ;
         this.propiedades = new ArrayList<>();
-        puedeTirarOtraVez = false;
     }
 
 
@@ -80,6 +79,10 @@ public class Jugador {
         
         
         return this.numeroVueltas;
+    }
+
+    public boolean getPuedeTirarOtraVez(){
+        return this.puedeTirarOtraVez;
     }
 
     //Setters
@@ -122,6 +125,10 @@ public class Jugador {
 
     public void setNumeroVueltas(int numeroVueltas){
         this.numeroVueltas += numeroVueltas;
+    }
+
+    public void setPuedeTirarOtraVez(boolean puede){
+        this.puedeTirarOtraVez = puede;
     }
     
     public boolean enCarcel() {
