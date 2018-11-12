@@ -71,7 +71,7 @@ public class InterpreteComandos {
         
         else if(eleccion.contains("listar avatares")){
             for (Avatar avatare : this.avatares) {
-                System.out.println(avatare.imprimirDatos());
+                System.out.println(avatare);
             }
             System.out.println(tablero);
         }
@@ -95,13 +95,22 @@ public class InterpreteComandos {
 
                 if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
 
-                    if(this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()==3){
 
                         this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
                         this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
 
                     }
-                    else if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
+                    else {
+                        System.out.println("El usuario todavía no ha sacado 3 veces dobles, lance los dados.\n");
+                        lanzarDados();
+                        if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
+                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1);
+                        }
+                    }
+                        
+                    
+                    if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
                         System.out.println("El jugador no tiene suficiente dinero para salir de la cárcel. Pierde el turno.");
                     }
                     else{
@@ -130,7 +139,7 @@ public class InterpreteComandos {
                             !aux[1].contains("IrACarcel") ||
                             !aux[1].contains("Suerte") ||
                             !aux[1].contains("Caja")  ||
-                            !aux[1].contains("Comjnidad"))
+                            !aux[1].contains("Comunidad"))
                     {
                         System.out.println(this.tablero.getCasilla(i,j));
                     }
@@ -158,7 +167,7 @@ public class InterpreteComandos {
             //buscamos al usuario e imprimimos sus datos
             for (Avatar avatare : this.avatares) {
                 if (av == avatare.getSimbolo()) {
-                    System.out.println(avatare.imprimirDatos());
+                    System.out.println(avatare);
                 }
             }
         }

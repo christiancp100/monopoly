@@ -14,6 +14,7 @@ public class Jugador {
     private int numeroVueltas;
     private boolean puedeTirarOtraVez;
     private boolean estarCarcel;
+    private int numDobles;
 
     private ArrayList<Casilla> propiedades;
 
@@ -23,6 +24,7 @@ public class Jugador {
         this.casillaActual = null;
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1; //Le damos el valor de -1 para que cuando se cree, al estar en la casilla de salida, sea 0
+        this.numDobles=0;
         puedeTirarOtraVez = false;
 
     }
@@ -33,6 +35,7 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         this.nombreJugador = nombreJugador;
         this.numeroVueltas = -1;
+        this.numDobles=0;
         puedeTirarOtraVez = true;
 
 
@@ -44,6 +47,7 @@ public class Jugador {
         this.fortuna = fortuna;
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1;
+        this.numDobles=0;
         puedeTirarOtraVez = true;
 
 
@@ -88,6 +92,10 @@ public class Jugador {
     
     public boolean getEstarCarcel(){
         return this.estarCarcel;
+    }
+    
+    public int getNumDobles(){
+        return this.numDobles;
     }
 
     //Setters
@@ -139,6 +147,16 @@ public class Jugador {
     public void setEstarCarcel(boolean estarCarcel) {
         //Si todavía no ha empezado la partida o la casilla actual no es de tipo cárcel => es que no está en la carcel.
         this.estarCarcel=estarCarcel;
+    }
+    
+    public void setNumDobles(int numDobles){
+        //contamos cuantas veces saca dobles, y como solo nos interesa para la carcel desde aqui establecemos el valor a 0 cuando llega a 3
+        if(this.numDobles==3){
+            this.numDobles=0;
+        }
+        else{
+            this.numDobles+=numDobles;
+        }
     }
     
     //MÉTODOS
