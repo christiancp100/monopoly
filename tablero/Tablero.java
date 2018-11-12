@@ -396,9 +396,9 @@ public class Tablero {
                         p=poseerTransportes();
 
                         //dependiendo del numero de casillas que se posea se cobra una tasa u otra.
-                        if(p==1) factor=0.25;
-                        if(p==2) factor=0.5;
-                        if(p==3) factor=0.75;
+                        if(p==0) factor=0.25;
+                        if(p==1) factor=0.5;
+                        if(p==2) factor=0.75;
 
                         this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE*factor,-1);
                         this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
