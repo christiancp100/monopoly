@@ -25,7 +25,7 @@ public class Valores {
                                             "IBERDROLA", "Argentina", "Venezuela", "Puerto",
                                             "Canadá", "Caja 2", "EE.UU", "México", "Parking",
                                             "Finlandia", "REPSOL", "Rusia", "Estonia",
-                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "IrCárcel",
+                                            "Aeropuerto", "China", "Suerte 2", "Japón", "India", "IrCarcel",
                                             "España", "Caja3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
                                             "Suerte3", "E.Árabes", "Qatar"};
 

@@ -13,6 +13,7 @@ public class Jugador {
     private double fortuna;
     private int numeroVueltas;
     private boolean puedeTirarOtraVez;
+    private boolean estarCarcel;
 
     private ArrayList<Casilla> propiedades;
 
@@ -84,6 +85,10 @@ public class Jugador {
     public boolean getPuedeTirarOtraVez(){
         return this.puedeTirarOtraVez;
     }
+    
+    public boolean getEstarCarcel(){
+        return this.estarCarcel;
+    }
 
     //Setters
 
@@ -131,12 +136,9 @@ public class Jugador {
         this.puedeTirarOtraVez = puede;
     }
     
-    public boolean enCarcel() {
+    public void setEstarCarcel(boolean estarCarcel) {
         //Si todavía no ha empezado la partida o la casilla actual no es de tipo cárcel => es que no está en la carcel.
-        if(!(casillaActual.equals("Carcel"))){
-                return false;
-        }
-        return true;
+        this.estarCarcel=estarCarcel;
     }
     
     //MÉTODOS
