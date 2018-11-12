@@ -94,9 +94,11 @@ public class InterpreteComandos {
 
                 if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
 
-                    if(this.dados.getValorDados().get(0) == this.dados.getValorDados().get(1)){
+                    if(this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
 
                         this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
+                        this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
+
                     }
                     else if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
                         System.out.println("El jugador no tiene suficiente dinero para salir de la cárcel. Pierde el turno.");
@@ -105,6 +107,7 @@ public class InterpreteComandos {
                         this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
                         System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
                         System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
+                        this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
                         lanzarDados();
                     }
                 }
@@ -191,7 +194,7 @@ public class InterpreteComandos {
 
         dados.tirarDados();
 
-        /*if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {*/
+        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
 
 
             System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
@@ -278,8 +281,8 @@ public class InterpreteComandos {
                     System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
                 }
             }
-        /*}else{
+        }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
-        }*/
+        }
     }
 }
