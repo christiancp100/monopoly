@@ -95,32 +95,51 @@ public class InterpreteComandos {
 
                 if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
 
+                    if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
+                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
+                    }
+                    
                     if(this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()==3){
 
+                        System.out.println("Se han lanzado los dados.\n");
+                        System.out.println("El jugador ha sacado 3 veces dobles y sale de la cárcel");
                         this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
                         this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
                         this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
 
                     }
                     else {
-                        System.out.println("El usuario todavía no ha sacado 3 veces dobles, lance los dados.\n");
-                        lanzarDados();
-                        if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
-                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
+                        System.out.println("Se han lanzado los dados.\n");
+                        System.out.println("El jugador ha sacado "
+                                +this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()+" veces dobles.");
+                        System.out.println("LLegue a 3 para salir.\n");
+                        
+                        if(this.avatares.get(i).getJugador().getFortuna()>=Valores.PAGOSALIRCARCEL){
+                        System.out.println("El jugador tiene suficiente dinero para salir de la cárcel.¿Quiere pagar? (si/no)\n");
+                    
+                        Scanner opcion=new Scanner(System.in);  // Reading from System.in
+        
+                        System.out.println("\n->");
+                        String n = opcion.nextLine(); // Scans the next token of the input as an int.
+                        opcion.reset();
+                        
+                        if(n.contains("si")){
+                            this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
+                            System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
+                            System.out.println(" paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Lanza los dados:");
+                            this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
+                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
+                            lanzarDados();
+                        }
+                        else{
+                            System.out.println("El jugador pierde el turno porque no quiere pagar.\n");
+                            eleccion("acabar turno");
                         }
                     }
-                        
-                    
-                    if(this.avatares.get(i).getJugador().getFortuna()<Valores.PAGOSALIRCARCEL){
-                        System.out.println("El jugador no tiene suficiente dinero para salir de la cárcel. Pierde el turno.");
-                    }
                     else{
-                        this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
-                        System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
-                        System.out.println("paga "+Valores.PAGOSALIRCARCEL+" y sale de la cárcel. Puede lanzar los dados");
-                        this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
-                        this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
-                        lanzarDados();
+                            System.out.println("El jugador pierde el turno porque no tiene dinero para salir.\n");
+                            eleccion("acabar turno");
+                    }
                     }
                 }
                 else{
