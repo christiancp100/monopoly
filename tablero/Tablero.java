@@ -336,6 +336,8 @@ public class Tablero {
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
                 if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){
                     this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(3).get(0));
+                    this.avatares.get(i).getJugador().setFortuna(Valores.PAGOSALIRCARCEL,1);
+                    this.avatares.get(i).getJugador().setEstarCarcel(true);
                 }
                 
                 //CASILLA PARKING
