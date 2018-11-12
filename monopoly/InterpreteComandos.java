@@ -94,6 +94,7 @@ public class InterpreteComandos {
             this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
+            this.dados.setRepetidos(0);
             System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
         }
 
@@ -334,12 +335,7 @@ public class InterpreteComandos {
                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
                 } else this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
             } else {
-                if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
-                    System.out.println("El jugador sacó dobles y por lo tanto, sale de la cárcel, se lanzarán los dados de nuevo\n");
-                    lanzarDados();
-                } else {
-                    System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
-                }
+                System.out.println("El usuario está en la cárcel. Escriba 'salir carcel' o 'acabar turno'");
             }
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
