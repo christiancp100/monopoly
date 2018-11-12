@@ -37,11 +37,11 @@ public class InterpreteComandos {
     }
     
     public void eleccion(String eleccion){
-        
+
         String[] aux;
-        
+
         if(eleccion.contains("crear jugador") && !this.tablero.getPartidaIniciada()){
-            
+
             aux=eleccion.split("\\s+");
             darAltaJugador(aux[2],aux[3]);
             if(k>6){
@@ -56,31 +56,31 @@ public class InterpreteComandos {
             //Aumentamos el numero de turnos disponibles
             this.turno.setNumeroJugadores(1);
         }
-        
+
         else if(eleccion.equals("jugador")){
             System.out.println("Nombre: "+this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
             System.out.println("Avatar: "+this.avatares.get(this.turno.getTurno()).getSimbolo());
         }
-        
+
         else if(eleccion.contains("listar jugadores")){
             for (Avatar avatare : this.avatares) {
                 System.out.println(avatare.getJugador());
             }
             System.out.println(tablero);
         }
-        
+
         else if(eleccion.contains("listar avatares")){
             for (Avatar avatare : this.avatares) {
                 System.out.println(avatare);
             }
             System.out.println(tablero);
         }
-        
+
         else if(eleccion.contains("lanzar dados")){
             lanzarDados();//funcion auxiliar
             System.out.println(tablero);
         }
-        
+
         else if(eleccion.contains("acabar turno")){
             //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
             this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
@@ -88,41 +88,50 @@ public class InterpreteComandos {
             this.turno.setTurno(this.dados.getNumeroTiradas());
             System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
         }
-        
+
+        else if(eleccion.contains("acabar turno")){
+            //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
+            this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
+            this.dados.setNumeroTiradas(1);
+            this.turno.setTurno(this.dados.getNumeroTiradas());
+            this.dados.setRepetidos(0);
+            System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
+        }
+
         else if(eleccion.contains("salir carcel")){
 
-                int i=turno.getTurno();
+            int i=turno.getTurno();
 
-                if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
+            if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
 
-                    if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
-                            this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
-                    }
-                    
-                    if(this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()==3){
+                if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
+                    this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
+                }
 
-                        System.out.println("Se han lanzado los dados.\n");
-                        System.out.println("El jugador ha sacado 3 veces dobles y sale de la cárcel");
-                        this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
-                        this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
-                        this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
+                if(this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()==3){
 
-                    }
-                    else {
-                        System.out.println("Se han lanzado los dados.\n");
-                        System.out.println("El jugador ha sacado "
-                                +this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()+" veces dobles.");
-                        System.out.println("LLegue a 3 para salir.\n");
-                        
-                        if(this.avatares.get(i).getJugador().getFortuna()>=Valores.PAGOSALIRCARCEL){
+                    System.out.println("Se han lanzado los dados.\n");
+                    System.out.println("El jugador ha sacado 3 veces dobles y sale de la cárcel");
+                    this.tablero.desplazarAvatar(this.avatares.get(i),this.dados.getValorSuma());
+                    this.avatares.get(this.turno.getTurno()).getJugador().setEstarCarcel(false);
+                    this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(0,2);
+
+                }
+                else {
+                    System.out.println("Se han lanzado los dados.\n");
+                    System.out.println("El jugador ha sacado "
+                            +this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles()+" veces dobles.");
+                    System.out.println("LLegue a 3 para salir.\n");
+
+                    if(this.avatares.get(i).getJugador().getFortuna()>=Valores.PAGOSALIRCARCEL){
                         System.out.println("El jugador tiene suficiente dinero para salir de la cárcel.¿Quiere pagar? (si/no)\n");
-                    
+
                         Scanner opcion=new Scanner(System.in);  // Reading from System.in
-        
+
                         System.out.println("\n->");
                         String n = opcion.nextLine(); // Scans the next token of the input as an int.
                         opcion.reset();
-                        
+
                         if(n.contains("si")){
                             this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL,-1);//le quitamos al jugador el dinero para salir de la carcel
                             System.out.print(this.avatares.get(i).getJugador().getNombreJugador());
@@ -137,17 +146,16 @@ public class InterpreteComandos {
                         }
                     }
                     else{
-                            System.out.println("El jugador pierde el turno porque no tiene dinero para salir.\n");
-                            eleccion("acabar turno");
-                    }
+                        System.out.println("El jugador pierde el turno porque no tiene dinero para salir.\n");
+                        eleccion("acabar turno");
                     }
                 }
-                else{
-                    System.out.println("El jugador no está en la cárcel");
-                }
+            }
+            else{
+                System.out.println("El jugador no está en la cárcel");
+            }
         }
         //Describir {nombre de la casilla}
-//Describir {nombre de la casilla}
         else if(eleccion.split("\\s+")[0].equals("describir") &&
                 !eleccion.split("\\s+")[1].equals("avatar") &&
                 !eleccion.split("\\s+")[1].equals("jugador")){
@@ -208,7 +216,16 @@ public class InterpreteComandos {
         else if(eleccion.contains("comprar")){
             
             aux=eleccion.split("\\s+");
-            tablero.comprarPropiedad(aux[1]);
+            if(!aux[1].equals("Carcel") && !aux[1].equals("IrCarcel") &&
+                    !aux[1].equals("Parking") && !aux[1].contains("Suerte") &&
+                    !aux[1].contains("Impuestos") && !aux[1].contains("Caja") &&
+                    !aux[1].equals("Salida")){
+
+                tablero.comprarPropiedad(aux[1]);
+            }
+            else{
+                System.out.println("Esta casilla no se puede comprar");
+            }
 
         }
         
@@ -222,6 +239,7 @@ public class InterpreteComandos {
         }
         if(eleccion.equals("iniciar partida")){
             this.tablero.setPartidaIniciada(true);
+            System.out.println(this.tablero);
         }
     }
     
@@ -317,12 +335,7 @@ public class InterpreteComandos {
                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
                 } else this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
             } else {
-                if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
-                    System.out.println("El jugador sacó dobles y por lo tanto, sale de la cárcel, se lanzarán los dados de nuevo\n");
-                    lanzarDados();
-                } else {
-                    System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
-                }
+                System.out.println("El usuario está en la cárcel. Escriba 'salir carcel' o 'acabar turno'");
             }
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);

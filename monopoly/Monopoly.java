@@ -21,9 +21,6 @@ public class Monopoly {
         this.tablero = new Tablero(this.avatares,this.dados, this.turno);
         this.interprete  = new InterpreteComandos(this.avatares,this.tablero,this.turno,this.dados);
         this.menu = new Menu(this.interprete, this.avatares);
-
-
-
     }
 
     public void inicializar () {
@@ -33,11 +30,8 @@ public class Monopoly {
         }
         while (avatares.size() > 1);
 
-    }
-
-    public void refrescarTablero(){
-        System.out.println(this.tablero);
-        menu.start();
+        System.out.println("\n¡La partida ha terminado!");
+        System.out.println("El jugador vencedor es: " + this.avatares.get(0).getJugador().getNombreJugador());
 
     }
 }

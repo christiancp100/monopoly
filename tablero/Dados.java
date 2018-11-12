@@ -13,6 +13,7 @@ public class Dados {
     private ArrayList<Integer> valorDados;
     private int numeroTiradas;
     private Random r;
+    private int repetidos;
 
     public Dados(){
         r = new Random();
@@ -20,6 +21,7 @@ public class Dados {
         valorDados = new ArrayList<>();
         valorDados.add(0);
         valorDados.add(0);
+        this.repetidos = 0;
     }
 
     public ArrayList<Integer> getValorDados(){
@@ -41,13 +43,27 @@ public class Dados {
         int max=6,min=1;
         this.valorDados.set(0,r.nextInt((max - min) + 1) + min);
         this.valorDados.set(1,r.nextInt((max - min) + 1) + min);
-
+        if(this.valorDados.get(0) == this.valorDados.get(1)){
+            this.repetidos++;
+        }
+        else{
+            this.repetidos = 0;
+        }
         return this.valorDados;
 
+    }
+    public int getRepetidos(){
+        return this.repetidos;
     }
     
     public int getValorSuma(){
         return this.valorDados.get(0)+this.valorDados.get(1);
+    }
+
+    //Setters
+
+    public void setRepetidos(int repetido){
+        this.repetidos = repetido;
     }
 
 
