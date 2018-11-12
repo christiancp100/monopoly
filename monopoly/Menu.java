@@ -67,8 +67,7 @@ public class Menu {
     
     public void desarrolloPartida(){
         
-        boolean jugadorMovido=false;//variable para saber si es jugador se ha desplazado
-        String opcion;        
+        String opcion;
     
         do{
             System.out.println("->ver opciones");
@@ -84,7 +83,7 @@ public class Menu {
                         "   -describir casilla {nombreCasilla}\n"+
                         "   -describir jugador {nombreJugador}\n"+
                         "   -describir avatar {simboloAvatar}\n"+
-                        "   -comprar propiedad\n"+
+                        "   -comprar {propiedad}\n"+
                         "   -salir carcel\n"+
                         "   -listar enventa\n"+
                         "   -ver tablero\n"+

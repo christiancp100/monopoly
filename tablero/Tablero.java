@@ -306,6 +306,7 @@ public class Tablero {
 
     public void desplazarAvatar(Avatar avatar, int cantidadDesplazamiento){
 
+        int coordenadaAntes = 0, coordenadaMovida =0;
         int coordenada = 0;
         int posicion = 0;
         //Recorremos el array de avatares en busca del que queremos mover
@@ -314,6 +315,8 @@ public class Tablero {
                 //Establecemos la posicion de la casilla en la que se encuentra
                 posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
                 coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                coordenadaAntes = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+
                 //hacemos el modulo porque no puede ser mayor que 10, ya que las secciones N S E O tienen 10 casillas
                 //Si es mayor que 10, le sumamos uno a coordenada
 
@@ -331,6 +334,7 @@ public class Tablero {
                 }
 
                 this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada%4).get(posicion));
+                coordenadaMovida = coordenada%4;
                 
                 //IR A LA CARCEL
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
@@ -400,8 +404,14 @@ public class Tablero {
                         this.avatares.get(i).getJugador().getCasillaActual().getPropietario().setFortuna(Valores.OPERACIONTRANSPORTE*factor,1);
                     }
                 }
+
+                if( (coordenadaAntes == 2 || coordenadaAntes == 3) && (coordenadaMovida == 0 || coordenadaMovida == 1)  ){
+                    this.avatares.get(i).getJugador().setNumeroVueltas(1);
+                    this.avatares.get(i).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                }
             }
-        }        
+        }
+
     }
 
     public void comprarPropiedad(String nombrePropiedad){

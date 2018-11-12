@@ -191,7 +191,7 @@ public class InterpreteComandos {
 
         dados.tirarDados();
 
-        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
+        /*if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {*/
 
 
             System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
@@ -278,8 +278,8 @@ public class InterpreteComandos {
                     System.out.println("El Jugador, que está en la cárcel, no puede salir porque no ha sacado dobles");
                 }
             }
-        }else{
+        /*}else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
-        }
+        }*/
     }
 }
