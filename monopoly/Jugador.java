@@ -201,7 +201,7 @@ public class Jugador {
 
         aux = "{\n    Nombre: " + this.nombreJugador + "\n";
         //aux += "Avatar del Jugador: " + this.avatar + "\n";
-        aux += "    Fortuna: " + Valores.VERDE + this.fortuna + " \uD83D\uDCB8️\n"+ Valores.RESET;
+        aux += "    Fortuna: " + Valores.VERDE + this.fortuna + " Trillones de euro\n"+ Valores.RESET;
         aux += "    Casilla actual: " + this.casillaActual.getNombre() + "\n";
 
         if(this.propiedades.size() != 0){
