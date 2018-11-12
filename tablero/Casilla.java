@@ -110,7 +110,7 @@ public class Casilla {
         if(this.sePuedeComprar==false){
             for(int k=0;k<avatares.size();k++){//buscamos que jugador posee la propiedad
                 for(int j=0;j<avatares.get(k).getJugador().getPropiedades().size();j++){
-                    if(avatares.get(k).getJugador().getPropiedades().get(j).getNombre().equals(this.jugadorQueTieneLaCasilla.getNombreJugador())){
+                    if(avatares.get(k).getJugador().getPropiedades().get(j).getNombre().equals(this.nombre)){
                         return avatares.get(k).getJugador();
                     }
                 }

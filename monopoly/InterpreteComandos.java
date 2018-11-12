@@ -147,7 +147,6 @@ public class InterpreteComandos {
                 }
         }
         //Describir {nombre de la casilla}
-//Describir {nombre de la casilla}
         else if(eleccion.split("\\s+")[0].equals("describir") &&
                 !eleccion.split("\\s+")[1].equals("avatar") &&
                 !eleccion.split("\\s+")[1].equals("jugador")){
