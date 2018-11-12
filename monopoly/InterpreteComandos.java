@@ -83,9 +83,10 @@ public class InterpreteComandos {
         
         else if(eleccion.contains("acabar turno")){
             //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
+            this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
-            this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
+            System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
         }
         
         else if(eleccion.contains("salir carcel")){
@@ -199,7 +200,7 @@ public class InterpreteComandos {
 
             System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
 
-            if (!this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true) {
+            if (this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false) {
 
                 double auxParking = 0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
