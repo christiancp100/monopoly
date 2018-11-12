@@ -429,7 +429,12 @@ public class Tablero {
                                 this.turno.setNumeroJugadores(-1);
                             }
                         }
+<<<<<<< HEAD
+                    }
+                    else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")){
+=======
                     } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
+>>>>>>> 09a6994d93412c0e8b982ce37757209c45a2ee2f
                         //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
                         int p = 0;
                         double factor = 1;
@@ -478,16 +483,16 @@ public class Tablero {
                     
                     if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals(nombrePropiedad)) {
 
-                        if (this.getCasilla(i, j).getDisponibilidad() == true) {
-                            if (this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna() >= this.getCasilla(i, j).getPrecio()) {
+                        if (this.getCasilla(i,j).getDisponibilidad() == true) {
+                            if (this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna() >= this.getCasilla(i,j).getPrecio()) {
                                 //le quitamos el dinero al jugador, le asignamos la propiedad y la establecemos como no disponible
-                                this.getAvatares().get(this.turno.getTurno()).getJugador().pagar(this.banca, this.getCasilla(i, j).getPrecio());
+                                this.getAvatares().get(this.turno.getTurno()).getJugador().pagar(this.banca, this.getCasilla(i,j).getPrecio());
                                 this.banca.cedePropiedad(this.getCasilla(i, j));
                                 this.getBanca().cedePropiedad(this.getCasilla(i, j));
                                 this.getAvatares().get(this.turno.getTurno()).getJugador().nuevaPropiedad(this.getCasilla(i, j)); //Ya pone disponibilidad a false
                                 this.getCasilla(i,j).setJugadorQueTieneLaCasilla(this.getAvatares().get(this.turno.getTurno()).getJugador());
                                 System.out.println("El jugador " + this.getAvatares().get(this.turno.getTurno()).getJugador().getNombreJugador()
-                                        + " compra la casilla " + this.getCasilla(i, j).getNombre() + " por " + this.getCasilla(i, j).getPrecio());
+                                        + " compra la casilla " + this.getCasilla(i, j).getNombre() + " por " + this.getCasilla(i,j).getPrecio());
                                 System.out.println("Su fortuna actual es: " + this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
                             } else {
                                 System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
