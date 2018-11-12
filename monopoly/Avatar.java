@@ -14,7 +14,7 @@ public class Avatar {
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
         //Se establecen desde el tablero
             this.simbolo = generarSimboloAleatorio();
-            if(tipo == "pelota" || tipo == "coche" || tipo == "esfinge" || tipo == "sombrero") {
+            if(tipo.equals("pelota")|| tipo.equals("coche") || tipo.equals("esfinge") || tipo.equals("sombrero")) {
                 this.tipo = tipo;
         }
         this.jugador = new Jugador(this, nombreJugador);
@@ -43,10 +43,14 @@ public class Avatar {
 
     @Override
     public String toString(){
-        String info;
-        info = "Representación en tablero: " + this.simbolo + "\n";
-        info += this.jugador.toString();
-        return info;
+        String datos;
+
+        datos="{\n    ID: "+this.simbolo+"\n";
+        datos+="    Tipo: "+this.tipo+"\n";
+        datos+="    Casilla: "+this.jugador.getCasillaActual().getNombre()+"\n";
+        datos+="    Jugador: "+this.jugador.getNombreJugador()+"\n}\n";
+
+        return datos;
     }
 
 
@@ -57,18 +61,6 @@ public class Avatar {
         int  codigoNumerico = rand.nextInt(max-min +1) + min;
         char ascii = (char) codigoNumerico;
         return ascii;
-    }
-    
-    public String imprimirDatos(){
-        
-        String datos;
-        
-        datos="ID: "+this.simbolo+"\n";
-        datos+="Tipo: "+this.tipo+"\n";
-        datos+="Casilla: "+this.jugador.getCasillaActual()+"\n";
-        datos+="Jugador: "+this.jugador.getNombreJugador()+"\n";
-        
-        return datos;
     }
 
 }
