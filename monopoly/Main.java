@@ -13,7 +13,5 @@ public class Main {
 
         Monopoly cargaPartida = new Monopoly();
         cargaPartida.inicializar();
-
-
     }
 }

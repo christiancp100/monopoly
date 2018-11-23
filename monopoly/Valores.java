@@ -46,6 +46,6 @@ public class Valores {
     public static final double TASAIMPUESTOS2 = PRECIOJUGADORVUELTA/2;
     
     //Tasa para salir de la cárcel
-    public static final double PAGOSALIRCARCEL = PRECIOJUGADORVUELTA*25;
+    public static final double PAGOSALIRCARCEL = PRECIOJUGADORVUELTA*5;
 }
     

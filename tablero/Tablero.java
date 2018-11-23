@@ -316,7 +316,7 @@ public class Tablero {
             //Comprobamos que no lleve 3 dobles
             if(avatar.equals(this.avatares.get(i))){
                 if(this.dados.getRepetidos() == 3){
-                    avatar.getJugador().setCasillaActual(this.casillas.get(3).get(0));
+                    //avatar.getJugador().setCasillaActual(this.casillas.get(3).get(0));
                     this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(1).get(0));
                     this.avatares.get(i).getJugador().setEstarCarcel(true);
                 }
@@ -348,7 +348,6 @@ public class Tablero {
                 //IR A LA CARCEL
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
                 if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("IrCarcel")){
-                    System.out.println("El jugador a caído en IrCarcel y se desplaza a la casilla Carcel.\n");
                     this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(1).get(0));
                     this.avatares.get(i).getJugador().setEstarCarcel(true);
                 }
@@ -561,4 +560,23 @@ public class Tablero {
         return p;
     }
 
+
+    public boolean JugadorBancarrota(Jugador jugador, int cantidadAPagar){
+
+        double sumaValorPropiedades = 0;
+
+        if(jugador.getFortuna() < cantidadAPagar){
+            System.out.println("El jugador no puede pagar esa cantidad de dinero");
+            if(jugador.getPropiedades().size() > 0){
+                for(int i=0;i<jugador.getPropiedades().size();i++){
+                    sumaValorPropiedades += jugador.getPropiedades().get(i).getPrecio();
+                }
+            }
+            //for(jugador.getPropiedades());
+            this.avatares.remove(this.turno.getTurno());
+
+        }
+
+        return true;
+    }
 }

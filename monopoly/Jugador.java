@@ -15,6 +15,7 @@ public class Jugador {
     private boolean puedeTirarOtraVez;
     private boolean estarCarcel;
     private int numDobles;
+    private int numTiradasCarcel;
 
     private ArrayList<Casilla> propiedades;
 
@@ -98,6 +99,10 @@ public class Jugador {
         return this.numDobles;
     }
 
+    public int getNumTiradasCarcel(){
+        return this.numTiradasCarcel;
+    }
+
     //Setters
 
     public void setNombreJugador(String nombreJugador){
@@ -114,7 +119,9 @@ public class Jugador {
 
     public void setFortuna(double valor, int operacion ){ //1 para incremento y 0 para decremento
         if(operacion == 1) this.fortuna += valor;
-        if(operacion == -1) this.fortuna -= valor;
+        if(operacion == -1){
+            this.fortuna -= valor;
+        }
     }
 
     public void setPropiedades(Casilla casilla){
@@ -133,6 +140,15 @@ public class Jugador {
 
     public void cedePropiedad(Casilla propiedad){
         this.propiedades.remove(propiedad);
+    }
+
+    public void setNumTiradasCarcel(int tiradas,int situacion){
+        if(situacion==1){
+            this.numTiradasCarcel+=tiradas;
+        }
+        if(situacion==2){
+            this.numTiradasCarcel=tiradas;
+        }
     }
 
 
