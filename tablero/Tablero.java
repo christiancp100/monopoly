@@ -2,13 +2,17 @@ package tablero;
 import monopoly.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Tablero {
 
     //Atributos
     private ArrayList<Avatar> avatares;
     private ArrayList<ArrayList<Casilla>> casillas;
-    private ArrayList<Tarjeta> tarjetas;
+    private ArrayList<Tarjeta> Suerte; //tarjetas de suerte
+    private ArrayList<Tarjeta> Caja; //tarjetas de Caja de Comunidad
     private Jugador banca;
     private Dados dados;
     private Turno turno;
@@ -21,6 +25,10 @@ public class Tablero {
 
     public Tablero(ArrayList<Avatar> avatares,Dados dados, Turno turno) {
 
+        this.Caja=new ArrayList();
+        
+        this.Suerte=new ArrayList();
+        
         this.partidaIniciada = false;
 
         this.incrementosRealizados = 0;
@@ -179,6 +187,18 @@ public class Tablero {
                 }
             }
         }
+        
+        //CREAMOS LOS MAZOS DE LAS CARTAS SUERTE Y CAJA COMUNIDAD
+        //número de tarjetas de cada mazo fijo
+        for(int i=0;i<14;i++){
+            Tarjeta tarjeta=new Tarjeta("Suerte", i);
+            tarjeta.setMensajeSuerte(i);
+            this.Suerte.add(tarjeta);
+        }
+        for(int i=0;i<10;i++){
+            Tarjeta tarjeta=new Tarjeta("Caja", i);
+            tarjeta.setMensajeCaja(i);
+            this.Caja.add(tarjeta);        }
     }
 
     //Getters
@@ -320,30 +340,34 @@ public class Tablero {
                     this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(1).get(0));
                     this.avatares.get(i).getJugador().setEstarCarcel(true);
                 }
+                
                 else{
-                //Establecemos la posicion de la casilla en la que se encuentra
-                posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
-                coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
-                coordenadaAntes = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                
+                if(cantidadDesplazamiento!=0){
+                    //Establecemos la posicion de la casilla en la que se encuentra
+                    posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
+                    coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                    coordenadaAntes = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
 
-                //hacemos el modulo porque no puede ser mayor que 10, ya que las secciones N S E O tienen 10 casillas
-                //Si es mayor que 10, le sumamos uno a coordenada
+                    //hacemos el modulo porque no puede ser mayor que 10, ya que las secciones N S E O tienen 10 casillas
+                    //Si es mayor que 10, le sumamos uno a coordenada
 
-                if( (posicion + cantidadDesplazamiento) > 9){
-                    posicion = (posicion+cantidadDesplazamiento)%10;
-                    if((posicion+cantidadDesplazamiento)>20){ //Si se da que esta en la posicion 9 y sacamos un 12 tendriamos que sumar 2
-                        coordenada +=2;
+                    if( (posicion + cantidadDesplazamiento) > 9){
+                        posicion = (posicion+cantidadDesplazamiento)%10;
+                        if((posicion+cantidadDesplazamiento)>20){ //Si se da que esta en la posicion 9 y sacamos un 12 tendriamos que sumar 2
+                            coordenada +=2;
+                        }
+                        else{
+                            coordenada+=1;
+                        }
                     }
                     else{
-                        coordenada+=1;
+                        posicion+=cantidadDesplazamiento;
                     }
-                }
-                else{
-                    posicion+=cantidadDesplazamiento;
-                }
 
-                this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada%4).get(posicion));
-                coordenadaMovida = coordenada%4;
+                    this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada%4).get(posicion));
+                    coordenadaMovida = coordenada%4;
+                }
 
                 //IR A LA CARCEL
                 //comprobamos si la nueva casilla es del tipo IrCarcel y en ese caso desplazamos al jugador a la cárcel
@@ -382,11 +406,40 @@ public class Tablero {
                     }
 
                 }
-                //ALQUILER CASILLAS CON DUEÑO (CASILLAS DE SERVICIO,SOLAR O TRANSPORTE
+                
+                //CASILLA DE SUERTE O CAJA COMUNIDAD
+                else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().contains("Suerte")){
+                    barajar(Suerte);
+                    //elegir una aleatoria entre las disponibles
+                    System.out.println("Elija un número entre el 1 y el 14.");
+                    Scanner reader=new Scanner(System.in); 
+        
+                    System.out.println("\n->");
+                    int n = reader.nextInt(); 
+                    reader.reset();
+                    
+                    cogerTarjetaSuerte(this.Suerte.get(n));//el indice del array no tiene pq coincidir con el numero de la tarjeta
+                }
+                else if(this.avatares.get(i).getJugador().getCasillaActual().getTipo().contains("Caja")){
+                    barajar(Caja);
+                    //elegir una aleatoria entre las disponibles
+                    System.out.println("Elija un número entre el 1 y el 10.");
+                    Scanner reader=new Scanner(System.in);  
+        
+                    System.out.println("\n->");
+                    int n = reader.nextInt();
+                    reader.reset();
+                    
+                    cogerTarjetaCaja(this.Caja.get(n));
+                }
+                
+                
+                //ALQUILER CASILLAS CON DUEÑO (CASILLAS DE SERVICIO,SOLAR O TRANSPORTE)
                 //comprobamos si la nueva casilla en la que se situa el jugador pertenece a algun usuario
                 else if(this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad()==false) {//falta meter en caso de que esté hipotecada
                     //si el propietario posee todas las casillas de un grupo entonces cobra el doble
-                    if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar")) {
+                    if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar") ||
+                            this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
                         if (this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo()) == true) {
                             if (this.avatares.get(i).getJugador().getFortuna() >= this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2) {
 
@@ -574,9 +627,195 @@ public class Tablero {
             }
             //for(jugador.getPropiedades());
             this.avatares.remove(this.turno.getTurno());
-
         }
 
         return true;
+    }
+    
+    
+    //ACCIONES DE LAS TARJETAS (SEGÚN CUAL SE SAQUE DEL MAZO)
+    public void barajar(ArrayList<Tarjeta> tarjetas){
+        //al barajar las cartas estas cambian su posicion en el vector, pero la variable numTarjeta se mantiene intacta
+        Collections.shuffle(tarjetas);
+    }
+    
+    public void cogerTarjetaSuerte(Tarjeta tarjeta){
+        
+        int i=tarjeta.getNumero();
+        
+        //simepre imprimimos el mensaje de la tarjeta
+        System.out.println(tarjeta.getMensaje());            
+
+        
+        if(i==0){
+            
+            for(int k=0;k<4;k++){
+                for(int j=0;j<10;j++){
+                    if((i==2 && j>5) || (i==3)){//si el jugador esta entre las casillas (2,6) y (3,9) => pasas por la salida
+                        this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA,1);
+                    }
+                }
+            }
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(2,5));//cooredenadas aeropuerto    
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==1){
+            //situamos al avatar en EEUU
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1,8));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==2){
+            //recibe 500.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000,1);
+        }
+        else if(i==3){
+            
+            for(int k=0;k<4;k++){
+                for(int j=0;j<10;j++){
+                    if((i==2 && j>6) || (i==3)){//si el jugador esta entre las casillas (2,7) y (3,9) => pasas por la salida
+                        this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA,1);
+                    }
+                }
+            }
+            //situamos al jugador en China
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(2,6));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+
+        }
+        else if(i==4){
+            //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3,0));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==5){
+            //recibes 1.000.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000,1);
+        }
+        else if(i==6){
+            //pagas 150.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000,-1);
+        }
+        else if(i==7){
+            //hacer cuando tengamos las construcciones
+        }
+        else if(i==8){
+            
+            for(int k=0;k<4;k++){
+                for(int j=0;j<10;j++){
+                    if((i==0 && j==9) || (i==3) || (i==2) || (i==1)){//si el jugador esta entre las casillas (0,9) y (3,9) => pasas por la salida
+                        this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA,1);
+                    }
+                }
+            }
+            //situamos al jugador en Kenia
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0,8));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==9){
+            //le damos 250.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
+            for(int j=0;j<this.avatares.size();j++){
+                if(j!=this.turno.getTurno()){
+                    this.avatares.get(j).getJugador().setFortuna(250000,1);
+                }
+            }
+            //le restamos al usuario la cantidad por el numero de jugadores
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((250000)*(this.avatares.size()-1),-1);
+
+        }
+        else if(i==10){
+            //retrocede 3 casillas
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),-3);
+        }
+        else if(i==11){
+            //paga 150.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000,-1);
+        }
+        else if(i==12){
+            //recibe 1.500.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500000,1);
+        }
+        else if(i==13){
+            //desplazar a la casilla de transporte mas cercana
+            for(int k=0;k<4;k++){
+                for(int j=0;j<10;j++){
+                    if(i==0 && j<5){//antes que RENFE
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0,5));
+                    }
+                    else if((i==0 && j>=5) || (i==1 && j<5)){//antes que Puerto
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1,5));
+                    }
+                    else if((i==1 && j>=5) || (i==2 && j<5)){//antes que Aeropuerto
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(2,5));
+                    }
+                    else if((i==2 && j>=5) || (i==3 && j<5)){//antes que NASA
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3,5));
+                    }
+                }
+            }
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+    }
+    
+    public void cogerTarjetaCaja(Tarjeta tarjeta){
+        
+        int i=tarjeta.getNumero();
+        
+        //simepre imprimimos el mensaje de la tarjeta
+        System.out.println(tarjeta.getMensaje());            
+
+        if(i==0){
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000,-1);
+        }
+        else if(i==1){
+             //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3,0));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==2){
+            //va a la salida
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0,0));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
+        else if(i==3){
+            //cobra 2.000.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(2000000,1);
+        }
+        else if(i==4){
+            //paga 1.000.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000,-1);
+        }
+        else if(i==5){
+            //recibes 500.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000,1);
+        }
+        else if(i==6){
+            //retrocede hasta E.Árabes
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3,8));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);
+        }
+        else if(i==7){
+            //le damos 200.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
+            for(int j=0;j<this.avatares.size();j++){
+                if(j!=this.turno.getTurno()){
+                    this.avatares.get(j).getJugador().setFortuna(200000,1);
+                }
+            }
+            //le restamos al usuario la cantidad por el numero de jugadores
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((200000)*(this.avatares.size()-1),-1);        }
+        else if(i==8){
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000,1);
+        }
+        else if(i==9){
+            for(int k=0;k<4;k++){
+                for(int j=0;j<10;j++){
+                    if((i==2 && j>6) || (i==3)){//si el jugador esta entre las casillas (2,7) y (3,9) => pasas por la salida
+                        this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA,1);
+                    }
+                }
+            }
+            //situamos al jugador en Brasil
+            this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1,1));
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+        }
     }
 }

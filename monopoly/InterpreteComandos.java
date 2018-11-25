@@ -280,7 +280,7 @@ public class InterpreteComandos {
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
                     auxParking = this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getBote();
                 }
-
+                
                 System.out.print("\nEl avatar " + this.avatares.get(this.turno.getTurno()).getSimbolo() +
                         " avanza " + this.dados.getValorSuma() +
                         " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() +

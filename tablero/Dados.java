@@ -41,8 +41,8 @@ public class Dados {
 
     public ArrayList<Integer> tirarDados(){
         int max=6,min=1;
-        this.valorDados.set(0,10);
-        this.valorDados.set(1,0);
+        this.valorDados.set(1,r.nextInt(6)+1);
+        this.valorDados.set(1,r.nextInt(6)+1);
         if(this.valorDados.get(0) == this.valorDados.get(1)){
             this.repetidos++;
         }
