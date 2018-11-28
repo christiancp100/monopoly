@@ -26,7 +26,7 @@ public class Avatar {
     public Jugador getJugador(){
         return this.jugador;
     }
-
+    
     public char getSimbolo(){return this.simbolo;}
 
     //Setters
