@@ -53,30 +53,30 @@ public class Valores {
     public static final String[] TARJETAS_SUERTE = {
         "1.-Ve al aeropuerto y coge un avión. Si pasas por la casilla de Salida cobras.",
         "2.-Decides hacer un viaje con tu familia. Avanza hasta EE.UU",
-        "3.-Vendes tu billete de avión para Estonia. Cobra 500.000€",
+        "3.-Vendes tu billete de avión para Estonia. Cobra 5.000€",
         "4.-Ve a China. Si pasas por la casilla de Salida cobras.",
         "5.-Los acreedores te persiguen por impago,ve a la Cárcel. Si pasas por la casilla de Salida no cobras.",
-        "6.-¡Has ganado la lotería! Recibe 1.000.000€",
-        "7.-Paga 1500000€ por la matrícula del colegio privado.",
+        "6.-¡Has ganado la lotería! Recibe 100.000€",
+        "7.-Paga 15000€ por la matrícula del colegio privado.",
         "8.-El aumento del impuesto sobre bienes inmuebles afecta a todas tus propiedades. Paga 400.000€ por casa, 1.150.000€ por hotel, 200.000€ por piscina y 750.000€ por pista de deportes.",
         "9.-Ve a Kenia. Si pasas por la casilla de Salida cobras.",
-        "10.-Has sido elegido presidente de la junta directiva. Paga a cada jugador 250.000€.",
+        "10.-Has sido elegido presidente de la junta directiva. Paga a cada jugador 2.500€.",
         "11.-¡Hora punta de tráfico! Retrocede tres casillas.",
-        "12.-Te multan por usar el móvil mientras conduces. Paga 150.000€.",
-        "13.-Beneficio por la venta de tus acciones. Recibe 1.500.000€.",
+        "12.-Te multan por usar el móvil mientras conduces. Paga 1.500€.",
+        "13.-Beneficio por la venta de tus acciones. Recibe 150.000€.",
         "14.-Avanza hasta la casilla de transporte más cercana. Si no tiene dueño, puedes comprársela a la banca. Si tiene dueño, paga al dueño el doble de la operación indicada."
         };
         
     public static final String[] TARJETAS_CAJA = {
-        "1.-Paga 500.000€ por un fin de semana en un balneario de 5 estrellas.",
+        "1.-Paga 5.000€ por un fin de semana en un balneario de 5 estrellas.",
         "2.-Te investigan por fraude de identidad. Ve a la Cárcel. Ve directamente sin pasar por la casilla de Salida y sin cobrar.",
         "3.-Colócate en la casilla de Salida y cobra.",
-        "4.-Tu compañía de Internet obtiene beneficios. Recibe 2.000.000€.",
-        "5.-Paga 1.000.000€ por invitar a todos tus amigos a un viaje a Francia.",
-        "6.-Devolución de Hacienda. Cobra 500.000€.",
+        "4.-Tu compañía de Internet obtiene beneficios. Recibe 200.000€.",
+        "5.-Paga 10.000€ por invitar a todos tus amigos a un viaje a Francia.",
+        "6.-Devolución de Hacienda. Cobra 5.000€.",
         "7.-Retrocede hasta E.Árabes para comprar antigüedades exóticas.",
-        "8.-Alquilas a tus compañeros una villa en Cannes durante una semana. Paga 200.000€ a cada jugador.",
-        "9.-Recibe 1.000.000€ de beneficios por alquilar los servicios de tu jet privado.",
+        "8.-Alquilas a tus compañeros una villa en Cannes durante una semana. Paga 2.000€ a cada jugador.",
+        "9.-Recibe 100.000€ de beneficios por alquilar los servicios de tu jet privado.",
         "10.-Ve a Brasil para disfrutar de los Carnavales. Si pasas por la casilla de Salida cobras."
         };
 

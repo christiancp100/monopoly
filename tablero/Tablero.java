@@ -656,8 +656,8 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 2) {
-            //recibe 500.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000, 1);
+            //recibe 5.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
         } else if (i == 3) {
 
             for (int k = 0; k < 4; k++) {
@@ -676,15 +676,14 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 5) {
-            //recibes 1.000.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000, 1);
+            //recibes 100.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(100000, 1);
         } else if (i == 6) {
-            //pagas 150.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, -1);
+            //pagas 15.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);
         } else if (i == 7) {
             //hacer cuando tengamos las construcciones
         } else if (i == 8) {
-            //TODO no entiendo esto
 
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
@@ -697,24 +696,24 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 9) {
-            //le damos 250.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
+            //le damos 2.500 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
             for (int j = 0; j < this.avatares.size(); j++) {
                 if (j != this.turno.getTurno()) {
-                    this.avatares.get(j).getJugador().setFortuna(250000, 1);
+                    this.avatares.get(j).getJugador().setFortuna(2500, 1);
                 }
             }
             //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((250000) * (this.avatares.size() - 1), -1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2500) * (this.avatares.size() - 1), -1);
 
         } else if (i == 10) {
             //retrocede 3 casillas
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), -3);
         } else if (i == 11) {
-            //paga 150.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, -1);
+            //paga 15.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500, -1);
         } else if (i == 12) {
-            //recibe 1.500.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500000, 1);
+            //recibe 150.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, 1);
         } else if (i == 13) {
             //desplazar a la casilla de transporte mas cercana
             for (int k = 0; k < 4; k++) {
@@ -742,7 +741,7 @@ public class Tablero {
         System.out.println(tarjeta.getMensaje());
 
         if (i == 0) {
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000, -1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, -1);
         } else if (i == 1) {
             //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
@@ -753,29 +752,30 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 3) {
-            //cobra 2.000.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(2000000, 1);
+            //cobra 200.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(200000, 1);
         } else if (i == 4) {
-            //paga 1.000.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000, -1);
+            //paga 10.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, -1);
         } else if (i == 5) {
-            //recibes 500.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(500000, 1);
+            //recibes 5.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
         } else if (i == 6) {
             //retrocede hasta E.Árabes
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);
         } else if (i == 7) {
-            //le damos 200.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
+            //le damos 2.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
             for (int j = 0; j < this.avatares.size(); j++) {
                 if (j != this.turno.getTurno()) {
-                    this.avatares.get(j).getJugador().setFortuna(200000, 1);
+                    this.avatares.get(j).getJugador().setFortuna(2000, 1);
                 }
             }
             //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((200000) * (this.avatares.size() - 1), -1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2000) * (this.avatares.size() - 1), -1);
         } else if (i == 8) {
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1000000, 1);
+            //recibe 10.000€
+            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
         } else if (i == 9) {
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
