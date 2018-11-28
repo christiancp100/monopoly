@@ -293,6 +293,15 @@ public class Casilla {
         }
     }
 
+    public void deleteEdificaciones(Edificaciones ed){
+        Iterator it = edificaciones.values().iterator();
+        while(it.hasNext()){
+            if(it.equals(ed)){
+                it.remove();
+            }
+        }
+    }
+
     private boolean edificarAuxiliar(Edificaciones edificio, int max){
         if((this.numeroPistasDep < max) && (this.numeroPiscinas<max)){
             if(edificio.getTipo().equals("casa") && this.numeroHoteles <max){ //Si tenemos menos de MAX hoteles, podemos construir hasta 4 casas

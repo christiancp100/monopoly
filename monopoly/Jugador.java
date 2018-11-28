@@ -343,13 +343,30 @@ public class Jugador {
         return false;
     }
 
-    public boolean venderEdificio(String tipo, Casilla casilla, int cantidad){
-        if(tipo.contains("casa")){
-            for(int i=0;i<cantidad;i++){
+    public int venderEdificio(Jugador jugador, String tipo, Casilla casilla, int cantidad) {
 
+        int auxCantAEliminar = cantidad;
+        int eliminadas = 0;
+
+        if (tipo.contains("casa") && cantidad > casilla.getNumeroCasas()) auxCantAEliminar = casilla.getNumeroCasas();
+        else if (tipo.contains("hotel") && cantidad > casilla.getNumeroHoteles()) auxCantAEliminar = casilla.getNumeroHoteles();
+        else if (tipo.contains("piscina") && cantidad > casilla.getNumeroPiscinas()) auxCantAEliminar = casilla.getNumeroPiscinas();
+        else if (tipo.contains("pistaDep") && cantidad > casilla.getNumeroPistasDep()) auxCantAEliminar = casilla.getNumeroPistasDep();
+        else return 3;
+
+        for (int i = 0; i < auxCantAEliminar; i++) {
+            for (String edKey : casilla.getEdificaciones().keySet()) {
+                if (casilla.getEdificaciones().get(edKey).getTipo().equals(tipo)) {
+                    casilla.getEdificaciones().remove(edKey);
+                    jugador.setFortuna(casilla.getEdificaciones().get(edKey).hipotecaEdificaciones(), 1);
+                    eliminadas++;
+                }
             }
         }
-        
-        return false;
+
+        if (eliminadas == 0) return 0;
+        else if (eliminadas == cantidad) return 1;
+        else if (eliminadas == casilla.getNumeroCasas()) return 2;
+        else return 3;
     }
 }

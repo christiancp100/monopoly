@@ -295,7 +295,16 @@ public class InterpreteComandos {
         else if(eleccion.contains("vender")){
             aux = eleccion.split("\\s+");
             Casilla casilla = this.tablero.getCasillaByName(aux[2]);
-            this.avatares.get(this.turno.getTurno()).getJugador().venderEdificio(aux[1], casilla, Integer.parseInt(aux[3]));
+            int res = this.avatares.get(this.turno.getTurno()).getJugador().venderEdificio(
+                                                                    this.avatares.get(this.turno.getTurno()).getJugador(),
+                                                                    aux[1],
+                                                                    casilla,
+                                                                    Integer.parseInt(aux[3]));
+
+            if(res == 0) System.out.println("No se ha vendido nada.");
+            else if(res == 1) System.out.println("Se han vendido " + aux[3] + " edificaciones.");
+            else if(res == 2) System.out.println("No disponías de " + aux[3] + " edificaciones. Hemos vendido todas las que tenías.");
+            else if(res == 3) System.out.println("No se ha podido ejecutar esta acción.");
 
         }
     }
