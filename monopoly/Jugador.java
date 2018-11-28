@@ -349,7 +349,6 @@ public class Jugador {
 
             }
         }
-        System.out.println("Hola soy maria :).");
         
         return false;
     }
