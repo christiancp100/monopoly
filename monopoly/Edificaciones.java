@@ -9,54 +9,102 @@ import tablero.Casilla;
 
 public class Edificaciones {
 
-    private String nombre;
+    private String tipo;
     private double precio;
-    private int numCasas=0;
-
     private Casilla casilla;
-    
+    private double alquiler;
+    private boolean hipotecada;
+    private double precioHipoteca;
+
     public Edificaciones(String nombre,Casilla casilla){
-        
+
+        this.hipotecada = false;
+
         if(nombre.equals("casa")){
-            this.nombre="casa";
+            this.tipo ="casa";
             this.precio=casilla.getPrecio()*0.6;
-            if(this.casilla.getNumeroCasas()>4){
-                System.out.println("No puede construír más casas.");
+            if(casilla.getNumeroCasas() == 0){
+                this.alquiler = 5 * casilla.getAlquiler();
             }
-            else{
-                this.casilla.setCasas(1);
+            else if( casilla.getNumeroCasas() == 1){
+                this.alquiler = 15 * casilla.getAlquiler();
             }
+            else if( casilla.getNumeroCasas() == 2){
+                this.alquiler = 35 * casilla.getAlquiler();
+            }
+            else if( casilla.getNumeroCasas() == 3){
+                this.alquiler = 50 * casilla.getAlquiler();
+            }
+
         }
         //mirar cuantos puede haber de cada tipo
         if(nombre.equals("hotel")){
-            this.nombre="hotel";
+            this.tipo ="hotel";
             this.precio=casilla.getPrecio()*0.6;
+            this.alquiler = 70 * casilla.getAlquiler();
         }
         if(nombre.equals("piscina")){
-            this.nombre="piscina";
+            this.tipo ="piscina";
             this.precio=casilla.getPrecio()*0.4;
+            this.alquiler = 25 * casilla.getPrecio();
         }
         if(nombre.equals("pista deportes")){
-            this.nombre="pista deportes";
+            this.tipo ="pista deportes";
             this.precio=casilla.getPrecio()*1.25;
+            this.alquiler = 25*casilla.getPrecio();
         }
+
+        this.precioHipoteca = this.precio/2;
     }
-    
+
+    public double getPrecio() {
+        return this.precio;
+    }
+    public String getTipo(){
+        return this.tipo;
+    }
+
+    public double getAlquiler(){
+        return this.alquiler;
+    }
+
+    public double getPrecioHipoteca(){
+        return this.precioHipoteca;
+    }
+
+    public Casilla getCasillaEdificio(){
+        return this.casilla;
+    }
+
+    public boolean getHipotecada(){
+        return this.hipotecada;
+    }
+
+    //Setters
+
+    public void setHipotecada(boolean hipotecada){
+        this.hipotecada = hipotecada;
+    }
+
+
     public double alquilerEdificaciones(Casilla casilla){
                 
-            if(casilla.getNumeroCasas()==1){
+            if(casilla.getNumeroCasas()==0){
+                if(casilla.getNumeroHoteles()>0){
+                    return (this.casilla.getAlquiler()*70);
+                }
                 return this.casilla.getAlquiler()*5;
             }
-            else if(casilla.getNumeroCasas()==2){
+            else if(casilla.getNumeroCasas()==1){
                 return this.casilla.getAlquiler()*15;
             }
-            else if(casilla.getNumeroCasas()==3){
+            else if(casilla.getNumeroCasas()==2){
                 return this.casilla.getAlquiler()*35;
             }
-            else if(casilla.getNumeroCasas()==4){
+            else if(casilla.getNumeroCasas()==3){
                 return this.casilla.getAlquiler()*50;
             }
-            else if(casilla.getNumeroCasas()==0){
+            else if(casilla.getNumeroCasas()==4){
                 if(casilla.getNumeroHoteles()==1){
                     return this.casilla.getAlquiler()*70;
                 }

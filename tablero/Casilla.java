@@ -6,10 +6,14 @@
 package tablero;
 
 import monopoly.Avatar;
+import monopoly.Edificaciones;
 import monopoly.Jugador;
 import monopoly.Valores;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -24,13 +28,19 @@ public class Casilla {
     private double precio;
     private Jugador jugadorQueTieneLaCasilla;
     private boolean sePuedeComprar;
+    private double alquiler;
 
     private boolean hipotecada;
+    private double precioHipoteca;
     private int numeroCasas;
     private int numeroHoteles;
     private int numeroPiscinas;
     private int numeroPistasDep;
     private double bote;
+    private HashMap<String, Edificaciones> edificaciones;
+    private HashMap<Jugador, Integer> vecesCaidoEnEstaCasilla;
+
+    Random rand;
 
 
 
@@ -42,6 +52,12 @@ public class Casilla {
         jugadorQueTieneLaCasilla = null;
         this.sePuedeComprar = false;
         this.numeroCasas=0;
+        edificaciones = new HashMap<>();
+        vecesCaidoEnEstaCasilla = new HashMap<>();
+        int numeroCasas = 0;
+        int numeroHoteles = 0;
+        int numeroPiscinas = 0;
+        int numeroPistasDep = 0;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -52,8 +68,17 @@ public class Casilla {
         if(tipo.equals("Solar") || tipo.equals("Transporte")){
             this.sePuedeComprar = true;
         }
-        this.numeroCasas=0;
+        edificaciones = new HashMap<>();
+        vecesCaidoEnEstaCasilla = new HashMap<>();
+        this.precioHipoteca = this.precio / 2;
+        int numeroCasas = 0;
+        int numeroHoteles = 0;
+        int numeroPiscinas = 0;
+        int numeroPistasDep = 0;
+    }
 
+    public HashMap<String, Edificaciones> getEdificaciones() {
+        return edificaciones;
     }
 
     public Jugador getJugadorQueTieneLaCasilla() {
@@ -83,7 +108,7 @@ public class Casilla {
             return 0;
         }
     }
-    
+
     public double getHipoteca(){
         
         if(this.tipo.equals("Solar")){
@@ -98,6 +123,14 @@ public class Casilla {
         else{
             return 0;
         }
+    }
+
+    public boolean getHipotecada(){
+        return this.hipotecada;
+    }
+
+    public double getPrecioHipoteca(){
+        return this.precio/2;
     }
 
     public boolean getDisponibilidad(){
@@ -142,7 +175,7 @@ public class Casilla {
     
     //accedemos al precio de alquiler de esa casilla (siempre solar)
     public double getAlquiler(){//hay que revisar para que no aumente el 5%
-        return this.precio*0.1;//10% de su precio inicial
+        return this.alquiler;//10% de su precio inicial
     }
     
     public int getNumeroCasas(){
@@ -161,8 +194,40 @@ public class Casilla {
         return this.numeroPistasDep;
     }
 
+    public int getVeces(Jugador jugador){
+        return this.vecesCaidoEnEstaCasilla.get(jugador);
+    }
+
+    public int getNumeroEdificaciones(){
+        return (this.numeroCasas + this.numeroHoteles + this.numeroPistasDep + this.numeroPiscinas);
+    }
     //Setters
 
+    //No hay setter para numero de edificaciones porque es la suma de los tipos de edificaciones ya construidos
+
+    public void setHipotecada(boolean hipotecada){
+        this.hipotecada = hipotecada;
+    }
+
+    public void setAlquiler(double alquiler) {
+        this.alquiler = alquiler;
+    }
+
+    public void setAlquiler(double alquiler, int op){
+        if(op == 1) this.alquiler += alquiler;
+        else this.alquiler -= alquiler;
+    }
+
+    public void setVeces(Jugador jugador){
+
+        if(this.vecesCaidoEnEstaCasilla.containsKey(jugador)){
+            //Sumamos una vez a caido en casilla
+            this.vecesCaidoEnEstaCasilla.put(jugador, this.vecesCaidoEnEstaCasilla.get(jugador) + 1);
+        }else{ //Si no se encuentra en el hashmap, lo añadimos y le establecemos las veces a uno
+            this.vecesCaidoEnEstaCasilla.put(jugador, 0);
+        }
+
+    }
 
     public void setJugadorQueTieneLaCasilla(Jugador jugadorQueTieneLaCasilla) {
         this.jugadorQueTieneLaCasilla = jugadorQueTieneLaCasilla;
@@ -199,6 +264,10 @@ public class Casilla {
     public void setCasas(int numeroCasas){
         this.numeroCasas+=numeroCasas;
     }
+
+    public void setPrecioHipoteca(){
+        precioHipoteca = this.precio/2;
+    }
     
     //establecemos la cantidad de dinero que hay en el Parking
     public void setBote(double bote){
@@ -210,6 +279,59 @@ public class Casilla {
         }
     }
 
+    public boolean setEdificaciones(Edificaciones edificio){
+        int maxGrupo2 = 2;
+        int maxGrupo3 = 3;
+
+        if( (this.grupo == 1) || (this.grupo == 7) ) { //Grupos de 2 casillas
+
+            return edificarAuxiliar(edificio, maxGrupo2);
+
+        }
+        else{
+            return edificarAuxiliar(edificio, maxGrupo3);
+        }
+    }
+
+    private boolean edificarAuxiliar(Edificaciones edificio, int max){
+        if((this.numeroPistasDep < max) && (this.numeroPiscinas<max)){
+            if(edificio.getTipo().equals("casa") && this.numeroHoteles <max){ //Si tenemos menos de MAX hoteles, podemos construir hasta 4 casas
+                if ((this.numeroCasas < Valores.MAXCASAS)) {
+                    this.edificaciones.put(generarClave(), edificio);
+                    this.numeroCasas++;
+                    this.alquiler += edificio.getAlquiler();
+                    return true;
+                }
+            }else if(numeroHoteles == max){ //Si tenemos 2 hoteles, solo podemos contruir 2 casas
+                if (edificio.getTipo().equals("casa") && this.numeroCasas <= 2) {
+                    this.edificaciones.put(generarClave(), edificio);
+                    this.numeroCasas++;
+                    this.alquiler += edificio.getAlquiler();
+                    return true;
+                }
+            }
+            else if (edificio.getTipo().equals("hotel") && (this.numeroCasas == 4) && (this.numeroHoteles<=max)) {
+                this.numeroCasas = 0;
+                this.edificaciones.put(generarClave(), edificio);
+                this.numeroHoteles++;
+                this.alquiler += edificio.getAlquiler();
+                return true;
+            }
+            else if (edificio.getTipo().equals("piscina") && (this.numeroHoteles >= 1) && (this.numeroCasas >= 2)) {
+                this.numeroPiscinas++;
+                this.edificaciones.put(generarClave(), edificio);
+                this.alquiler += edificio.getAlquiler();
+                return true;
+            }
+            else if (edificio.getTipo().equals("pistaDep") && (this.numeroHoteles >= 2)) {
+                this.numeroPistasDep++;
+                this.edificaciones.put(generarClave(), edificio);
+                this.alquiler += edificio.getAlquiler();
+                return true;
+            }
+        }
+        return false;
+    }
 
     //Metodos
     @Override
@@ -237,5 +359,19 @@ public class Casilla {
         }
 
         return null;
+    }
+
+    private String generarClave(){ //Genera una clave aleatoria compuesta por 2 letras mayusculas
+        StringBuffer res = new StringBuffer();
+        int min= 65, max = 90;
+        rand = new Random();
+
+        int codigo1 = rand.nextInt(max + 1 - min);
+        char ascii = (char) codigo1;
+        int codigo2 = rand.nextInt(max + 1 - min);
+        char ascii2 = (char) codigo2;
+
+        return res.append(ascii).append(ascii2).toString();
+
     }
 }

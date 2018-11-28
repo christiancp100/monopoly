@@ -16,7 +16,10 @@ public class Avatar {
             this.simbolo = generarSimboloAleatorio();
             if(tipo.equals("pelota")|| tipo.equals("coche") || tipo.equals("esfinge") || tipo.equals("sombrero")) {
                 this.tipo = tipo;
-        }
+            }else{
+                System.out.println("No has escrito bien el tipo de avatar, se asignará uno por defecto (pelota)");
+                this.tipo = "pelota";
+            }
         this.jugador = new Jugador(this, nombreJugador);
     }
 
@@ -28,6 +31,10 @@ public class Avatar {
     }
     
     public char getSimbolo(){return this.simbolo;}
+
+    public String getTipo(){
+        return this.tipo;
+    }
 
     //Setters
 

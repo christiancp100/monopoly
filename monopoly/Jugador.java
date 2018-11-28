@@ -2,6 +2,8 @@ package monopoly;
 import tablero.Casilla;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
 
 
 public class Jugador {
@@ -18,7 +20,6 @@ public class Jugador {
     private int numTiradasCarcel;
 
     private ArrayList<Casilla> propiedades;
-
     public Jugador(Avatar avatar,float fortuna){
         this.avatar = avatar;
         this.fortuna = fortuna;
@@ -209,7 +210,6 @@ public class Jugador {
             return false;
         }
     }
-    
 
     @Override
     public String toString() {
@@ -236,12 +236,119 @@ public class Jugador {
         return aux;
     }
 
-
     public void pagar(Jugador jugadorRecibe, double cantidad){
         this.setFortuna(cantidad, -1);
         jugadorRecibe.setFortuna(cantidad, 1);
     }
 
+    public void edificar(Casilla casilla, String tipo){
+
+        Scanner reader=new Scanner(System.in);  // Reading from System.in
+        Edificaciones edificio = new Edificaciones(tipo, casilla);
+
+        if(casilla.getJugadorQueTieneLaCasilla().equals(this)){
+
+            if(poseerGrupo(casilla.getGrupo()) || casilla.getVeces(this) > 2) { //Si tiene el grupo entero o estuvo mas de 2 veces en esa casilla, puede comprarla
+
+                if (this.fortuna > edificio.getPrecio()) {
+                    if(casilla.setEdificaciones(edificio)){
+                        System.out.println(Valores.VERDE + "El jugador ha construido 1 " + tipo + ", ¡ENHORABUENA!" + Valores.RESET);
+                        System.out.println("El precio actual del alquiler es: " + casilla.getAlquiler());
+                    }else{
+                        System.out.println(Valores.ROJO + "No se ha podido construir la edificación" + Valores.RESET);
+                    }
+                } else if (this.propiedades.size() > 0) {
+
+                    //Recorremos las propiedades del jugador
+                    for(Casilla cas : this.propiedades){
+                        if(!cas.getHipotecada()){
+                            if(cas.getNumeroEdificaciones() > 0){
+                                for(Edificaciones ed : casilla.getEdificaciones().values()){
+                                    if(ed.getPrecioHipoteca() > edificio.getPrecio()){
+                                        System.out.println("Podrías hipotecar una de tus edificaciones en la casilla " + ed.getCasillaEdificio());
+                                        System.out.println("¿Deseas hacerlo?");
+                                        System.out.println("\n->");
+                                        String n = reader.nextLine(); // Scans the next token of the input as an int.
+                                        reader.reset();
+                                        if(n.equals("Si")){
+                                            //Hipotecar el edificio
+                                            ed.setHipotecada(true);
+                                            //Sumar a la fortuna el precio de la hipoteca
+                                            this.fortuna+= ed.getPrecioHipoteca();
+                                            //Restamos el coste de la edificacion a la fortuna del jugador
+                                            this.fortuna -= edificio.getPrecio();
+                                            //Añadimos el edificio a la casilla
+                                            cas.setEdificaciones(edificio);
+                                            System.out.println(Valores.VERDE + "El jugador ha construido 1 " + tipo + ", ¡ENHORABUENA!" + Valores.RESET);
+                                            System.out.println("El precio actual del alquiler es: " + casilla.getAlquiler());
+
+                                        }
+                                        else{
+                                            System.out.println("No se hipotecará la edificacion");
+                                        }
+                                    }
+                                }
+                                if(cas.getPrecioHipoteca() > edificio.getPrecio()){
+                                    System.out.println("Podrías hipotecar la propiedad:  " + cas.getNombre());
+                                    System.out.println("¿Deseas hacerlo?");
+                                    System.out.println("\n->");
+                                    String n = reader.nextLine(); // Scans the next token of the input as an int.
+                                    reader.reset();
+                                    if(n.equals("Si")){
+                                        //Hipotecar propiedad y comprar el edificio nuevo
+                                        cas.setHipotecada(true);
+                                        //sumamos el precio de la hipoteca a la fortuna del jugador
+                                        this.fortuna += cas.getPrecioHipoteca();
+                                        //Restamos el coste del edificio a la fortuna del jugador
+                                        this.fortuna -= edificio.getPrecio();
+                                        //Añadimos el edificio a la casilla
+                                        cas.setEdificaciones(edificio);
+                                        System.out.println(Valores.VERDE + "El jugador ha construido 1 " + tipo + ", ¡ENHORABUENA!" + Valores.RESET);
+                                        System.out.println("El precio actual del alquiler es: " + casilla.getAlquiler());
+                                    }
+                                    else{
+                                        System.out.println("No se hipotecara la propiedad");
+                                    }
+                                }
+                            }
+                        }
+                    }
 
 
+                    //TODO Recorrer todas las propiedades, comprobar si tienen edificios, si los tienen, comprobar si su hipoteca es mayor o igual
+                    //que su fortuna, si no, comprobar si la hipoteca de la casilla es mayor que lo que debe pagar, para esto, voy a crear una funcion auxiliar
+
+
+                } else {
+                    System.out.println(Valores.ROJO + "El jugador no puede permitirse llevar a cabo esta acción" + Valores.RESET);
+                }
+            }else{
+                System.out.println("El jugador no posee todo el grupo de Casillas y tampoco estuvo más de dos veces en esta casilla. No puede edificar");
+            }
+        }
+    }
+
+    public void hipotecar(Casilla casilla){
+        casilla.setHipotecada(true);
+        this.fortuna += casilla.getHipoteca();
+    }
+
+    public boolean deshipotecar(Casilla casilla){
+        double cantidad = casilla.getHipoteca() * 1.1f;
+        if(this.fortuna >= cantidad) {
+            this.fortuna -= cantidad;
+            casilla.setHipotecada(false);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean venderEdificio(String tipo, Casilla casilla, int cantidad){
+        if(tipo.contains("casa")){
+            for(int i=0;i<cantidad;i++){
+
+            }
+        }
+        return false;
+    }
 }
