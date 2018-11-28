@@ -18,6 +18,7 @@ public class Jugador {
     private boolean estarCarcel;
     private int numDobles;
     private int numTiradasCarcel;
+    private String nombreCasillaAnterior;
 
     private ArrayList<Casilla> propiedades;
     public Jugador(Avatar avatar,float fortuna){
@@ -68,6 +69,10 @@ public class Jugador {
     public Casilla getCasillaActual(){
         return this.casillaActual;
     }
+    
+    public String getNombreCasillaAnterior(){
+        return nombreCasillaAnterior;
+    }
 
     public double getFortuna(){
         return this.fortuna;
@@ -112,6 +117,10 @@ public class Jugador {
 
     public void setCasillaActual(Casilla casilla){
         this.casillaActual = casilla;
+    }
+    
+    public void setNombreCasillaAnterior(String casilla){
+        this.nombreCasillaAnterior=casilla;
     }
 
     public void setFortuna(double fortuna){

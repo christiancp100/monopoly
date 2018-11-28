@@ -5,6 +5,7 @@ import tablero.Dados;
 import tablero.Tablero;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 
@@ -308,28 +309,18 @@ public class InterpreteComandos {
         k++;
     }
     
-    public void lanzarDados() {
-
-        dados.tirarDados();
-
-        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
-
-
-            System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
-
-            if (!this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()) {
-
+    public void imprimirLanzarDados(int valorDados){
+        if (!this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()) {   
+            
                 double auxParking = 0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
                     auxParking = this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getBote();
                 }
-                
+                                
                 System.out.print("\nEl avatar " + this.avatares.get(this.turno.getTurno()).getSimbolo() +
-                        " avanza " + this.dados.getValorSuma() +
-                        " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() +
-                        " hasta ");
-                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
-                System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
+                        " avanza " + valorDados +
+                        " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior() +
+                        " hasta " +this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
 
                 if(this.dados.getRepetidos() == 3){
                     System.out.println("El jugador ha sacado 3 veces dobles, por eso se situa en la carcel");
@@ -398,8 +389,80 @@ public class InterpreteComandos {
             } else {
                 System.out.println("El usuario está en la cárcel. Escriba 'salir carcel' o 'acabar turno'");
             }
+    }
+    
+    public void lanzarDados() {
+
+        dados.tirarDados();
+
+        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
+
+            System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
+            
+            //almacenamos el nombre de la casilla anterior para imprimirlo
+            this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+            
+            if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota") || 
+                    this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
+                movimientoEspecial();
+            }else{
+                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+            }
+            
+            imprimirLanzarDados(this.dados.getValorSuma());    
+            
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
         }
+    }
+        
+    public void movimientoEspecial(){
+
+        if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota")){
+            if(this.dados.getValorSuma()>=4){
+
+                System.out.println("Has sacado un número mayor que 4, avanzas.");
+                int j=0; //variable auxiliar para restar la posicion del avatar
+
+                for(int i=1;i<=this.dados.getValorSuma();i++){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                            System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
+                    }else{
+                        if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar, el ultimo valor y que no este en la carcel
+
+                            System.out.println(" ");
+                            System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
+                            this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(i-j));
+                            if(i!=this.dados.getValorSuma()){//en este caso se imprime en lanzarDados
+                                imprimirLanzarDados(i-j);
+                            }
+                            j=i;
+                        }
+                    }
+                }
+            }else{
+
+                System.out.println("Has sacado un número menor que 4, retrocede.");
+                int j=0; //variable auxiliar para restar la posicion del avatar
+
+                for(int i=1;i<=this.dados.getValorSuma();i++){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                            System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
+                    }else{
+                        if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar, el ultimo valor y que no este en la carcel
+
+                            System.out.println(" ");
+                            System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
+                            this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(i-j));
+                            if(i!=this.dados.getValorSuma()){//en este caso se imprime en lanzarDados
+                                imprimirLanzarDados(i-j);
+                            }
+                            j=i;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
