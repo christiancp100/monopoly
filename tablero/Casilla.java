@@ -76,6 +76,25 @@ public class Casilla {
         int numeroPiscinas = 0;
         int numeroPistasDep = 0;
     }
+    
+    /*public Casilla(Casilla casilla){
+        this.tipo=casilla.tipo;
+        this.color=casilla.color;
+        this.nombre=casilla.nombre;
+        this.grupo=casilla.grupo;
+        this.precio=casilla.precio;
+        this.sePuedeComprar=casilla.sePuedeComprar;
+        this.hipotecada=casilla.hipotecada;
+        this.alquiler=casilla.alquiler;
+        this.jugadorQueTieneLaCasilla=casilla.jugadorQueTieneLaCasilla;
+        this.numeroCasas;
+        this.numeroHoteles;
+        this.numeroPiscinas;
+        this.numeroPistasDep;
+        this.bote;
+        this.edificaciones;
+        this.vecesCaidoEnEstaCasilla;
+    }*/
 
     public HashMap<String, Edificaciones> getEdificaciones() {
         return edificaciones;
