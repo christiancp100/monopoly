@@ -349,6 +349,8 @@ public class Jugador {
 
             }
         }
+        System.out.println("Hola soy Christian");
+
         return false;
     }
 }
