@@ -318,7 +318,7 @@ public class InterpreteComandos {
                 }
                                 
                 System.out.print("\nEl avatar " + this.avatares.get(this.turno.getTurno()).getSimbolo() +
-                        " avanza " + valorDados +
+                        " se desplaza " + valorDados +
                         " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior() +
                         " hasta " +this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
 
@@ -419,7 +419,7 @@ public class InterpreteComandos {
     public void movimientoEspecial(){
 
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota")){
-            if(this.dados.getValorSuma()>=4){
+            if(this.dados.getValorSuma()>4){
 
                 System.out.println("Has sacado un número mayor que 4, avanzas.");
                 int j=0; //variable auxiliar para restar la posicion del avatar
@@ -428,7 +428,7 @@ public class InterpreteComandos {
                     if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
-                        if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar, el ultimo valor y que no este en la carcel
+                        if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
 
                             System.out.println(" ");
                             System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
@@ -442,18 +442,18 @@ public class InterpreteComandos {
                 }
             }else{
 
-                System.out.println("Has sacado un número menor que 4, retrocede.");
+                System.out.println("Has sacado un número menor o igual que 4, retrocede.");
                 int j=0; //variable auxiliar para restar la posicion del avatar
 
                 for(int i=1;i<=this.dados.getValorSuma();i++){
                     if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
-                        if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar, el ultimo valor y que no este en la carcel
-
+                        if(i%2!=0 || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
+                            
                             System.out.println(" ");
-                            System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
-                            this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(i-j));
+                            System.out.println("El jugador ha retrocedido "+i+" posiciones desde la casilla de origen.");
+                            this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(i-j));
                             if(i!=this.dados.getValorSuma()){//en este caso se imprime en lanzarDados
                                 imprimirLanzarDados(i-j);
                             }

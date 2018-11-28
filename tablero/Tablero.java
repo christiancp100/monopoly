@@ -340,7 +340,7 @@ public class Tablero {
                     this.avatares.get(i).getJugador().setEstarCarcel(true);
                 } else {
 
-                    if (cantidadDesplazamiento != 0) {
+                    if (cantidadDesplazamiento > 0) {
                         //Establecemos la posicion de la casilla en la que se encuentra
                         posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
                         coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
@@ -364,6 +364,32 @@ public class Tablero {
                         coordenadaMovida = coordenada % 4;
                         //Aumentamos el numero de  veces que estuvo en esta casilla
                         this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
+                    }
+                    else if(cantidadDesplazamiento<0){
+                        
+                        //getCoordenada devuelve la i y getCasilla devuelve la j
+                        posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
+                        coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                        coordenadaAntes = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
+                        
+                        if ((posicion + cantidadDesplazamiento) < 0) {
+                            posicion = 10-(-(posicion+cantidadDesplazamiento));
+                            if(coordenada==0){
+                                coordenada=4;
+                            }else{
+                                coordenada -= 1;
+                            }
+                            
+                        } else {
+                            posicion += cantidadDesplazamiento;
+                        }
+
+                        this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada % 4).get(posicion));
+                        coordenadaMovida = coordenada % 4;
+                        
+                        //Aumentamos el numero de  veces que estuvo en esta casilla
+                        this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
+
                     }
 
                     //IR A LA CARCEL
