@@ -19,7 +19,8 @@ public class Valores {
     public static final String FONDO = "\033[47m";
 
 
-    public static final String[] nombres = {"Salida", "N.Zelanda","Caja 1", "Australia",
+    public static final String[] nombres = {
+                                            "Salida", "N.Zelanda","Caja 1", "Australia",
                                             "Impuestos 1", "RENFE", "Sudáfrica",
                                             "Suerte1", "Kenia", "CaboVerde", "Carcel", "Brasil",
                                             "IBERDROLA", "Argentina", "Venezuela", "Puerto",
@@ -27,8 +28,8 @@ public class Valores {
                                             "Finlandia", "REPSOL", "Rusia", "Estonia",
                                             "Aeropuerto", "China", "Suerte 2", "Japón", "India", "IrCarcel",
                                             "España", "Caja 3", "Inglaterra", "Impuestos 2", "NASA" ,"Yemen",
-                                            "Suerte3", "E.Árabes", "Qatar"};
-
+                                            "Suerte3", "E.Árabes", "Qatar"
+                                            };
 
     //Precios de las casillas (iniciales) que se mantienen constantes
     public static final double PRECIOTOTALSOLARES = 78895.51;
@@ -49,7 +50,8 @@ public class Valores {
     public static final double PAGOSALIRCARCEL = PRECIOJUGADORVUELTA*5;
     
         //Mensajes de las tarjetas suerte y caja de comunidad
-    public static final String[] TARJETAS_SUERTE = {"1.-Ve al aeropuerto y coge un avión. Si pasas por la casilla de Salida cobras.",
+    public static final String[] TARJETAS_SUERTE = {
+        "1.-Ve al aeropuerto y coge un avión. Si pasas por la casilla de Salida cobras.",
         "2.-Decides hacer un viaje con tu familia. Avanza hasta EE.UU",
         "3.-Vendes tu billete de avión para Estonia. Cobra 500.000€",
         "4.-Ve a China. Si pasas por la casilla de Salida cobras.",
@@ -62,9 +64,11 @@ public class Valores {
         "11.-¡Hora punta de tráfico! Retrocede tres casillas.",
         "12.-Te multan por usar el móvil mientras conduces. Paga 150.000€.",
         "13.-Beneficio por la venta de tus acciones. Recibe 1.500.000€.",
-        "14.-Avanza hasta la casilla de transporte más cercana. Si no tiene dueño, puedes comprársela a la banca. Si tiene dueño, paga al dueño el doble de la operación indicada."};
+        "14.-Avanza hasta la casilla de transporte más cercana. Si no tiene dueño, puedes comprársela a la banca. Si tiene dueño, paga al dueño el doble de la operación indicada."
+        };
         
-    public static final String[] TARJETAS_CAJA = {"1.-Paga 500.000€ por un fin de semana en un balneario de 5 estrellas.",
+    public static final String[] TARJETAS_CAJA = {
+        "1.-Paga 500.000€ por un fin de semana en un balneario de 5 estrellas.",
         "2.-Te investigan por fraude de identidad. Ve a la Cárcel. Ve directamente sin pasar por la casilla de Salida y sin cobrar.",
         "3.-Colócate en la casilla de Salida y cobra.",
         "4.-Tu compañía de Internet obtiene beneficios. Recibe 2.000.000€.",
@@ -73,6 +77,15 @@ public class Valores {
         "7.-Retrocede hasta E.Árabes para comprar antigüedades exóticas.",
         "8.-Alquilas a tus compañeros una villa en Cannes durante una semana. Paga 200.000€ a cada jugador.",
         "9.-Recibe 1.000.000€ de beneficios por alquilar los servicios de tu jet privado.",
-        "10.-Ve a Brasil para disfrutar de los Carnavales. Si pasas por la casilla de Salida cobras."};
+        "10.-Ve a Brasil para disfrutar de los Carnavales. Si pasas por la casilla de Salida cobras."
+        };
+
+    //Maximo numero de edificios
+
+    public static final int MAXCASAS = 4;
+    public static final int MAXHOTELES = 2;
+    public static final int MAXPISCINAS = 2;
+    public static final int MAXPISTAS = 2;
+
 }
     

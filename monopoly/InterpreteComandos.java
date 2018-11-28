@@ -1,5 +1,6 @@
 package monopoly;
 
+import tablero.Casilla;
 import tablero.Dados;
 import tablero.Tablero;
 
@@ -52,7 +53,7 @@ public class InterpreteComandos {
                 System.out.println("Avatar: " + this.avatares.get(this.avatares.size()-1).getSimbolo() + "\n");
             }
             //Le damos el dinero
-            this.avatares.get(this.avatares.size()-1).getJugador().setFortuna(26600);
+            this.avatares.get(this.avatares.size()-1).getJugador().setFortuna(Valores.PRECIOTOTALSOLARES/3);
             //Aumentamos el numero de turnos disponibles
             this.turno.setNumeroJugadores(1);
         }
@@ -94,7 +95,7 @@ public class InterpreteComandos {
 
             int i=turno.getTurno();
 
-            if(this.avatares.get(i).getJugador().getEstarCarcel()==true){
+            if(this.avatares.get(i).getJugador().getEstarCarcel()){
 
                 if (this.dados.getValorDados().get(0)==this.dados.getValorDados().get(1)){
                     this.avatares.get(this.turno.getTurno()).getJugador().setNumDobles(1,1);
@@ -137,16 +138,12 @@ public class InterpreteComandos {
                         System.out.println("El jugador ha sacado "
                                 + this.avatares.get(this.turno.getTurno()).getJugador().getNumDobles() + " veces dobles.");
                         System.out.println("LLegue a 3 para salir.\n");
-
                         if (this.avatares.get(i).getJugador().getFortuna() >= Valores.PAGOSALIRCARCEL) {
                             System.out.println("El jugador tiene suficiente dinero para salir de la cárcel.¿Quiere pagar? (si/no)\n");
-
                             Scanner opcion = new Scanner(System.in);  // Reading from System.in
-
                             System.out.println("\n->");
                             String n = opcion.nextLine(); // Scans the next token of the input as an int.
                             opcion.reset();
-
                             if (n.contains("si")) {
                                 this.avatares.get(i).getJugador().setFortuna((float) Valores.PAGOSALIRCARCEL, -1);//le quitamos al jugador el dinero para salir de la carcel
                                 System.out.print(this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
@@ -251,12 +248,58 @@ public class InterpreteComandos {
             System.out.println(tablero);
             System.out.print("\033[H\033[2J");
         }
-        if(eleccion.equals("iniciar partida")){
+        else if(eleccion.equals("iniciar partida")){
             this.tablero.setPartidaIniciada(true);
             System.out.println(this.tablero);
         }
+        else if(eleccion.contains("edificar")){
+            aux=eleccion.split("\\s+");
+            this.avatares.get(this.turno.getTurno()).getJugador().edificar(
+                    this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual(),
+                    aux[1]
+            );
+        }
+
+        else if(eleccion.equals("deshipotecar")){
+            //Compruebo que la casilla pertenezca al jugador
+            if(this.avatares.get(this.turno.getTurno()).getJugador().equals(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getJugadorQueTieneLaCasilla())) {
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getHipotecada()) {
+                    //Si el jugador posee la casilla
+                    boolean deshipotecada = this.avatares.get(this.turno.getTurno()).getJugador().deshipotecar(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual());
+                    if (deshipotecada) System.out.println("Has deshipotecado la casilla correctamente. Has pagado " +
+                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getHipoteca()*1.1f);
+                    else System.out.println("¡Oh, oh! Creo que no tienes dinero para pagar tus deudas...");
+                }else System.out.println("Esta casilla no está hipotecada, no la puedes deshipotecar.");
+            }
+            else System.out.println("No puedes deshipotecar esta casilla, ¡No es tuya!");
+        }
+
+        else if(eleccion.contains("hipotecar")) {
+            aux = eleccion.split("\\s+");
+            //Comprobamos que la casilla pertenezca al jugador
+            if (this.tablero.getCasillaByName(aux[1]).getJugadorQueTieneLaCasilla() != null
+                    && this.tablero.getCasillaByName(aux[1]).getJugadorQueTieneLaCasilla().equals(this.avatares.get(this.turno.getTurno()).getJugador())) {
+                if (!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getHipotecada()) {
+                    if (!this.tablero.getCasillaByName(aux[1]).equals(null)) {
+                        this.avatares.get(this.turno.getTurno()).getJugador().hipotecar(this.tablero.getCasillaByName(aux[1]));
+                        System.out.println("La casilla se ha hipotecado " +
+                                this.tablero.getCasillaByName(aux[1]).getNombre()+
+                                " correctamente y recibe " +
+                                this.tablero.getCasillaByName(aux[1]).getHipoteca() +
+                                ". ¡Disfrute de su dinero!");
+                    } else System.out.println("La casilla introducida no existe.");
+                }else System.out.println("¡Esta casilla ya está hipotecada!");
+            }else System.out.println("No puedes hipotecar una casilla que no es tuya.");
+        }
+
+        else if(eleccion.contains("vender")){
+            aux = eleccion.split("\\s+");
+            Casilla casilla = this.tablero.getCasillaByName(aux[2]);
+            this.avatares.get(this.turno.getTurno()).getJugador().venderEdificio(aux[1], casilla, Integer.parseInt(aux[3]));
+
+        }
     }
-    
+
     public void darAltaJugador(String nombre,String tipo){
 
         Avatar avatarCreado = new Avatar(tipo, nombre);
@@ -274,7 +317,7 @@ public class InterpreteComandos {
 
             System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
 
-            if (this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false) {
+            if (!this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()) {
 
                 double auxParking = 0;//accedemos al bote del Parking antes de cobrarlo para poder imprimirlo
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Parking")) {
@@ -334,7 +377,7 @@ public class InterpreteComandos {
                     double factor = 0;
 
                     int p = this.tablero.poseerTransportes();
-                    if (p == 1) factor = 0.25;
+                    if (p == 1) factor =  0.25;
                     if (p == 2) factor = 0.5;
                     if (p == 3) factor = 0.75;
 

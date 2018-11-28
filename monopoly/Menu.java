@@ -86,12 +86,13 @@ public class Menu {
                         "   -salir carcel\n"+
                         "   -listar enventa\n"+
                         "   -ver tablero\n"+
+                        "   -edificar {tipo edificación}\n"+
                         "   -acabar turno\n");
 
             }else{
                 interprete.eleccion(opcion);
             }
-
-        }while(!opcion.equals("acabar turno")) ;
+        //TODO añadir comprobacion de bancarrota aqui
+        }while(!opcion.equals("acabar turno") ) ;
     }
 }
