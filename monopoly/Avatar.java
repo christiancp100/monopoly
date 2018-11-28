@@ -9,6 +9,7 @@ public class Avatar {
     private Jugador jugador;
     private char simbolo;
     private String tipo;
+    private boolean especial;
 
     public Avatar(String tipo, String nombreJugador){
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
@@ -21,6 +22,7 @@ public class Avatar {
                 this.tipo = "pelota";
             }
         this.jugador = new Jugador(this, nombreJugador);
+        this.especial=false;
     }
 
 
@@ -35,6 +37,10 @@ public class Avatar {
     public String getTipo(){
         return this.tipo;
     }
+    
+    public boolean getTipoEspecial(){
+        return this.especial;
+    }
 
     //Setters
 
@@ -44,6 +50,10 @@ public class Avatar {
 
     public void setSimbolo(char simbolo){
         this.simbolo = simbolo;
+    }
+    
+    public void setTipoEspecial(boolean especial){
+        this.especial=especial;
     }
 
     //Métodos

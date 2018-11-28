@@ -87,6 +87,7 @@ public class Menu {
                         "   -listar enventa\n"+
                         "   -ver tablero\n"+
                         "   -edificar {tipo edificación}\n"+
+                        "   -cambiar modo\n"+
                         "   -acabar turno\n");
 
             }else{

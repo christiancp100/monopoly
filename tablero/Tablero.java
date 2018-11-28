@@ -370,7 +370,6 @@ public class Tablero {
                         //getCoordenada devuelve la i y getCasilla devuelve la j
                         posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
                         coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
-                        coordenadaAntes = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
                         
                         if ((posicion + cantidadDesplazamiento) < 0) {
                             posicion = 10-(-(posicion+cantidadDesplazamiento));
@@ -384,8 +383,7 @@ public class Tablero {
                             posicion += cantidadDesplazamiento;
                         }
 
-                        this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada % 4).get(posicion));
-                        coordenadaMovida = coordenada % 4;
+                        this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(coordenada).get(posicion));
                         
                         //Aumentamos el numero de  veces que estuvo en esta casilla
                         this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
@@ -502,7 +500,6 @@ public class Tablero {
                                     this.turno.setNumeroJugadores(-1);
                                 }
                             }
-                        } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                             //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
                             int p = 0;

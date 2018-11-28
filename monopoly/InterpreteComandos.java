@@ -299,6 +299,15 @@ public class InterpreteComandos {
             this.avatares.get(this.turno.getTurno()).getJugador().venderEdificio(aux[1], casilla, Integer.parseInt(aux[3]));
 
         }
+        
+        else if(eleccion.contains("cambiar modo")){
+            
+            if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
+                this.avatares.get(this.turno.getTurno()).setTipoEspecial(false);
+            }else{
+                this.avatares.get(this.turno.getTurno()).setTipoEspecial(true);
+            }
+        }
     }
 
     public void darAltaJugador(String nombre,String tipo){
@@ -321,6 +330,26 @@ public class InterpreteComandos {
                         " se desplaza " + valorDados +
                         " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior() +
                         " hasta " +this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
+                
+                //ofrecemos comprar la casilla al jugador
+                if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Solar") ||
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Servicio") || 
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Transporte") &&
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==true){
+                    
+                    System.out.println("¿Quiere comprar la casilla? (si|no)");
+                    
+                    Scanner opcion = new Scanner(System.in);  // Reading from System.in
+                            System.out.println("\n->");
+                            String n = opcion.nextLine(); // Scans the next token of the input as an int.
+                            opcion.reset();
+                    
+                    if (n.contains("si")) {
+                        //ejecutamos la funcion comprar
+                        this.eleccion("comprar "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+                    }
+                    
+                }
 
                 if(this.dados.getRepetidos() == 3){
                     System.out.println("El jugador ha sacado 3 veces dobles, por eso se situa en la carcel");
@@ -328,8 +357,8 @@ public class InterpreteComandos {
                 }
                 else if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                     System.out.println("El jugador ha caído en IrCarcel y por ello se desplaza a la casilla Carcel.\n");
-                }
-
+                }    
+                //SOLAR
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
                         && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
                         && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
@@ -402,8 +431,7 @@ public class InterpreteComandos {
             //almacenamos el nombre de la casilla anterior para imprimirlo
             this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
             
-            if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota") || 
-                    this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
+            if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
                 movimientoEspecial();
             }else{
                 this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
