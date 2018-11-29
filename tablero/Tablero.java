@@ -413,8 +413,7 @@ public class Tablero {
                                 this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS1);
                             } else {
                                 System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
+                                this.bancarrota(this.avatares.get(i),Valores.TASAIMPUESTOS1 );
                             }
                         } else {
                             if (this.avatares.get(i).getJugador().getFortuna() >= Valores.TASAIMPUESTOS2) {
@@ -422,8 +421,7 @@ public class Tablero {
                                 this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS2);
                             } else {
                                 System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
+                                this.bancarrota(this.avatares.get(i),Valores.TASAIMPUESTOS2 );
                             }
                         }
 
@@ -467,8 +465,7 @@ public class Tablero {
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), 1);
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
+                                    this.bancarrota(this.avatares.get(i),this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2 );
                                 }
                             } else {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()) {
@@ -476,8 +473,8 @@ public class Tablero {
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()), 1);
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
+                                    this.bancarrota(this.avatares.get(i),(float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() );
+
                                 }
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
@@ -488,8 +485,7 @@ public class Tablero {
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
+                                    this.bancarrota(this.avatares.get(i),10 * Valores.FACTORSERVICIO * this.dados.getValorSuma() );
                                 }
                             } else {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (4 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
@@ -497,8 +493,7 @@ public class Tablero {
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
+                                    this.bancarrota(this.avatares.get(i),4 * Valores.FACTORSERVICIO * this.dados.getValorSuma() );
                                 }
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
@@ -518,8 +513,8 @@ public class Tablero {
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(Valores.OPERACIONTRANSPORTE * factor, 1);
                             } else {
                                 System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
+                                this.bancarrota(this.avatares.get(i),Valores.OPERACIONTRANSPORTE * factor );
+
                             }
                         }
                     }
@@ -814,31 +809,6 @@ public class Tablero {
         }
     }
 
-    public boolean tieneLiquidez(Avatar avatar, double cantidadAPagar) {
-        if (avatar.getJugador().getFortuna() <= cantidadAPagar) {
-            bancarrota(avatar);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void bancarrota(Avatar avatar) {
-
-        if(avatar.getJugador().getPropiedades().size() > 0){
-            System.out.println("El jugador debe hipotecar una propiedad para pagar su deuda");
-            System.out.println("¿Qué propiedad desea deshipotecar?");
-        }else {
-
-            for (Casilla casilla : avatar.getJugador().getPropiedades()) {
-                casilla.setJugadorQueTieneLaCasilla(banca);
-                casilla.setDisponibilidad(true);
-                casilla.setCasas(0);
-            }
-            this.avatares.remove(avatar);
-        }
-    }
-
     public Casilla getCasillaByName(String nombre){
         for(int i=0;i<4;i++){
             for(int j=0;j<10;j++){
@@ -849,4 +819,43 @@ public class Tablero {
         }
         return null;
     }
+
+    public boolean tieneLiquidez(Avatar avatar, double cantidadAPagar) {
+        if (avatar.getJugador().getFortuna() <= cantidadAPagar) {
+            bancarrota(avatar, cantidadAPagar);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public void bancarrota(Avatar avatar, double deuda) {
+
+        Scanner reader=new Scanner(System.in);  // Reading from System.in
+        String casString = " ";
+        Casilla casilla;
+
+        while(avatar.getJugador().getFortuna() < deuda){
+
+            if(avatar.getJugador().getPropiedades().size() > 0){ //El jugador tiene propiedades que puede hipotecar para saldar deuda
+                System.out.println("El jugador debe hipotecar una propiedad para pagar su deuda");
+                System.out.println("¿Qué propiedad desea deshipotecar?");
+                System.out.println("\n->");
+                casString = reader.nextLine(); // Scans the next token of the input as an int.
+                reader.reset();
+                casilla = this.getCasillaByName(casString);
+                avatar.getJugador().hipotecar(casilla);
+
+            }else {
+                this.avatares.remove(avatar);
+                this.turno.setNumeroJugadores(-1);
+                this.turno.setTurno(1);
+                break;
+            }
+        }
+
+    }
+
+
 }

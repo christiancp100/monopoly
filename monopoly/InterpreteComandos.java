@@ -89,6 +89,7 @@ public class InterpreteComandos {
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
             this.dados.setRepetidos(0);
+
             System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
         }
 

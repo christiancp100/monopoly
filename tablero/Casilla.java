@@ -29,7 +29,6 @@ public class Casilla {
     private Jugador jugadorQueTieneLaCasilla;
     private boolean sePuedeComprar;
     private double alquiler;
-
     private boolean hipotecada;
     private double precioHipoteca;
     private int numeroCasas;
@@ -58,6 +57,7 @@ public class Casilla {
         numeroHoteles = 0;
         numeroPiscinas = 0;
         numeroPistasDep = 0;
+        this.alquiler = this.precio*0.1f;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -75,6 +75,7 @@ public class Casilla {
         numeroHoteles = 0;
         numeroPiscinas = 0;
         numeroPistasDep = 0;
+        this.alquiler = this.precio*0.1f;
     }
     
     /*public Casilla(Casilla casilla){
@@ -271,10 +272,13 @@ public class Casilla {
 
     public void setPrecio(int grupo) {
         this.precio= (float) (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))));
+        this.alquiler = this.precio*0.1f;
+
     }
 
     public void setPrecio(double precio){
         this.precio = precio;
+        this.alquiler = this.precio*0.1f;
     }
 
     public void setDisponibilidad(boolean disponibilidad){
@@ -428,7 +432,7 @@ public class Casilla {
             if (jugadorQueTieneLaCasilla != null) {
                 aux += "\n       -Propietario: " + this.jugadorQueTieneLaCasilla;
             }
-            aux += "\n       -Alquiler: " + getAlquiler();
+            aux += "\n       -Alquiler: " + alquiler;
             aux += "\n       -Valor hotel: " + "Imprimir valor hotel";
             aux += "\n       -Valor casa: " + "Imprimir valor casa";
             aux += "\n       -Valor piscina: " + "Imprimir valor piscina";

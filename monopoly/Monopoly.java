@@ -45,10 +45,18 @@ public class Monopoly {
         interprete.eleccion("edificar casa");
         interprete.eleccion("edificar hotel");
         //menu.start();
-        do{
+        while (avatares.size() > 1){
+            /*for(Avatar av : this.avatares){
+                if(av.getJugador().getFortuna()<0){
+                    avatares.remove(av);
+                    this.turno.setNumeroJugadores(-1);
+                }
+            }*/
+
             menu.desarrolloPartida();
+
         }
-        while (avatares.size() > 1);
+
 
         System.out.println("\n¡La partida ha terminado!");
         System.out.println("El jugador vencedor es: " + this.avatares.get(0).getJugador().getNombreJugador());
