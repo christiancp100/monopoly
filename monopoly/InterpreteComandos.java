@@ -426,18 +426,20 @@ public class InterpreteComandos {
 
         if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
 
-            System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
-            
-            //almacenamos el nombre de la casilla anterior para imprimirlo
-            this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
-            
-            if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
-                movimientoEspecial();
-            }else{
-                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
+                System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
+
+                //almacenamos el nombre de la casilla anterior para imprimirlo
+                this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+
+                if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
+                    movimientoEspecial();
+                }else{
+                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+                }
             }
             
-            imprimirLanzarDados(this.dados.getValorSuma());    
+            imprimirLanzarDados(this.dados.getValorSuma());   
             
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
@@ -453,7 +455,7 @@ public class InterpreteComandos {
                 int j=0; //variable auxiliar para restar la posicion del avatar
 
                 for(int i=1;i<=this.dados.getValorSuma();i++){
-                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
                         if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
@@ -474,7 +476,7 @@ public class InterpreteComandos {
                 int j=0; //variable auxiliar para restar la posicion del avatar
 
                 for(int i=1;i<=this.dados.getValorSuma();i++){
-                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
                         if(i%2!=0 || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor

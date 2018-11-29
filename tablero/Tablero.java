@@ -3,6 +3,7 @@ import monopoly.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -439,7 +440,7 @@ public class Tablero {
                         int n = reader.nextInt();
                         reader.reset();
 
-                        cogerTarjetaSuerte(this.Suerte.get(n));//el indice del array no tiene pq coincidir con el numero de la tarjeta
+                        cogerTarjetaSuerte(this.Suerte.get(n-1));//el indice del array no tiene pq coincidir con el numero de la tarjeta
                     } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().contains("Caja")) {
                         barajar(Caja);
                         //elegir una aleatoria entre las disponibles
@@ -450,7 +451,7 @@ public class Tablero {
                         int n = reader.nextInt();
                         reader.reset();
 
-                        cogerTarjetaCaja(this.Caja.get(n));
+                        cogerTarjetaCaja(this.Caja.get(n-1));
                     }
 
 
@@ -730,7 +731,11 @@ public class Tablero {
 
         } else if (i == 10) {
             //retrocede 3 casillas
+            this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+            
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), -3);
+            System.out.println("Te desplazas de "+this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior()+
+                    " hasta "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual());
         } else if (i == 11) {
             //paga 15.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500, -1);
@@ -741,7 +746,7 @@ public class Tablero {
             //desplazar a la casilla de transporte mas cercana
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
-                    if (i == 0 && j < 5) {//antes que RENFE
+                    if ((i == 0 && j < 5) || (i==3 && j>=5)) {//antes que RENFE
                         this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 5));
                     } else if ((i == 0 && j >= 5) || (i == 1 && j < 5)) {//antes que Puerto
                         this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1, 5));
@@ -766,9 +771,9 @@ public class Tablero {
         if (i == 0) {
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, -1);
         } else if (i == 1) {
-            //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
+            //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones)
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
-            desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
+            desplazarAvatar(this.avatares.get(this.turno.getTurno()),0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 2) {
             //va a la salida
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 0));
