@@ -17,7 +17,6 @@ public class Tablero {
     private Dados dados;
     private Turno turno;
     private boolean partidaIniciada;
-
     private int incrementosRealizados;
 
 
@@ -379,7 +378,7 @@ public class Tablero {
                             }else{
                                 coordenada -= 1;
                             }
-                            
+
                         } else {
                             posicion += cantidadDesplazamiento;
                         }
@@ -461,7 +460,7 @@ public class Tablero {
                     else if (!this.avatares.get(i).getJugador().getCasillaActual().getDisponibilidad() &&  !this.avatares.get(i).getJugador().getCasillaActual().getHipotecada()) {
                         //si el propietario posee todas las casillas de un grupo entonces cobra el doble
                         if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar")) {
-                            if (this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo()) == true) {
+                            if (this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo())) {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2) {
 
                                     this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), -1);
@@ -502,7 +501,6 @@ public class Tablero {
                                     this.turno.setNumeroJugadores(-1);
                                 }
                             }
-                        } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                             //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
                             int p = 0;
@@ -567,7 +565,7 @@ public class Tablero {
                                 System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
                             }
                         } else {
-                            System.out.println("La casilla es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador());
+                            System.out.println("La casilla ya es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador());
                         }
                     } else {
                         System.out.println("No se puede comprar porque el jugador no está situado en ella.\n");

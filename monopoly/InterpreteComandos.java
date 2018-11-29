@@ -256,9 +256,9 @@ public class InterpreteComandos {
         else if(eleccion.contains("edificar")){
             aux=eleccion.split("\\s+");
             this.avatares.get(this.turno.getTurno()).getJugador().edificar(
-                    this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual(),
-                    aux[1]
-            );
+                                this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual(),
+                                aux[1]
+                                );
         }
 
         else if(eleccion.equals("deshipotecar")){
@@ -282,7 +282,14 @@ public class InterpreteComandos {
                     && this.tablero.getCasillaByName(aux[1]).getJugadorQueTieneLaCasilla().equals(this.avatares.get(this.turno.getTurno()).getJugador())) {
                 if (!this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getHipotecada()) {
                     if (!this.tablero.getCasillaByName(aux[1]).equals(null)) {
+
+                        if(this.tablero.getCasillaByName(aux[1]).getNumeroEdificaciones() > 0){
+                            this.avatares.get(this.turno.getTurno()).getJugador().venderTodosEdificios(this.tablero.getCasillaByName(aux[1]));
+                            System.out.println("Tenías edificios en esta casilla, pero para hipotecarla se venderán.");
+                        }
+
                         this.avatares.get(this.turno.getTurno()).getJugador().hipotecar(this.tablero.getCasillaByName(aux[1]));
+
                         System.out.println("La casilla se ha hipotecado " +
                                 this.tablero.getCasillaByName(aux[1]).getNombre()+
                                 " correctamente y recibe " +
@@ -303,9 +310,12 @@ public class InterpreteComandos {
                                                                     Integer.parseInt(aux[3]));
 
             if(res == 0) System.out.println("No se ha vendido nada.");
-            else if(res == 1) System.out.println("Se han vendido " + aux[3] + " edificaciones.");
+            else if(res == 1) System.out.println("Se han vendido " + aux[3] + " edificaciones. En la propiedad queda(n) " +
+                    casilla.getNumeroEdificaciones() +
+                    " edificacion(es)" );
             else if(res == 2) System.out.println("No disponías de " + aux[3] + " edificaciones. Hemos vendido todas las que tenías.");
             else if(res == 3) System.out.println("No se ha podido ejecutar esta acción.");
+            else if(res == -1) System.out.println("Esta casilla no pertenece a " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
 
         }
     }
@@ -346,7 +356,7 @@ public class InterpreteComandos {
 
                     System.out.print("Se han pagado ");
 
-                    //comprobamos si el jugador propietario posee todo el grupo para indicar que paga el doble
+                    //comprobamos si el jugador propietario posee to.do el grupo para indicar que paga el doble
                     if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(
                             this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getGrupo())) {
 

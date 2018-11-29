@@ -61,7 +61,7 @@ public class Avatar {
     }
 
 
-    public char generarSimboloAleatorio(){
+    public static final char generarSimboloAleatorio(){
         //Generamos una letra mayuscula aleatoria
         int max=90, min=65;
         Random rand = new Random();

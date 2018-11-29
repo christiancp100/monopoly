@@ -3,6 +3,7 @@ import tablero.Casilla;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -194,7 +195,8 @@ public class Jugador {
     public void desHipotecar(){
         //si tiene suficiente dinero => puede deshipotecar la propiedad
         if(this.avatar.getJugador().getFortuna()>=(this.avatar.getJugador().getCasillaActual().getHipoteca()*1.1)){
-            this.avatar.getJugador().setFortuna((float) (this.avatar.getJugador().getCasillaActual().getHipoteca()*1.1),-1);   
+            this.avatar.getJugador().setFortuna((float) (this.avatar.getJugador().getCasillaActual().getHipoteca()),-1);
+
         }
     }
     
@@ -322,12 +324,6 @@ public class Jugador {
                             }
                         }
                     }
-
-
-                    //TODO Recorrer todas las propiedades, comprobar si tienen edificios, si los tienen, comprobar si su hipoteca es mayor o igual
-                    //que su fortuna, si no, comprobar si la hipoteca de la casilla es mayor que lo que debe pagar, para esto, voy a crear una funcion auxiliar
-
-
                 } else {
                     System.out.println(Valores.ROJO + "El jugador no puede permitirse llevar a cabo esta acción" + Valores.RESET);
                 }
@@ -356,26 +352,67 @@ public class Jugador {
 
         int auxCantAEliminar = cantidad;
         int eliminadas = 0;
+        String auxTipo= " ";
+        int count = 0;
+        Iterator edKey = casilla.getEdificaciones().keySet().iterator();
 
-        if (tipo.contains("casa") && cantidad > casilla.getNumeroCasas()) auxCantAEliminar = casilla.getNumeroCasas();
-        else if (tipo.contains("hotel") && cantidad > casilla.getNumeroHoteles()) auxCantAEliminar = casilla.getNumeroHoteles();
-        else if (tipo.contains("piscina") && cantidad > casilla.getNumeroPiscinas()) auxCantAEliminar = casilla.getNumeroPiscinas();
-        else if (tipo.contains("pistaDep") && cantidad > casilla.getNumeroPistasDep()) auxCantAEliminar = casilla.getNumeroPistasDep();
-        else return 3;
+        if(!casilla.getJugadorQueTieneLaCasilla().equals(this)) return -1;
 
-        for (int i = 0; i < auxCantAEliminar; i++) {
-            for (String edKey : casilla.getEdificaciones().keySet()) {
-                if (casilla.getEdificaciones().get(edKey).getTipo().equals(tipo)) {
-                    casilla.getEdificaciones().remove(edKey);
-                    jugador.setFortuna(casilla.getEdificaciones().get(edKey).hipotecaEdificaciones(), 1);
-                    eliminadas++;
-                }
+        if (tipo.contains("casa")) {
+
+            if(cantidad > casilla.getNumeroCasas()) auxCantAEliminar = casilla.getNumeroCasas();
+            auxTipo = "casa";
+        }
+        else if (tipo.contains("hotel")){
+            if(cantidad > casilla.getNumeroHoteles()) auxCantAEliminar = casilla.getNumeroHoteles();
+            auxTipo = "hotel";
+        }
+
+        else if (tipo.contains("piscina")) {
+            if(cantidad > casilla.getNumeroPiscinas()) auxCantAEliminar = casilla.getNumeroPiscinas();
+            auxTipo = "piscina";
+        }
+        else if (tipo.contains("pistaDep")) {
+            if(cantidad > casilla.getNumeroPistasDep()) auxCantAEliminar = casilla.getNumeroPistasDep();
+            auxTipo = "pistaDep";
+        }
+
+         while(edKey.hasNext()) {
+
+             String aux = edKey.next().toString();
+
+            if ((count<auxCantAEliminar) && casilla.getEdificaciones().get(aux).getTipo().equals(auxTipo)) {
+
+                if (tipo.contains("casa"))
+                    casilla.setNumeroCasas(-1);
+                else if (tipo.contains("hotel"))
+                    casilla.setNumeroHoteles(-1);
+                else if (tipo.contains("piscina"))
+                    casilla.setNumeroPiscinas(-1);
+                else if (tipo.contains("pistaDep"))
+                    casilla.setNumeroPistasDep(-1);
+
+                jugador.setFortuna(casilla.getEdificaciones().get(aux).hipotecaEdificaciones(), 1);
+                edKey.remove();
+                eliminadas++;
             }
+            count++;
         }
 
         if (eliminadas == 0) return 0;
         else if (eliminadas == cantidad) return 1;
-        else if (eliminadas == casilla.getNumeroCasas()) return 2;
+        else if (auxCantAEliminar != cantidad) return 2;
         else return 3;
+    }
+
+    public void venderTodosEdificios(Casilla casilla){
+
+        Iterator it = casilla.getEdificaciones().keySet().iterator();
+
+        while(it.hasNext()){
+            String edKey = it.next().toString();
+            this.fortuna+= casilla.getEdificaciones().get(edKey).getPrecioHipoteca();
+            casilla.getEdificaciones().remove(edKey);
+        }
     }
 }

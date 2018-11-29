@@ -61,7 +61,7 @@ public class Menu {
                     partidaIniciada=true;
                 }
             }
-        }while(partidaIniciada==false);
+        }while(!partidaIniciada);
         
     }
     

@@ -54,10 +54,10 @@ public class Casilla {
         this.numeroCasas=0;
         edificaciones = new HashMap<>();
         vecesCaidoEnEstaCasilla = new HashMap<>();
-        int numeroCasas = 0;
-        int numeroHoteles = 0;
-        int numeroPiscinas = 0;
-        int numeroPistasDep = 0;
+        numeroCasas = 0;
+        numeroHoteles = 0;
+        numeroPiscinas = 0;
+        numeroPistasDep = 0;
     }
     
     public Casilla(String tipo, String color, String nombre, float precio){
@@ -71,10 +71,10 @@ public class Casilla {
         edificaciones = new HashMap<>();
         vecesCaidoEnEstaCasilla = new HashMap<>();
         this.precioHipoteca = this.precio / 2;
-        int numeroCasas = 0;
-        int numeroHoteles = 0;
-        int numeroPiscinas = 0;
-        int numeroPistasDep = 0;
+        numeroCasas = 0;
+        numeroHoteles = 0;
+        numeroPiscinas = 0;
+        numeroPistasDep = 0;
     }
     
     /*public Casilla(Casilla casilla){
@@ -200,7 +200,7 @@ public class Casilla {
     public int getNumeroCasas(){
         return this.numeroCasas;
     }
-    
+
     public int getNumeroHoteles(){
         return this.numeroHoteles;
     }
@@ -220,6 +220,7 @@ public class Casilla {
     public int getNumeroEdificaciones(){
         return (this.numeroCasas + this.numeroHoteles + this.numeroPistasDep + this.numeroPiscinas);
     }
+
     //Setters
 
     //No hay setter para numero de edificaciones porque es la suma de los tipos de edificaciones ya construidos
@@ -312,6 +313,22 @@ public class Casilla {
         }
     }
 
+    public void setNumeroCasas(int numeroCasas){
+        this.numeroCasas += numeroCasas;
+    }
+
+    public void setNumeroHoteles(int numeroHoteles) {
+        this.numeroHoteles += numeroHoteles;
+    }
+
+    public void setNumeroPiscinas(int numeroPiscinas) {
+        this.numeroPiscinas += numeroPiscinas;
+    }
+
+    public void setNumeroPistasDep(int numeroPistasDep) {
+        this.numeroPistasDep += numeroPistasDep;
+    }
+
     public void deleteEdificaciones(Edificaciones ed){
         Iterator it = edificaciones.values().iterator();
         while(it.hasNext()){
@@ -322,43 +339,81 @@ public class Casilla {
     }
 
     private boolean edificarAuxiliar(Edificaciones edificio, int max){
-        if((this.numeroPistasDep < max) && (this.numeroPiscinas<max)){
-            if(edificio.getTipo().equals("casa") && this.numeroHoteles <max){ //Si tenemos menos de MAX hoteles, podemos construir hasta 4 casas
-                if ((this.numeroCasas < Valores.MAXCASAS)) {
-                    this.edificaciones.put(generarClave(), edificio);
-                    this.numeroCasas++;
-                    this.alquiler += edificio.getAlquiler();
-                    return true;
+        if(this.numeroCasas<=4){
+            if(this.numeroHoteles< max){
+
+                if(this.numeroCasas==4){
+                    if (edificio.getTipo().equals("hotel")) {
+                        this.numeroCasas = 0;
+                        this.eliminarTodasLasCasas();
+                        this.edificaciones.put(generarClave(), edificio);
+                        this.numeroHoteles++;
+                        this.alquiler += edificio.getAlquiler();
+                        return true;
+                    }
                 }
-            }else if(numeroHoteles == max){ //Si tenemos 2 hoteles, solo podemos contruir 2 casas
-                if (edificio.getTipo().equals("casa") && this.numeroCasas <= 2) {
-                    this.edificaciones.put(generarClave(), edificio);
-                    this.numeroCasas++;
-                    this.alquiler += edificio.getAlquiler();
-                    return true;
+                if(this.numeroCasas <4){
+                    if(edificio.getTipo().equals("casa")){
+                        this.edificaciones.put(generarClave(), edificio);
+                        this.numeroCasas++;
+                        this.alquiler += edificio.getAlquiler();
+                        return true;
+                    }
                 }
             }
-            else if (edificio.getTipo().equals("hotel") && (this.numeroCasas == 4) && (this.numeroHoteles<=max)) {
-                this.numeroCasas = 0;
-                this.edificaciones.put(generarClave(), edificio);
-                this.numeroHoteles++;
-                this.alquiler += edificio.getAlquiler();
-                return true;
+            if(this.numeroHoteles == max){
+
+                if(this.numeroCasas<2){
+                    if(edificio.getTipo().equals("casa")){
+                        this.edificaciones.put(generarClave(), edificio);
+                        this.numeroCasas++;
+                        this.alquiler += edificio.getAlquiler();
+                        return true;
+                    }
+                }
             }
-            else if (edificio.getTipo().equals("piscina") && (this.numeroHoteles >= 1) && (this.numeroCasas >= 2)) {
-                this.numeroPiscinas++;
-                this.edificaciones.put(generarClave(), edificio);
-                this.alquiler += edificio.getAlquiler();
-                return true;
+            if(this.numeroHoteles>=1 && this.numeroCasas>=2){
+                if(this.numeroPiscinas<max){
+                    if (edificio.getTipo().equals("piscina")) {
+                        this.numeroPiscinas++;
+                        this.edificaciones.put(generarClave(), edificio);
+                        this.alquiler += edificio.getAlquiler();
+                        return true;
+                    }
+                }
             }
-            else if (edificio.getTipo().equals("pistaDep") && (this.numeroHoteles >= 2)) {
-                this.numeroPistasDep++;
-                this.edificaciones.put(generarClave(), edificio);
-                this.alquiler += edificio.getAlquiler();
-                return true;
+            if(this.numeroHoteles>=2){
+                if(this.numeroPistasDep<max){
+                    if (edificio.getTipo().equals("pistaDep")) {
+                        this.numeroPistasDep++;
+                        this.edificaciones.put(generarClave(), edificio);
+                        this.alquiler += edificio.getAlquiler();
+                        return true;
+                    }
+                }
             }
         }
         return false;
+    }
+
+    private void eliminarTodasLasCasas(){
+        String aux = " ";
+        Iterator it = this.edificaciones.keySet().iterator();
+        while(it.hasNext()){
+            aux = it.next().toString();
+            if(edificaciones.get(aux).getTipo().equals("casa")){
+                it.remove();
+            }
+        }
+    }
+
+    private String generarClave(){ //Genera una clave aleatoria compuesta por 2 letras mayusculas
+        StringBuffer res = new StringBuffer();
+
+        char ascii1 = Avatar.generarSimboloAleatorio();
+        char ascii2 = Avatar.generarSimboloAleatorio();
+        return res.append(ascii1).append(ascii2).toString();
+
     }
 
     //Metodos
@@ -389,17 +444,5 @@ public class Casilla {
         return null;
     }
 
-    private String generarClave(){ //Genera una clave aleatoria compuesta por 2 letras mayusculas
-        StringBuffer res = new StringBuffer();
-        int min= 65, max = 90;
-        rand = new Random();
 
-        int codigo1 = rand.nextInt(max + 1 - min);
-        char ascii = (char) codigo1;
-        int codigo2 = rand.nextInt(max + 1 - min);
-        char ascii2 = (char) codigo2;
-
-        return res.append(ascii).append(ascii2).toString();
-
-    }
 }

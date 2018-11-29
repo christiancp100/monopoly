@@ -48,8 +48,8 @@ public class Edificaciones {
             this.precio=casilla.getPrecio()*0.4;
             this.alquiler = 25 * casilla.getPrecio();
         }
-        if(nombre.equals("pista deportes")){
-            this.tipo ="pista deportes";
+        if(nombre.equals("pistaDep")){
+            this.tipo ="pistaDep";
             this.precio=casilla.getPrecio()*1.25;
             this.alquiler = 25*casilla.getPrecio();
         }
