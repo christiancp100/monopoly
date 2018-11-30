@@ -394,12 +394,12 @@ public class InterpreteComandos {
                 //TRANSPORTES
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
 
-                    double factor = 0;
+                    double factor = 1;
 
                     int p = this.tablero.poseerTransportes();
-                    if (p == 1) factor =  0.25;
-                    if (p == 2) factor = 0.5;
-                    if (p == 3) factor = 0.75;
+                    if (p == 0) factor =  0.25;
+                    if (p == 1) factor = 0.5;
+                    if (p == 2) factor = 0.75;
 
                     System.out.println("Se han pagado " + Valores.OPERACIONTRANSPORTE * factor + " de alquiler.\n");
                 }

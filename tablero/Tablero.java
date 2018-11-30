@@ -366,13 +366,13 @@ public class Tablero {
                         //Aumentamos el numero de  veces que estuvo en esta casilla
                         this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
                     }
-                    else if(cantidadDesplazamiento<0){
+                    else if(cantidadDesplazamiento<0){//en caso de que queramos desplazar el avatar hacia atrás
                         
                         //getCoordenada devuelve la i y getCasilla devuelve la j
                         posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
                         coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
                         
-                        if ((posicion + cantidadDesplazamiento) < 0) {
+                        if ((posicion + cantidadDesplazamiento)<0 && (posicion + cantidadDesplazamiento)>=-9) {
                             posicion = 10-(-(posicion+cantidadDesplazamiento));
                             if(coordenada==0){
                                 coordenada=4;
@@ -380,7 +380,17 @@ public class Tablero {
                                 coordenada -= 1;
                             }
                             
-                        } else {
+                        } else if((posicion + cantidadDesplazamiento) < -9){//revisar esta condicion!!
+                            posicion = (posicion + cantidadDesplazamiento) % 10;
+                            if(coordenada==0){
+                                coordenada=3;
+                            }else if(coordenada==1){
+                                coordenada=4;
+                            }
+                            else{
+                                coordenada -= 2;
+                            }                        }
+                        else {
                             posicion += cantidadDesplazamiento;
                         }
 
@@ -481,7 +491,8 @@ public class Tablero {
                                 }
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
-                            if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador())) {
+                            
+                            if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(2).get(2).getPropietario(this.avatares).getNombreJugador())) {
 
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (10 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
                                     this.avatares.get(i).getJugador().setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), -1);
@@ -704,7 +715,15 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(100000, 1);
         } else if (i == 6) {
             //pagas 15.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getFortuna()>=15000){  
+                this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);           
+            } 
+            else {  
+                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
+                this.avatares.remove(i);
+                this.turno.setNumeroJugadores(-1);
+            }
+            
         } else if (i == 7) {
             //hacer cuando tengamos las construcciones
         } else if (i == 8) {
@@ -721,13 +740,20 @@ public class Tablero {
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 9) {
             //le damos 2.500 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
-            for (int j = 0; j < this.avatares.size(); j++) {
-                if (j != this.turno.getTurno()) {
-                    this.avatares.get(j).getJugador().setFortuna(2500, 1);
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getFortuna()>=(2500) * (this.avatares.size() - 1)){
+                for (int j = 0; j < this.avatares.size(); j++) {
+                    if (j != this.turno.getTurno()) {
+                        this.avatares.get(j).getJugador().setFortuna(2500, 1);
+                    }
                 }
+                //le restamos al usuario la cantidad por el numero de jugadores
+                this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2500) * (this.avatares.size() - 1), -1);
             }
-            //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2500) * (this.avatares.size() - 1), -1);
+            else{
+                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
+                this.avatares.remove(i);
+                this.turno.setNumeroJugadores(-1);
+            }
 
         } else if (i == 10) {
             //retrocede 3 casillas
@@ -736,9 +762,17 @@ public class Tablero {
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), -3);
             System.out.println("Te desplazas de "+this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior()+
                     " hasta "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual());
+       
         } else if (i == 11) {
             //paga 15.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500, -1);
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getFortuna()>=15000){  
+                this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);           
+            } 
+            else {  
+                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
+                this.avatares.remove(i);
+                this.turno.setNumeroJugadores(-1);
+            }
         } else if (i == 12) {
             //recibe 150.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, 1);
@@ -784,7 +818,14 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(200000, 1);
         } else if (i == 4) {
             //paga 10.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, -1);
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getFortuna()>=10000){  
+                this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, -1);           
+            } 
+            else {  
+                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
+                this.avatares.remove(i);
+                this.turno.setNumeroJugadores(-1);
+            }
         } else if (i == 5) {
             //recibes 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
@@ -794,16 +835,22 @@ public class Tablero {
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);
         } else if (i == 7) {
             //le damos 2.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
-            for (int j = 0; j < this.avatares.size(); j++) {
-                if (j != this.turno.getTurno()) {
-                    this.avatares.get(j).getJugador().setFortuna(2000, 1);
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getFortuna()>=(2000) * (this.avatares.size() - 1)){
+                for (int j = 0; j < this.avatares.size(); j++) {
+                    if (j != this.turno.getTurno()) {
+                        this.avatares.get(j).getJugador().setFortuna(2000, 1);
+                    }
                 }
+                //le restamos al usuario la cantidad por el numero de jugadores
+                this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2000) * (this.avatares.size() - 1), -1);
+            }else{
+                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
+                this.avatares.remove(i);
+                this.turno.setNumeroJugadores(-1);
             }
-            //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2000) * (this.avatares.size() - 1), -1);
         } else if (i == 8) {
-            //recibe 10.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
+        //recibe 10.000€
+        this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
         } else if (i == 9) {
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
