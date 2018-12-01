@@ -19,6 +19,7 @@ public class Jugador {
     private int numDobles;
     private int numTiradasCarcel;
     private String nombreCasillaAnterior;
+    public boolean compraEfectuada;
 
     private ArrayList<Casilla> propiedades;
     public Jugador(Avatar avatar,float fortuna){
@@ -108,6 +109,10 @@ public class Jugador {
     public int getNumTiradasCarcel(){
         return this.numTiradasCarcel;
     }
+    
+    public boolean getCompraEfectuada(){
+        return this.compraEfectuada;
+    }
 
     //Setters
 
@@ -132,6 +137,10 @@ public class Jugador {
         if(operacion == -1){
             this.fortuna -= valor;
         }
+    }
+    
+    public void setCompraEfectuada(boolean compra){
+        this.compraEfectuada=compra;
     }
 
     public void setPropiedades(Casilla casilla){

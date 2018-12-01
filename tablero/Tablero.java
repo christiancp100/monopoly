@@ -372,7 +372,7 @@ public class Tablero {
                         posicion = getPosicionCasilla(avatar.getJugador().getCasillaActual());
                         coordenada = getCoordenadaCasilla(avatar.getJugador().getCasillaActual());
                         
-                        if ((posicion + cantidadDesplazamiento)<0 && (posicion + cantidadDesplazamiento)>=-9) {
+                        if ((posicion + cantidadDesplazamiento)<0 /*&& (posicion + cantidadDesplazamiento)>=-9*/) {
                             posicion = 10-(-(posicion+cantidadDesplazamiento));
                             if(coordenada==0){
                                 coordenada=4;
@@ -380,7 +380,7 @@ public class Tablero {
                                 coordenada -= 1;
                             }
                             
-                        } else if((posicion + cantidadDesplazamiento) < -9){//revisar esta condicion!!
+                        } /*else if((posicion + cantidadDesplazamiento) < -9){//revisar esta condicion!!
                             posicion = (posicion + cantidadDesplazamiento) % 10;
                             if(coordenada==0){
                                 coordenada=3;
@@ -389,7 +389,7 @@ public class Tablero {
                             }
                             else{
                                 coordenada -= 2;
-                            }                        }
+                        }*/                        
                         else {
                             posicion += cantidadDesplazamiento;
                         }
