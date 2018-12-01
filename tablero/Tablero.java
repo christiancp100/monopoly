@@ -375,7 +375,7 @@ public class Tablero {
                         if ((posicion + cantidadDesplazamiento) < 0) {
                             posicion = 10-(-(posicion+cantidadDesplazamiento));
                             if(coordenada==0){
-                                coordenada=4;
+                                coordenada=3;
                             }else{
                                 coordenada -= 1;
                             }

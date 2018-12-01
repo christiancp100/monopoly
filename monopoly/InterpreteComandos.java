@@ -17,6 +17,8 @@ public class InterpreteComandos {
     private int k; //aumenta cada vez que creamos un jugador, para saber que turno le corresponde
     private Turno turno;
     private Dados dados;
+    private int numTiradas;
+
     
     public InterpreteComandos(ArrayList<Avatar> avatares, Tablero tablero,Turno turno,Dados dados){
 
@@ -25,6 +27,7 @@ public class InterpreteComandos {
         this.k=0;//contador del numero de usuarios en el sistema
         this.turno=turno;
         this.dados=dados;
+        this.numTiradas = 1;
     }
     
     public String input(){
@@ -528,22 +531,26 @@ public class InterpreteComandos {
                 this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
 
                 if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
-                    movimientoEspecial();
+                    if(this.numTiradas<=4){
+                        movimientoEspecial(this.numTiradas++);
+                    }
                 }else{
                     this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+                    imprimirLanzarDados(this.dados.getValorSuma());
                 }
             }
-            
-            imprimirLanzarDados(this.dados.getValorSuma());   
-            
+            if(this.numTiradas!=4){
+                imprimirLanzarDados(this.dados.getValorSuma());
+            }
+
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
         }
     }
         
-    int numTiradas=0;
 
-    public void movimientoEspecial(){
+
+    public void movimientoEspecial(int numTiradas){
 
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota")){
             if(this.dados.getValorSuma()>4){
@@ -560,9 +567,7 @@ public class InterpreteComandos {
                             System.out.println(" ");
                             System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
                             this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(i-j));
-                            if(i!=this.dados.getValorSuma()){//en este caso se imprime en lanzarDados
-                                imprimirLanzarDados(i-j);
-                            }
+                            imprimirLanzarDados(i-j);
                             j=i;
                         }
                     }
@@ -593,10 +598,8 @@ public class InterpreteComandos {
                 
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
             
-            int k=0;
-            
+
             if(this.dados.getValorSuma()>4 && numTiradas!=4){
-                numTiradas++;
                 this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),this.dados.getValorSuma());
                 imprimirLanzarDados(this.dados.getValorSuma());
                 System.out.println("Valor mayor que 4, ¿quiere seguir tirando?. (si|no)");
@@ -605,27 +608,21 @@ public class InterpreteComandos {
                         String n = opcion.nextLine(); // Scans the next token of the input as an int.
                         opcion.reset();
                 if(n.contains("si")){
-                    numTiradas++;
                     lanzarDados();
-                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),this.dados.getValorSuma());
-                    imprimirLanzarDados(this.dados.getValorSuma());
-                    movimientoEspecial();
-                    k=1;
+                    //movimientoEspecial(numTiradas++);
                 }
             
             }else{
-                if(k==1){
-                    if(numTiradas==4){
-                        System.out.println("Ya ha lanzado 4 veces los dados.");
-                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
-                        numTiradas=0;
-                    }else{
-                        System.out.println("Ha sacado un número menor o igual que 4, no puede seguir tirando y retrocede.");
-                        this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(this.dados.getValorSuma()));
-                        imprimirLanzarDados(this.dados.getValorSuma());
-                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
-                        numTiradas=0;
-                    }
+                if(numTiradas==4){
+                    System.out.println("Ya ha lanzado 4 veces los dados.");
+                    this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
+                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
+                }else{
+                    System.out.println("Ha sacado un número menor o igual que 4, no puede seguir tirando y retrocede.");
+                    this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
+                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(this.dados.getValorSuma()));
+                    //imprimirLanzarDados(this.dados.getValorSuma());
+                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
                 }
             }
         }
