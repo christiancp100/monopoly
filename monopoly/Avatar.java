@@ -10,6 +10,9 @@ public class Avatar {
     private char simbolo;
     private String tipo;
     private boolean especial;
+    private boolean pierdeTurno;
+    private int numeroTurnos;
+
 
     public Avatar(String tipo, String nombreJugador){
         //La casilla de salida es la inicial y el valor de la fortuna es un tercio del precio total de los solares
@@ -28,6 +31,14 @@ public class Avatar {
 
     //Getters
 
+    public boolean getPierdeTurno(){
+        return this.pierdeTurno;
+    }
+    
+    public int getNumeroTurnos(){
+        return this.numeroTurnos;
+    }
+    
     public Jugador getJugador(){
         return this.jugador;
     }
@@ -43,6 +54,18 @@ public class Avatar {
     }
 
     //Setters
+    
+    public void setPierdeTurno(boolean turno){
+        this.pierdeTurno=turno;
+    }
+    
+    public void setNumeroTurnos(int turno){
+        if(turno==0){
+            this.numeroTurnos=0;
+        }else{
+            this.numeroTurnos+=turno;
+        }
+    }
 
     public void setJugador(Jugador jugador){
         this.jugador = jugador;

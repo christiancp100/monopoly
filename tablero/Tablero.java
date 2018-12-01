@@ -744,7 +744,7 @@ public class Tablero {
             //desplazar a la casilla de transporte mas cercana
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
-                    if (i == 0 && j < 5) {//antes que RENFE
+                    if ((i == 0 && j < 5) || (i == 3 && j >= 5)) {//antes que RENFE
                         this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 5));
                     } else if ((i == 0 && j >= 5) || (i == 1 && j < 5)) {//antes que Puerto
                         this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1, 5));
