@@ -21,8 +21,13 @@ public class Jugador {
     private int numTiradasCarcel;
     private String nombreCasillaAnterior;
     private boolean compraEfectuada;
-
+    private double dineroIntertido;
     private ArrayList<Casilla> propiedades;
+    private double pagoAlquileres;
+    private int vecesEnCarcel;
+    private double premiosInvOBote;
+    private double cobroAlquileres;
+
     public Jugador(Avatar avatar,float fortuna){
         this.avatar = avatar;
         this.fortuna = fortuna;
@@ -30,8 +35,11 @@ public class Jugador {
         this.propiedades = new ArrayList<>();
         this.numeroVueltas = -1; //Le damos el valor de -1 para que cuando se cree, al estar en la casilla de salida, sea 0
         this.numDobles=0;
-        puedeTirarOtraVez = false;
-
+        this.puedeTirarOtraVez = false;
+        this.dineroIntertido = 0;
+        this.pagoAlquileres = 0;
+        this.premiosInvOBote = 0;
+        this.cobroAlquileres = 0;
     }
 
     public Jugador(Avatar avatar, String nombreJugador){
@@ -43,11 +51,14 @@ public class Jugador {
         this.numDobles=0;
         puedeTirarOtraVez = true;
         this.compraEfectuada = false;
-
+        this.dineroIntertido = 0;
+        this.pagoAlquileres = 0;
+        this.premiosInvOBote = 0;
+        this.cobroAlquileres = 0;
 
     }
 
-    public Jugador(Avatar avatar,Casilla casilla, float fortuna){
+    public Jugador(Avatar avatar, Casilla casilla, float fortuna){
         this.avatar = avatar;
         this.casillaActual = casilla;
         this.fortuna = fortuna;
@@ -56,7 +67,10 @@ public class Jugador {
         this.numDobles=0;
         puedeTirarOtraVez = true;
         this.compraEfectuada = false;
-
+        this.dineroIntertido = 0;
+        this.pagoAlquileres = 0;
+        this.premiosInvOBote = 0;
+        this.cobroAlquileres = 0;
     }
 
     public Jugador(){ //Constructor de la banca
@@ -68,6 +82,22 @@ public class Jugador {
 
 
     //Getters
+
+    public double getCobroAlquileres(){
+        return this.cobroAlquileres;
+    }
+
+    public double getPremiosInversionesBote() {
+        return premiosInvOBote;
+    }
+
+    public double getPagoAlquileres(){
+        return pagoAlquileres;
+    }
+
+    public double getDineroIntertido() {
+        return dineroIntertido;
+    }
 
     public Casilla getCasillaActual(){
         return this.casillaActual;
@@ -116,7 +146,23 @@ public class Jugador {
         return this.compraEfectuada;
     }
 
+    public int getVecesEnCarcel() {
+        return vecesEnCarcel;
+    }
+
     //Setters
+
+    public void setCobroAlquileres(double cobroAlquileres){
+        this.cobroAlquileres = cobroAlquileres;
+    }
+
+    public void setVecesEnCarcel(){
+        this.vecesEnCarcel++;
+    }
+
+    public void setPagoAlquileres(double pagoAlquileres) {
+        this.pagoAlquileres += pagoAlquileres;
+    }
 
     public void setNombreJugador(String nombreJugador){
         this.nombreJugador = nombreJugador;
@@ -139,6 +185,14 @@ public class Jugador {
         if(operacion == -1){
             this.fortuna -= valor;
         }
+    }
+
+    public void setDineroIntertido(double dineroIntertido) {
+        this.dineroIntertido += dineroIntertido;
+    }
+    
+    public void setPremiosInversionesBote(double premiosInvBote){
+        this.premiosInvOBote += premiosInvBote;
     }
     
     public void setCompraEfectuada(boolean compra){
@@ -275,6 +329,7 @@ public class Jugador {
                     if(casilla.setEdificaciones(edificio)){
                         System.out.println(Valores.VERDE + "El jugador ha construido 1 " + tipo + ", ¡ENHORABUENA!" + Valores.RESET);
                         System.out.println("El precio actual del alquiler es: " + casilla.getAlquiler());
+                        this.dineroIntertido += edificio.getPrecio();
                     }else{
                         System.out.println(Valores.ROJO + "No se ha podido construir la edificación" + Valores.RESET);
                     }

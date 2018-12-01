@@ -397,12 +397,14 @@ public class Tablero {
                     if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("IrCarcel")) {
                         this.avatares.get(i).getJugador().setCasillaActual(this.casillas.get(1).get(0));
                         this.avatares.get(i).getJugador().setEstarCarcel(true);
+                        this.avatares.get(i).getJugador().setVecesEnCarcel();
                     }
 
                     //CASILLA PARKING
                     else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Parking")) {
                         //comprobamos que haya dinero en el parking y se lo damos al usuario, si es 0 se suma 0
                         this.avatares.get(i).getJugador().setFortuna(this.avatares.get(i).getJugador().getCasillaActual().getBote(), 1);
+                        this.avatares.get(i).getJugador().setPremiosInversionesBote(this.avatares.get(i).getJugador().getCasillaActual().getBote());
 
                     }
 
@@ -465,7 +467,9 @@ public class Tablero {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2) {
 
                                     this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), -1);
+                                    this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), 1);
+                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
                                     this.avatares.remove(i);
@@ -474,7 +478,11 @@ public class Tablero {
                             } else {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()) {
                                     this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()), -1);
+                                    this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
+
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()), 1);
+                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
+
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
                                     this.avatares.remove(i);
@@ -486,7 +494,10 @@ public class Tablero {
 
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (10 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
                                     this.avatares.get(i).getJugador().setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), -1);
+                                    this.avatares.get(i).getJugador().setPagoAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
+                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
                                     this.avatares.remove(i);
@@ -495,7 +506,9 @@ public class Tablero {
                             } else {
                                 if (this.avatares.get(i).getJugador().getFortuna() >= (4 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
                                     this.avatares.get(i).getJugador().setFortuna(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), -1);
+                                    this.avatares.get(i).getJugador().setPagoAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                     this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
+                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 } else {
                                     System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
                                     this.avatares.remove(i);
@@ -517,7 +530,9 @@ public class Tablero {
                             if (p == 2) factor = 0.75;
                             if (this.avatares.get(i).getJugador().getFortuna() >= (Valores.OPERACIONTRANSPORTE * factor)) {
                                 this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE * factor, -1);
+                                this.avatares.get(i).getJugador().setPagoAlquileres(Valores.OPERACIONTRANSPORTE * factor);
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(Valores.OPERACIONTRANSPORTE * factor, 1);
+                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(Valores.OPERACIONTRANSPORTE * factor);
                             } else {
                                 System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
                                 this.avatares.remove(i);
@@ -530,6 +545,7 @@ public class Tablero {
                 if ((coordenadaAntes == 2 || coordenadaAntes == 3) && (coordenadaMovida == 0 || coordenadaMovida == 1)) {
                     this.avatares.get(i).getJugador().setNumeroVueltas(1);
                     this.avatares.get(i).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                    this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
                 }
 
                 for (Avatar avatare : avatares) {
@@ -560,6 +576,7 @@ public class Tablero {
                                 this.getBanca().cedePropiedad(this.getCasilla(i, j));
                                 this.getAvatares().get(this.turno.getTurno()).getJugador().nuevaPropiedad(this.getCasilla(i, j)); //Ya pone disponibilidad a false
                                 this.getCasilla(i, j).setJugadorQueTieneLaCasilla(this.getAvatares().get(this.turno.getTurno()).getJugador());
+                                this.getAvatares().get(this.turno.getTurno()).getJugador().setDineroIntertido(this.getCasilla(i, j).getPrecio());
                                 System.out.println("El jugador " + this.getAvatares().get(this.turno.getTurno()).getJugador().getNombreJugador()
                                         + " compra la casilla " + this.getCasilla(i, j).getNombre() + " por " + this.getCasilla(i, j).getPrecio());
                                 System.out.println("Su fortuna actual es: " + this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
@@ -672,6 +689,7 @@ public class Tablero {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 2 && j > 5) || (i == 3)) {//si el jugador esta entre las casillas (2,6) y (3,9) => pasas por la salida
                         this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
                     }
                 }
             }
@@ -684,12 +702,15 @@ public class Tablero {
         } else if (i == 2) {
             //recibe 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(5000);
         } else if (i == 3) {
 
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 2 && j > 6) || (i == 3)) {//si el jugador esta entre las casillas (2,7) y (3,9) => pasas por la salida
                         this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
+
                     }
                 }
             }
@@ -704,6 +725,7 @@ public class Tablero {
         } else if (i == 5) {
             //recibes 100.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(100000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(100000);
         } else if (i == 6) {
             //pagas 15.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);
@@ -715,6 +737,7 @@ public class Tablero {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 0 && j == 9) || (i == 3) || (i == 2) || (i == 1)) {//si el jugador esta entre las casillas (0,9) y (3,9) => pasas por la salida
                         this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
                     }
                 }
             }
@@ -740,6 +763,7 @@ public class Tablero {
         } else if (i == 12) {
             //recibe 150.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(150000);
         } else if (i == 13) {
             //desplazar a la casilla de transporte mas cercana
             for (int k = 0; k < 4; k++) {
@@ -776,16 +800,19 @@ public class Tablero {
             //va a la salida
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 0));
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
         } else if (i == 3) {
             //cobra 200.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(200000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(200000);
         } else if (i == 4) {
             //paga 10.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, -1);
         } else if (i == 5) {
             //recibes 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(5000);
         } else if (i == 6) {
             //retrocede hasta E.Árabes
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 8));
@@ -802,11 +829,13 @@ public class Tablero {
         } else if (i == 8) {
             //recibe 10.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
+            this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(10000);
         } else if (i == 9) {
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 2 && j > 6) || (i == 3)) {//si el jugador esta entre las casillas (2,7) y (3,9) => pasas por la salida
                         this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
+                        this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
                     }
                 }
             }

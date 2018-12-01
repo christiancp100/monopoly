@@ -23,6 +23,7 @@ public class Casilla {
     //Atributos
     private String tipo; //solar, transporte, impuestos, suerte, comunidad, servicios, carcel, parking, salida, ir  a la carcel
     private String color;
+    private String grupoColor;
     private int grupo;
     private String nombre;
     private double precio;
@@ -103,22 +104,22 @@ public class Casilla {
     }*/
 
     public HashMap<String, Edificaciones> getEdificaciones() {
-        return edificaciones;
+        return this.edificaciones;
     }
 
     public Jugador getJugadorQueTieneLaCasilla() {
-        return jugadorQueTieneLaCasilla;
+        return this.jugadorQueTieneLaCasilla;
     }
     public String getTipo() {
-        return tipo;
+        return this.tipo;
     }
     
     public int getGrupo(){
-        return grupo;
+        return this.grupo;
     }
 
     public String getColor() {
-        return color;
+        return this.color;
     }
 
     public String getNombre() {
@@ -243,6 +244,10 @@ public class Casilla {
         return (this.numeroCasas + this.numeroHoteles + this.numeroPistasDep + this.numeroPiscinas);
     }
 
+    public String getGrupoColor(){
+        return this.grupoColor;
+    }
+
     //Setters
 
     //No hay setter para numero de edificaciones porque es la suma de los tipos de edificaciones ya construidos
@@ -284,6 +289,23 @@ public class Casilla {
     }
 
     public void setColor(String color){
+        if(this.color.equals(Valores.VERDE)){
+            this.grupoColor = "verde";
+        }else if(this.color.equals(Valores.NEGRO)){
+            this.grupoColor = "negro";
+        }else if(this.color.equals(Valores.ROJO)){
+            this.grupoColor = "rojo";
+        }else if(this.color.equals(Valores.AMARILLO)){
+            this.grupoColor = "amarillo";
+        }else if(this.color.equals(Valores.AZUL)){
+            this.grupoColor = "azul";
+        }else if(this.color.equals(Valores.MAGENTA)){
+            this.grupoColor = "magenta";
+        }else if(this.color.equals(Valores.CIAN)){
+            this.grupoColor = "cian";
+        }else if(this.color.equals(Valores.BLANCO)){
+            this.grupoColor = "blanco";
+        }
         this.color=  color;
     }
 
@@ -398,6 +420,20 @@ public class Casilla {
     }
 
     private boolean edificarAuxiliar(Edificaciones edificio, int max){
+
+        String clave= generarClave();
+        boolean repetida = false;
+        //Evitamos generar 2 claves iguales.
+        do {
+            clave = generarClave();
+            for(String cl : this.edificaciones.keySet()){
+                if(clave.equals(cl)){
+                    repetida = true;
+                }
+            }
+        }while (repetida);
+
+
         if(this.numeroCasas<=4){
             if(this.numeroHoteles< max){
 
@@ -405,7 +441,9 @@ public class Casilla {
                     if (edificio.getTipo().equals("hotel")) {
                         this.numeroCasas = 0;
                         this.eliminarTodasLasCasas();
-                        this.edificaciones.put(generarClave(), edificio);
+                        this.edificaciones.put(clave, edificio);
+                        this.edificaciones.get(clave).setId(clave);
+                        this.edificaciones.get(clave).setCasilla(this);
                         this.numeroHoteles++;
                         this.alquiler += edificio.getAlquiler();
                         return true;
@@ -413,7 +451,9 @@ public class Casilla {
                 }
                 if(this.numeroCasas <4){
                     if(edificio.getTipo().equals("casa")){
-                        this.edificaciones.put(generarClave(), edificio);
+                        this.edificaciones.put(clave, edificio);
+                        this.edificaciones.get(clave).setId(clave);
+                        this.edificaciones.get(clave).setCasilla(this);
                         this.numeroCasas++;
                         this.alquiler += edificio.getAlquiler();
                         return true;
@@ -424,7 +464,9 @@ public class Casilla {
 
                 if(this.numeroCasas<2){
                     if(edificio.getTipo().equals("casa")){
-                        this.edificaciones.put(generarClave(), edificio);
+                        this.edificaciones.put(clave, edificio);
+                        this.edificaciones.get(clave).setId(clave);
+                        this.edificaciones.get(clave).setCasilla(this);
                         this.numeroCasas++;
                         this.alquiler += edificio.getAlquiler();
                         return true;
@@ -435,7 +477,9 @@ public class Casilla {
                 if(this.numeroPiscinas<max){
                     if (edificio.getTipo().equals("piscina")) {
                         this.numeroPiscinas++;
-                        this.edificaciones.put(generarClave(), edificio);
+                        this.edificaciones.put(clave, edificio);
+                        this.edificaciones.get(clave).setId(clave);
+                        this.edificaciones.get(clave).setCasilla(this);
                         this.alquiler += edificio.getAlquiler();
                         return true;
                     }
@@ -445,7 +489,9 @@ public class Casilla {
                 if(this.numeroPistasDep<max){
                     if (edificio.getTipo().equals("pistaDep")) {
                         this.numeroPistasDep++;
-                        this.edificaciones.put(generarClave(), edificio);
+                        this.edificaciones.put(clave, edificio);
+                        this.edificaciones.get(clave).setId(clave);
+                        this.edificaciones.get(clave).setCasilla(this);
                         this.alquiler += edificio.getAlquiler();
                         return true;
                     }
@@ -502,6 +548,8 @@ public class Casilla {
 
         return null;
     }
+
+
 
 
 }

@@ -15,6 +15,7 @@ public class Edificaciones {
     private double alquiler;
     private boolean hipotecada;
     private double precioHipoteca;
+    private String id;
 
     public Edificaciones(String nombre,Casilla casilla){
 
@@ -57,6 +58,14 @@ public class Edificaciones {
         this.precioHipoteca = this.precio/2;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
+    public Casilla casilla(){
+        return this.casilla;
+    }
+
     public double getPrecio() {
         return this.precio;
     }
@@ -84,6 +93,12 @@ public class Edificaciones {
 
     public void setHipotecada(boolean hipotecada){
         this.hipotecada = hipotecada;
+    }
+    public void setId(String id){
+        this.id = id;
+    }
+    public void setCasilla(Casilla casilla){
+        this.casilla = casilla;
     }
 
 
@@ -114,8 +129,31 @@ public class Edificaciones {
             }
             return 0;
     }
-    
     public double hipotecaEdificaciones(){
         return (this.precio/2);
-    }   
+    }
+
+
+    @Override
+    public String toString(){
+
+        StringBuffer str = new StringBuffer();
+
+        str.append("{\nid: " + this.tipo + " - " + this.id + "\n");
+        str.append("propietario: "+ this.casilla.getJugadorQueTieneLaCasilla().getNombreJugador()+ "\n");
+        str.append("casilla: " + this.casilla.getNombre() + "\n");
+        str.append("grupo: "  + this.casilla.getGrupoColor() + "\n");
+        str.append("coste: " + this.casilla.getAlquiler()+ "\n}");
+
+        return str.toString();
+    }
+
+    public String toString(String color){
+
+        StringBuffer str = new StringBuffer();
+
+        return str.toString();
+    }
+
+
 }

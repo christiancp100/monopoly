@@ -7,7 +7,6 @@ import tablero.Tablero;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 
 public class InterpreteComandos {
@@ -19,7 +18,7 @@ public class InterpreteComandos {
     private Turno turno;
     private Dados dados;
     private int numTiradas;
-    
+
     
     public InterpreteComandos(ArrayList<Avatar> avatares, Tablero tablero,Turno turno,Dados dados){
 
@@ -28,7 +27,7 @@ public class InterpreteComandos {
         this.k=0;//contador del numero de usuarios en el sistema
         this.turno=turno;
         this.dados=dados;
-        this.numTiradas = 0;
+        this.numTiradas = 1;
     }
     
     public String input(){
@@ -94,21 +93,8 @@ public class InterpreteComandos {
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
             this.dados.setRepetidos(0);
-            
-            numTiradas=0;
 
             System.out.println("El jugador actual es " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
-            
-            if(this.avatares.get(this.turno.getTurno()).getPierdeTurno()){
-                this.avatares.get(this.turno.getTurno()).setNumeroTurnos(1);
-                //ponemos 3 pq esta condicion se va a ejecutar al terminar el turno en el que pierde los 2 turnos siguientes
-                System.out.println("Le quedan "+(3-this.avatares.get(this.turno.getTurno()).getNumeroTurnos())+" turnos para poder tirar");
-            }
-            if(this.avatares.get(this.turno.getTurno()).getNumeroTurnos()==3){
-                this.avatares.get(this.turno.getTurno()).setNumeroTurnos(0);
-                this.avatares.get(this.turno.getTurno()).setPierdeTurno(false);
-            }
-
         }
 
         else if(eleccion.contains("salir carcel")){
@@ -443,11 +429,7 @@ public class InterpreteComandos {
                         " hasta " +this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
                 
                 //ofrecemos comprar la casilla al jugador
-                if(this.avatares.get(this.turno.getTurno()).getJugador().getCompraEfectuada()){
-                    
-                    System.out.println("No puede comprar más propiedades en este turno.");
-                    
-                }else if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Solar") ||
+                if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Solar") ||
                         this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Servicio") || 
                         this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Transporte")) &&
                         this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==true){
@@ -461,8 +443,9 @@ public class InterpreteComandos {
                     
                     if (n.contains("si")) {
                         //ejecutamos la funcion comprar
-                        this.eleccion("comprar "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());    
+                        this.eleccion("comprar "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
                     }
+                    
                 }
 
                 if(this.dados.getRepetidos() == 3){
@@ -506,10 +489,7 @@ public class InterpreteComandos {
                     }
                 }
                 //TRANSPORTES
-                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes") 
-                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
-                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
-                        this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())) {
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
 
                     double factor = 1;
 
@@ -521,10 +501,7 @@ public class InterpreteComandos {
                     System.out.println("Se han pagado " + Valores.OPERACIONTRANSPORTE * factor + " de alquiler.\n");
                 }
                 //SERVICIOS
-                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")
-                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
-                        && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
-                        this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())) {
+                if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")) {
                     if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().contains("1")) {
                         System.out.println("Se han pagado " + 4 * Valores.FACTORSERVICIO * this.dados.getValorSuma() + " de alquiler\n");
                     } else {
@@ -544,37 +521,26 @@ public class InterpreteComandos {
 
         dados.tirarDados();
 
-        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez() 
-                && !this.avatares.get(this.turno.getTurno()).getPierdeTurno()) {
+        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez() || 
+                this.avatares.get(this.turno.getTurno()).getTipoEspecial()) {
 
-            if(numTiradas<=4){
-            
-                if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
-                    //puede tirar hasta 4 veces si el numero es mayor que 4
-                    if(this.avatares.get(this.turno.getTurno()).getTipo().equals("coche") && 
-                            this.avatares.get(this.turno.getTurno()).getTipoEspecial()){
-                        System.out.println("Está en el turno número "+(numTiradas+1));
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
+                System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
+
+                //almacenamos el nombre de la casilla anterior para imprimirlo
+                this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+
+                if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
+                    if(this.numTiradas<=4){
+                        movimientoEspecial(this.numTiradas++);
                     }
-                    
-                    System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
-
-                    //almacenamos el nombre de la casilla anterior para imprimirlo
-                    this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
-
-                    if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
-                        numTiradas++;    
-                        movimientoEspecial();
-                    }else{
-                        this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
-                        imprimirLanzarDados(this.dados.getValorSuma());
-                    }
+                }else{
+                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+                    imprimirLanzarDados(this.dados.getValorSuma());
                 }
-                if(this.numTiradas!=4 || this.avatares.get(this.turno.getTurno()).getTipo().equals("pelota") 
-                        && this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()){
-                    if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()){
-                        imprimirLanzarDados(this.dados.getValorSuma());
-                    }
-                }
+            }
+            if(this.numTiradas!=4){
+                imprimirLanzarDados(this.dados.getValorSuma());
             }
 
         }else{
@@ -584,7 +550,7 @@ public class InterpreteComandos {
         
 
 
-    public void movimientoEspecial(){
+    public void movimientoEspecial(int numTiradas){
 
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota")){
             if(this.dados.getValorSuma()>4){
@@ -633,7 +599,7 @@ public class InterpreteComandos {
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
             
 
-            if(this.dados.getValorSuma()>4 && numTiradas!=4 && this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()){
+            if(this.dados.getValorSuma()>4 && numTiradas!=4){
                 this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),this.dados.getValorSuma());
                 imprimirLanzarDados(this.dados.getValorSuma());
                 System.out.println("Valor mayor que 4, ¿quiere seguir tirando?. (si|no)");
@@ -642,30 +608,21 @@ public class InterpreteComandos {
                         String n = opcion.nextLine(); // Scans the next token of the input as an int.
                         opcion.reset();
                 if(n.contains("si")){
-                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
                     lanzarDados();
                     //movimientoEspecial(numTiradas++);
-                }else{
-                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
                 }
             
             }else{
                 if(numTiradas==4){
                     System.out.println("Ya ha lanzado 4 veces los dados.");
-                    //almacenamos el nombre de la casilla anterior
-                    this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
-                    //movemos al avatar e imprimimos los datos de la ultima casilla
-                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(this.dados.getValorSuma()));
-                    imprimirLanzarDados(this.dados.getValorSuma());
+                    this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
                 }else{
                     System.out.println("Ha sacado un número menor o igual que 4, no puede seguir tirando y retrocede.");
-                    System.out.println("Además, pierde el turno durante 2 rondas.");
+                    this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
                     this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(this.dados.getValorSuma()));
+                    //imprimirLanzarDados(this.dados.getValorSuma());
                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
-                    
-                    this.avatares.get(this.turno.getTurno()).setPierdeTurno(true);
-                    
                 }
             }
         }
