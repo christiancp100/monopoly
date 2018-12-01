@@ -24,27 +24,8 @@ public class Monopoly {
     }
 
     public void inicializar () {
-        this.turno.setNumeroJugadores(2);
-        interprete.darAltaJugador("christian", "esfinge");
-        interprete.darAltaJugador("maria", "esfinge");
-        this.avatares.get(0).getJugador().setCasillaActual(this.tablero.getCasillaByName("N.Zelanda"));
-        this.avatares.get(1).getJugador().setCasillaActual(this.tablero.getCasillaByName("N.Zelanda"));
-        this.avatares.get(0).getJugador().setFortuna(2000000);
-        interprete.eleccion("iniciar partida");
-        interprete.eleccion("comprar N.Zelanda");
-        interprete.eleccion("lanzar dados");
-        interprete.eleccion("comprar Australia");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar hotel");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar casa");
-        interprete.eleccion("edificar hotel");
-        //menu.start();
+        menu.start();
+
         while (avatares.size() > 1){
             /*for(Avatar av : this.avatares){
                 if(av.getJugador().getFortuna()<0){

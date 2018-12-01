@@ -85,6 +85,7 @@ public class InterpreteComandos {
 
         else if(eleccion.contains("acabar turno")){
             //aumentamos el numero de tiradas y, por consiguiente, tenemos turno+1 (siguiente jugador)
+            this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
             this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
             this.dados.setNumeroTiradas(1);
             this.turno.setTurno(this.dados.getNumeroTiradas());
@@ -232,12 +233,10 @@ public class InterpreteComandos {
             if(!aux[1].equals("Carcel") && !aux[1].equals("IrCarcel") &&
                     !aux[1].equals("Parking") && !aux[1].contains("Suerte") &&
                     !aux[1].contains("Impuestos") && !aux[1].contains("Caja") &&
-                    !aux[1].equals("Salida") && 
-                    this.avatares.get(this.turno.getTurno()).getJugador().getCompraEfectuada()==false){
+                    !aux[1].equals("Salida")){
 
-                tablero.comprarPropiedad(aux[1]);
-                this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(true);
-                
+                    tablero.comprarPropiedad(aux[1]);
+                    this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(true);
             }
             else{
                 System.out.println("Esta casilla no se puede comprar");

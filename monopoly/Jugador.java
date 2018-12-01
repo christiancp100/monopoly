@@ -20,7 +20,7 @@ public class Jugador {
     private int numDobles;
     private int numTiradasCarcel;
     private String nombreCasillaAnterior;
-    public boolean compraEfectuada;
+    private boolean compraEfectuada;
 
     private ArrayList<Casilla> propiedades;
     public Jugador(Avatar avatar,float fortuna){
@@ -42,6 +42,7 @@ public class Jugador {
         this.numeroVueltas = -1;
         this.numDobles=0;
         puedeTirarOtraVez = true;
+        this.compraEfectuada = false;
 
 
     }
@@ -54,7 +55,7 @@ public class Jugador {
         this.numeroVueltas = -1;
         this.numDobles=0;
         puedeTirarOtraVez = true;
-
+        this.compraEfectuada = false;
 
     }
 
