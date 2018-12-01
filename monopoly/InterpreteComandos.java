@@ -232,12 +232,18 @@ public class InterpreteComandos {
             if(!aux[1].equals("Carcel") && !aux[1].equals("IrCarcel") &&
                     !aux[1].equals("Parking") && !aux[1].contains("Suerte") &&
                     !aux[1].contains("Impuestos") && !aux[1].contains("Caja") &&
-                    !aux[1].equals("Salida")){
+                    !aux[1].equals("Salida") && 
+                    this.avatares.get(this.turno.getTurno()).getJugador().getCompraEfectuada()==false){
 
                 tablero.comprarPropiedad(aux[1]);
+                this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(true);
+                
             }
             else{
                 System.out.println("Esta casilla no se puede comprar");
+                if(this.avatares.get(this.turno.getTurno()).getJugador().getCompraEfectuada()){
+                    System.out.println("Ya ha comprado otra propiedad durante su turno.");
+                }
             }
 
         }
@@ -319,6 +325,84 @@ public class InterpreteComandos {
             else if(res == -1) System.out.println("Esta casilla no pertenece a " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador());
 
         }
+        
+        else if(eleccion.contains("cambiar modo")){
+            
+            if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
+                this.avatares.get(this.turno.getTurno()).setTipoEspecial(false);
+            }else{
+                this.avatares.get(this.turno.getTurno()).setTipoEspecial(true);
+            }
+        }
+        
+        else if(eleccion.contains("listar edificios")){
+           
+            int k=0;
+            
+            aux = eleccion.split("\\s+");
+
+            if(aux.equals("verde") || aux.equals("rojo") || aux.equals("azul") || aux.equals("magenta") ||
+                    aux.equals("amarillo") || aux.equals("blanco") || aux.equals("cian") || aux.equals("negro")){
+                for(int i=0;i<4;i++){
+                    for(int j=0;j<10;j++){
+                        if(this.tablero.getCasilla(i,j).getColor().equals(aux) && 
+                                this.tablero.getCasilla(i,j).getEdificaciones().isEmpty()==false){
+                            System.out.println("{");
+                            System.out.println("Propiedad: "+this.tablero.getCasilla(i,j).getNombre());
+                            System.out.println("Hoteles: "+this.tablero.getCasilla(i,j).getNumeroHoteles());
+                            this.tablero.getCasilla(i,j).setNumeroHotelesGrupo(this.tablero.getCasilla(i,j).getNumeroHoteles());                          
+                            System.out.println("Casas: "+this.tablero.getCasilla(i,j).getNumeroCasas());
+                            this.tablero.getCasilla(i,j).setNumeroCasasGrupo(this.tablero.getCasilla(i,j).getNumeroCasas());                                                      
+                            System.out.println("Piscinas: "+this.tablero.getCasilla(i,j).getNumeroPiscinas());
+                            this.tablero.getCasilla(i,j).setNumeroPiscinasGrupo(this.tablero.getCasilla(i,j).getNumeroPiscinas());                                                      
+                            System.out.println("Pistas de deporte: "+this.tablero.getCasilla(i,j).getNumeroPistasDep());
+                            this.tablero.getCasilla(i,j).setNumeroPistasDepGrupo(this.tablero.getCasilla(i,j).getNumeroPistasDep());                                                      
+                            System.out.println("Alquiler: "+this.tablero.getCasilla(i,j).getAlquiler());
+                            System.out.println("}");       
+                        }
+                    }
+                }
+                
+                System.out.print("Aun se pueden edificar ");
+                  
+                if(!aux.equals("verde") && !aux.equals("negro")){
+                    
+                    System.out.print(3-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroHotelesGrupo()+" hoteles, ");
+                    System.out.print(3-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroCasasGrupo()+" casas, ");
+                    System.out.print(3-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroPiscinasGrupo()+" piscinas, ");
+                    System.out.print(3-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroPistasDepGrupo()+" pistas de deporte.");
+                }else{
+                    
+                    System.out.print(2-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroHotelesGrupo()+" hoteles, ");
+                    System.out.print(2-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroCasasGrupo()+" casas, ");
+                    System.out.print(2-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroPiscinasGrupo()+" piscinas, ");
+                    System.out.print(2-this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNumeroPistasDepGrupo()+" pistas de deporte.");
+                }  
+                //limpiamos los atributos
+                limpiezaAtributosGrupo();
+                
+            }else{
+                for(int i=0;i<4;i++){
+                    for(int j=0;j<10;j++){
+                        if(this.tablero.getCasilla(i,j).getTipo().equals("Solar") && 
+                                this.tablero.getCasilla(i,j).getEdificaciones().isEmpty()==false){
+                            System.out.println("{");
+                            System.out.println("Edificaciones: "+this.tablero.getCasilla(i,j).getEdificaciones());
+                            System.out.println("Propietario: "+this.tablero.getCasilla(i,j).getPropietario(avatares).getNombreJugador());
+                            System.out.println("Casilla: "+this.tablero.getCasilla(i,j).getNombre());
+                            System.out.println("Grupo: "+this.tablero.getCasilla(i,j).getColor());
+                            System.out.println("Coste: "+this.tablero.getCasilla(i,j).getPrecio());
+                            System.out.println("}");
+                        }else{
+                            k++;
+                        }
+                    }
+                }
+                if(k==40){
+                    System.out.println("Todavía no hay edificios en ninguna casilla.");
+                }
+            }
+        }
     }
 
     public void darAltaJugador(String nombre,String tipo){
@@ -341,6 +425,26 @@ public class InterpreteComandos {
                         " se desplaza " + valorDados +
                         " posiciones, desde " + this.avatares.get(this.turno.getTurno()).getJugador().getNombreCasillaAnterior() +
                         " hasta " +this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre() + "\n");
+                
+                //ofrecemos comprar la casilla al jugador
+                if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Solar") ||
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Servicio") || 
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Transporte")) &&
+                        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()==true){
+                    
+                    System.out.println("¿Quiere comprar la casilla? (si|no)");
+                    
+                    Scanner opcion = new Scanner(System.in);  // Reading from System.in
+                            System.out.println("\n->");
+                            String n = opcion.nextLine(); // Scans the next token of the input as an int.
+                            opcion.reset();
+                    
+                    if (n.contains("si")) {
+                        //ejecutamos la funcion comprar
+                        this.eleccion("comprar "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+                    }
+                    
+                }
 
                 if(this.dados.getRepetidos() == 3){
                     System.out.println("El jugador ha sacado 3 veces dobles, por eso se situa en la carcel");
@@ -348,8 +452,8 @@ public class InterpreteComandos {
                 }
                 else if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                     System.out.println("El jugador ha caído en IrCarcel y por ello se desplaza a la casilla Carcel.\n");
-                }
-
+                }    
+                //SOLAR
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
                         && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
                         && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
@@ -385,12 +489,12 @@ public class InterpreteComandos {
                 //TRANSPORTES
                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
 
-                    double factor = 0;
+                    double factor = 1;
 
                     int p = this.tablero.poseerTransportes();
-                    if (p == 1) factor =  0.25;
-                    if (p == 2) factor = 0.5;
-                    if (p == 3) factor = 0.75;
+                    if (p == 0) factor =  0.25;
+                    if (p == 1) factor = 0.5;
+                    if (p == 2) factor = 0.75;
 
                     System.out.println("Se han pagado " + Valores.OPERACIONTRANSPORTE * factor + " de alquiler.\n");
                 }
@@ -415,27 +519,31 @@ public class InterpreteComandos {
 
         dados.tirarDados();
 
-        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()) {
+        if (this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez() || 
+                this.avatares.get(this.turno.getTurno()).getTipoEspecial()) {
 
-            System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
-            
-            //almacenamos el nombre de la casilla anterior para imprimirlo
-            this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
-            
-            if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota") || 
-                    this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
-                movimientoEspecial();
-            }else{
-                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
+                System.out.println("El valor de los dados es " + dados.getValorDados().get(0) + "+" + dados.getValorDados().get(1));
+
+                //almacenamos el nombre de la casilla anterior para imprimirlo
+                this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
+
+                if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()==true){
+                    movimientoEspecial();
+                }else{
+                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()), dados.getValorSuma());//movemos el avatar y obtenemos su nueva posicion
+                }
             }
             
-            imprimirLanzarDados(this.dados.getValorSuma());    
+            imprimirLanzarDados(this.dados.getValorSuma());   
             
         }else{
             System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
         }
     }
         
+    int numTiradas=0;
+
     public void movimientoEspecial(){
 
         if(this.avatares.get(this.turno.getTurno()).getTipo().contains("pelota")){
@@ -445,7 +553,7 @@ public class InterpreteComandos {
                 int j=0; //variable auxiliar para restar la posicion del avatar
 
                 for(int i=1;i<=this.dados.getValorSuma();i++){
-                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
                         if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
@@ -466,7 +574,7 @@ public class InterpreteComandos {
                 int j=0; //variable auxiliar para restar la posicion del avatar
 
                 for(int i=1;i<=this.dados.getValorSuma();i++){
-                    if(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre().equals("IrCarcel")){
+                    if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
                     }else{
                         if(i%2!=0 || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
@@ -483,6 +591,53 @@ public class InterpreteComandos {
                 }
             }
         }
+                
+        if(this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){
+            
+            int k=0;
+            
+            if(this.dados.getValorSuma()>4 && numTiradas!=4){
+                numTiradas++;
+                this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),this.dados.getValorSuma());
+                imprimirLanzarDados(this.dados.getValorSuma());
+                System.out.println("Valor mayor que 4, ¿quiere seguir tirando?. (si|no)");
+                Scanner opcion = new Scanner(System.in);  // Reading from System.in
+                        System.out.println("\n->");
+                        String n = opcion.nextLine(); // Scans the next token of the input as an int.
+                        opcion.reset();
+                if(n.contains("si")){
+                    numTiradas++;
+                    lanzarDados();
+                    this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),this.dados.getValorSuma());
+                    imprimirLanzarDados(this.dados.getValorSuma());
+                    movimientoEspecial();
+                    k=1;
+                }
+            
+            }else{
+                if(k==1){
+                    if(numTiradas==4){
+                        System.out.println("Ya ha lanzado 4 veces los dados.");
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
+                        numTiradas=0;
+                    }else{
+                        System.out.println("Ha sacado un número menor o igual que 4, no puede seguir tirando y retrocede.");
+                        this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(this.dados.getValorSuma()));
+                        imprimirLanzarDados(this.dados.getValorSuma());
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
+                        numTiradas=0;
+                    }
+                }
+            }
+        }
+
+    }
+    
+    public void limpiezaAtributosGrupo(){
+        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setNumeroHotelesGrupo(10);
+        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setNumeroCasasGrupo(10);
+        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setNumeroPiscinasGrupo(10);
+        this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setNumeroPistasDepGrupo(10);
 
     }
 }

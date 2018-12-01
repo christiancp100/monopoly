@@ -39,6 +39,11 @@ public class Casilla {
     private HashMap<String, Edificaciones> edificaciones;
     private HashMap<Jugador, Integer> vecesCaidoEnEstaCasilla;
 
+    private int numeroCasasGrupo;
+    private int numeroHotelesGrupo;
+    private int numeroPiscinasGrupo;
+    private int numeroPistasDepGrupo;
+    
     Random rand;
 
 
@@ -213,6 +218,22 @@ public class Casilla {
     public int getNumeroPistasDep(){
         return this.numeroPistasDep;
     }
+    
+     public int getNumeroCasasGrupo(){
+        return this.numeroCasas;
+    }
+    
+    public int getNumeroHotelesGrupo(){
+        return this.numeroHoteles;
+    }
+    
+    public int getNumeroPiscinasGrupo(){
+        return this.numeroPiscinas;
+    }
+    
+    public int getNumeroPistasDepGrupo(){
+        return this.numeroPistasDep;
+    }
 
     public int getVeces(Jugador jugador){
         return this.vecesCaidoEnEstaCasilla.get(jugador);
@@ -287,6 +308,40 @@ public class Casilla {
     
     public void setCasas(int numeroCasas){
         this.numeroCasas+=numeroCasas;
+    }
+    
+    
+    public void setNumeroCasasGrupo(int numeroCasas){
+        if(numeroCasas==10){
+            this.numeroCasas=0;
+        }else{
+            this.numeroCasas+=numeroCasas;
+        }
+        
+    }
+    
+    public void setNumeroHotelesGrupo(int numeroHoteles){
+        if(numeroCasas==10){
+            this.numeroHoteles=0;
+        }else{
+            this.numeroHoteles+=numeroHoteles;
+        }        
+    }
+    
+    public void setNumeroPiscinasGrupo(int numeroPiscinas){
+        if(numeroCasas==10){
+            this.numeroPiscinas=0;
+        }else{
+            this.numeroPiscinas+=numeroPiscinas;
+        }
+    }
+    
+    public void setNumeroPistasDepGrupo(int numeroPistasDep){
+        if(numeroCasas==10){
+            this.numeroPistasDep=0;
+        }else{
+            this.numeroPistasDep+=numeroPistasDep;
+        }
     }
 
     public void setPrecioHipoteca(){
@@ -428,7 +483,7 @@ public class Casilla {
             aux = "{\nNombre: " + this.nombre;
             aux += "\n        -Tipo: " + this.tipo;
             aux += "\n        -Grupo: " + this.grupo;
-            aux += "\n        -precio: " + this.precio;
+            aux += "\n        -Precio: " + this.precio;
             if (jugadorQueTieneLaCasilla != null) {
                 aux += "\n       -Propietario: " + this.jugadorQueTieneLaCasilla;
             }

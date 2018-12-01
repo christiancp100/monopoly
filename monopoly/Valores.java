@@ -64,7 +64,7 @@ public class Valores {
         "11.-¡Hora punta de tráfico! Retrocede tres casillas.",
         "12.-Te multan por usar el móvil mientras conduces. Paga 1.500€.",
         "13.-Beneficio por la venta de tus acciones. Recibe 150.000€.",
-        "14.-Avanza hasta la casilla de transporte más cercana. Si no tiene dueño, puedes comprársela a la banca. Si tiene dueño, paga al dueño el doble de la operación indicada."
+        "14.-Avanza hasta la casilla de transporte más cercana."
         };
         
     public static final String[] TARJETAS_CAJA = {
