@@ -411,23 +411,11 @@ public class Tablero {
                     //CASILLA IMPUESTOS
                     else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Impuestos")) {
                         if (this.avatares.get(i).getJugador().getCasillaActual().getNombre().contains("1")) {
-                            if (this.avatares.get(i).getJugador().getFortuna() >= Valores.TASAIMPUESTOS1) {
-                                this.avatares.get(i).getJugador().setFortuna(Valores.TASAIMPUESTOS1, -1);
-                                this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS1);
-                            } else {
-                                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
-                            }
+                            pagar(this.avatares.get(i).getJugador(), banca,Valores.TASAIMPUESTOS1 );
+                            this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS1);
                         } else {
-                            if (this.avatares.get(i).getJugador().getFortuna() >= Valores.TASAIMPUESTOS2) {
-                                this.avatares.get(i).getJugador().setFortuna(Valores.TASAIMPUESTOS2, -1);
-                                this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS2);
-                            } else {
-                                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
-                            }
+                            pagar(this.avatares.get(i).getJugador(), banca,Valores.TASAIMPUESTOS2 );
+                            this.casillas.get(2).get(0).setBote(Valores.TASAIMPUESTOS2);
                         }
 
                     }
@@ -464,58 +452,26 @@ public class Tablero {
                         //si el propietario posee todas las casillas de un grupo entonces cobra el doble
                         if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Solar")) {
                             if (this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).poseerGrupo(this.avatares.get(i).getJugador().getCasillaActual().getGrupo()) == true) {
-                                if (this.avatares.get(i).getJugador().getFortuna() >= this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2) {
+                                this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
+                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
+                                this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
 
-                                    this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), -1);
-                                    this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2), 1);
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
-                                } else {
-                                    System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
-                                }
                             } else {
-                                if (this.avatares.get(i).getJugador().getFortuna() >= (float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()) {
-                                    this.avatares.get(i).getJugador().setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()), -1);
-                                    this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
-
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(((float) this.avatares.get(i).getJugador().getCasillaActual().getAlquiler()), 1);
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
-
-                                } else {
-                                    System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
-                                }
+                                this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
+                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
+                                this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
                             if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador())) {
+                                this.avatares.get(i).getJugador().setPagoAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), 10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
 
-                                if (this.avatares.get(i).getJugador().getFortuna() >= (10 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
-                                    this.avatares.get(i).getJugador().setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), -1);
-                                    this.avatares.get(i).getJugador().setPagoAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
-
-                                } else {
-                                    System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
-                                }
                             } else {
-                                if (this.avatares.get(i).getJugador().getFortuna() >= (4 * Valores.FACTORSERVICIO * this.dados.getValorSuma())) {
-                                    this.avatares.get(i).getJugador().setFortuna(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), -1);
-                                    this.avatares.get(i).getJugador().setPagoAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma(), 1);
-                                    this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
-                                } else {
-                                    System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                    this.avatares.remove(i);
-                                    this.turno.setNumeroJugadores(-1);
-                                }
+                                this.avatares.get(i).getJugador().setPagoAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), 4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                             }
-                        } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                             //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
                             int p = 0;
@@ -528,20 +484,12 @@ public class Tablero {
                             if (p == 0) factor = 0.25;
                             if (p == 1) factor = 0.5;
                             if (p == 2) factor = 0.75;
-                            if (this.avatares.get(i).getJugador().getFortuna() >= (Valores.OPERACIONTRANSPORTE * factor)) {
-                                this.avatares.get(i).getJugador().setFortuna(Valores.OPERACIONTRANSPORTE * factor, -1);
-                                this.avatares.get(i).getJugador().setPagoAlquileres(Valores.OPERACIONTRANSPORTE * factor);
-                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setFortuna(Valores.OPERACIONTRANSPORTE * factor, 1);
-                                this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(Valores.OPERACIONTRANSPORTE * factor);
-                            } else {
-                                System.out.println("El jugador no puede permitirse pagar y se declara en bancarrota");
-                                this.avatares.remove(i);
-                                this.turno.setNumeroJugadores(-1);
-                            }
+                            this.avatares.get(i).getJugador().setPagoAlquileres(Valores.OPERACIONTRANSPORTE * factor);
+                            this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(Valores.OPERACIONTRANSPORTE * factor);
+                            this.pagar(this.avatares.get(this.turno.getTurno()).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), Valores.OPERACIONTRANSPORTE * factor);
                         }
                     }
                 }
-
                 if ((coordenadaAntes == 2 || coordenadaAntes == 3) && (coordenadaMovida == 0 || coordenadaMovida == 1)) {
                     this.avatares.get(i).getJugador().setNumeroVueltas(1);
                     this.avatares.get(i).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
@@ -582,6 +530,9 @@ public class Tablero {
                                 System.out.println("Su fortuna actual es: " + this.getAvatares().get(this.turno.getTurno()).getJugador().getFortuna());
                             } else {
                                 System.out.println("El jugador no tiene suficiente dinero para comprar la propiedad.\n");
+                                if(this.avatares.get(this.turno.getTurno()).getJugador().getPropiedades().size()>0){
+                                    System.out.println("Sin embargo, posee propiedades, si lo desea puede escribir 'hipotecar [nombre_casilla]' y procederemos con la compra");
+                                }
                             }
                         } else {
                             System.out.println("La casilla es propiedad de: " + this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador());
@@ -728,7 +679,7 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(100000);
         } else if (i == 6) {
             //pagas 15.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(15000, -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 15000);
         } else if (i == 7) {
             //hacer cuando tengamos las construcciones
         } else if (i == 8) {
@@ -752,14 +703,14 @@ public class Tablero {
                 }
             }
             //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2500) * (this.avatares.size() - 1), -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, (2500) * (this.avatares.size() - 1));
 
         } else if (i == 10) {
             //retrocede 3 casillas
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), -3);
         } else if (i == 11) {
             //paga 15.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(1500, -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 15000);
         } else if (i == 12) {
             //recibe 150.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, 1);
@@ -791,7 +742,7 @@ public class Tablero {
         System.out.println(tarjeta.getMensaje());
 
         if (i == 0) {
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 5000);
         } else if (i == 1) {
             //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
@@ -808,7 +759,7 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(200000);
         } else if (i == 4) {
             //paga 10.000€
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 10000);
         } else if (i == 5) {
             //recibes 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
@@ -824,8 +775,7 @@ public class Tablero {
                     this.avatares.get(j).getJugador().setFortuna(2000, 1);
                 }
             }
-            //le restamos al usuario la cantidad por el numero de jugadores
-            this.avatares.get(this.turno.getTurno()).getJugador().setFortuna((2000) * (this.avatares.size() - 1), -1);
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, (2000) * (this.avatares.size() - 1));
         } else if (i == 8) {
             //recibe 10.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
@@ -845,29 +795,42 @@ public class Tablero {
         }
     }
 
-    public boolean tieneLiquidez(Avatar avatar, double cantidadAPagar) {
-        if (avatar.getJugador().getFortuna() <= cantidadAPagar) {
-            bancarrota(avatar);
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    public void bancarrota(Avatar avatar) {
 
-        if(avatar.getJugador().getPropiedades().size() > 0){
-            System.out.println("El jugador debe hipotecar una propiedad para pagar su deuda");
-            System.out.println("¿Qué propiedad desea deshipotecar?");
-        }else {
+    public void pagar(Jugador elQuePaga, Jugador elQueCobra, double deuda) {
 
-            for (Casilla casilla : avatar.getJugador().getPropiedades()) {
-                casilla.setJugadorQueTieneLaCasilla(banca);
-                casilla.setDisponibilidad(true);
-                casilla.setCasas(0);
+        if(deuda <= elQuePaga.getFortuna()){
+            elQuePaga.setFortuna(deuda, -1);
+            elQueCobra.setFortuna(deuda, 1);
+        }else{
+            if(elQuePaga.getPropiedades().size() >0){
+                for(Casilla cas: elQuePaga.getPropiedades()){
+                    elQuePaga.hipotecar(cas);
+                    if(deuda <= elQuePaga.getFortuna()){
+                        elQuePaga.setFortuna(deuda, -1);
+                        elQueCobra.setFortuna(deuda, 1);
+                        break;
+                    }
+                }
+            }else{
+                System.out.println("El jugador no tiene dinero ni propiedades, se declara en bancarrota. La banca cubre su deuda.");
+                System.out.println("El turno pasa al siguiente jugador");
+                elQueCobra.setFortuna(deuda, 1);
+                //No tiene dinero ni propiedades, se declara en bancarrota
+                for (Casilla casilla : this.avatares.get(this.turno.getTurno()).getJugador().getPropiedades()) {
+                    casilla.setJugadorQueTieneLaCasilla(banca);
+                    casilla.setDisponibilidad(true);
+                }
+                this.avatares.remove(avatares.get(this.turno.getTurno()));
+                this.turno.setNumeroJugadores(-1);
+                this.dados.setNumeroTiradas(1);
+                this.turno.setTurno(this.dados.getNumeroTiradas());
+                this.dados.setRepetidos(0);
             }
-            this.avatares.remove(avatar);
+
         }
+
+
     }
 
     public Casilla getCasillaByName(String nombre){

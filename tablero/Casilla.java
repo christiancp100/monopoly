@@ -44,7 +44,12 @@ public class Casilla {
     private int numeroHotelesGrupo;
     private int numeroPiscinasGrupo;
     private int numeroPistasDepGrupo;
-    
+
+    private int permisoCasas;
+    private int permisoHoteles;
+    private int permisoPiscinas;
+    private int permisoPistas;
+
     Random rand;
 
 
@@ -65,7 +70,7 @@ public class Casilla {
         numeroPistasDep = 0;
         this.alquiler = this.precio*0.1f;
     }
-    
+
     public Casilla(String tipo, String color, String nombre, float precio){
         this.tipo = tipo;
         this.color = color;
@@ -113,7 +118,7 @@ public class Casilla {
     public String getTipo() {
         return this.tipo;
     }
-    
+
     public int getGrupo(){
         return this.grupo;
     }
@@ -136,7 +141,7 @@ public class Casilla {
     }
 
     public double getHipoteca(){
-        
+
         if(this.tipo.equals("Solar")){
             return (Valores.PRECIOINICIALGRUPO1*(Math.pow(1.3f,(grupo-1))))/2;
         }
@@ -182,12 +187,12 @@ public class Casilla {
     public double getBote(){
         return this.bote;
     }
-    
+
     //contamos cuantos jugadores hay en la casilla
     public StringBuffer getJugadoresCasilla(ArrayList<Avatar> avatares){
-        
+
         StringBuffer jugadoresCasilla=new StringBuffer();
-        
+
         System.out.print("[");
         for(int i=0;i<avatares.size();i++){
             if(avatares.get(i).getJugador().getCasillaActual().getNombre().equals(this.nombre)){
@@ -195,15 +200,15 @@ public class Casilla {
             }
         }
         System.out.println("]");
-        
+
         return jugadoresCasilla;
     }
-    
+
     //accedemos al precio de alquiler de esa casilla (siempre solar)
     public double getAlquiler(){//hay que revisar para que no aumente el 5%
         return this.alquiler;//10% de su precio inicial
     }
-    
+
     public int getNumeroCasas(){
         return this.numeroCasas;
     }
@@ -211,28 +216,12 @@ public class Casilla {
     public int getNumeroHoteles(){
         return this.numeroHoteles;
     }
-    
+
     public int getNumeroPiscinas(){
         return this.numeroPiscinas;
     }
-    
+
     public int getNumeroPistasDep(){
-        return this.numeroPistasDep;
-    }
-    
-     public int getNumeroCasasGrupo(){
-        return this.numeroCasas;
-    }
-    
-    public int getNumeroHotelesGrupo(){
-        return this.numeroHoteles;
-    }
-    
-    public int getNumeroPiscinasGrupo(){
-        return this.numeroPiscinas;
-    }
-    
-    public int getNumeroPistasDepGrupo(){
         return this.numeroPistasDep;
     }
 
@@ -247,8 +236,38 @@ public class Casilla {
     public String getGrupoColor(){
         return this.grupoColor;
     }
+    public int getPermisoCasas() {
+        return permisoCasas;
+    }
 
+    public int getPermisoHoteles() {
+        return permisoHoteles;
+    }
+
+    public int getPermisoPiscinas() {
+        return permisoPiscinas;
+    }
+
+    public int getPermisoPistas() {
+        return permisoPistas;
+    }
     //Setters
+
+    public void setPermisoCasas(int permisoCasas) {
+        this.permisoCasas += permisoCasas;
+    }
+
+    public void setPermisoHoteles(int permisoHoteles) {
+        this.permisoHoteles += permisoHoteles;
+    }
+
+    public void setPermisoPiscinas(int permisoPiscinas) {
+        this.permisoPiscinas += permisoPiscinas;
+    }
+
+    public void setPermisoPistas(int permisoPistas) {
+        this.permisoPistas += permisoPistas;
+    }
 
     //No hay setter para numero de edificaciones porque es la suma de los tipos de edificaciones ya construidos
 
@@ -289,6 +308,7 @@ public class Casilla {
     }
 
     public void setColor(String color){
+        this.color=  color;
         if(this.color.equals(Valores.VERDE)){
             this.grupoColor = "verde";
         }else if(this.color.equals(Valores.NEGRO)){
@@ -306,7 +326,6 @@ public class Casilla {
         }else if(this.color.equals(Valores.BLANCO)){
             this.grupoColor = "blanco";
         }
-        this.color=  color;
     }
 
     public void setNombre(String nombre){
@@ -327,49 +346,15 @@ public class Casilla {
     public void setDisponibilidad(boolean disponibilidad){
         this.sePuedeComprar = disponibilidad;
     }
-    
+
     public void setCasas(int numeroCasas){
         this.numeroCasas+=numeroCasas;
-    }
-    
-    
-    public void setNumeroCasasGrupo(int numeroCasas){
-        if(numeroCasas==10){
-            this.numeroCasas=0;
-        }else{
-            this.numeroCasas+=numeroCasas;
-        }
-        
-    }
-    
-    public void setNumeroHotelesGrupo(int numeroHoteles){
-        if(numeroCasas==10){
-            this.numeroHoteles=0;
-        }else{
-            this.numeroHoteles+=numeroHoteles;
-        }        
-    }
-    
-    public void setNumeroPiscinasGrupo(int numeroPiscinas){
-        if(numeroCasas==10){
-            this.numeroPiscinas=0;
-        }else{
-            this.numeroPiscinas+=numeroPiscinas;
-        }
-    }
-    
-    public void setNumeroPistasDepGrupo(int numeroPistasDep){
-        if(numeroCasas==10){
-            this.numeroPistasDep=0;
-        }else{
-            this.numeroPistasDep+=numeroPistasDep;
-        }
     }
 
     public void setPrecioHipoteca(){
         precioHipoteca = this.precio/2;
     }
-    
+
     //establecemos la cantidad de dinero que hay en el Parking
     public void setBote(double bote){
         if(bote==0){
@@ -521,6 +506,8 @@ public class Casilla {
 
     }
 
+
+
     //Metodos
     @Override
     public String toString(){
@@ -531,15 +518,35 @@ public class Casilla {
             aux += "\n        -Grupo: " + this.grupo;
             aux += "\n        -Precio: " + this.precio;
             if (jugadorQueTieneLaCasilla != null) {
-                aux += "\n       -Propietario: " + this.jugadorQueTieneLaCasilla;
+                aux += "\n       -Propietario: " + this.jugadorQueTieneLaCasilla.getNombreJugador();
             }
-            aux += "\n       -Alquiler: " + alquiler;
-            aux += "\n       -Valor hotel: " + "Imprimir valor hotel";
-            aux += "\n       -Valor casa: " + "Imprimir valor casa";
-            aux += "\n       -Valor piscina: " + "Imprimir valor piscina";
+            aux += "\n       -Alquiler: " + this.alquiler;
+            aux += "\n       -Valor hotel: " + 0.6 * this.precio;
+            aux += "\n       -Valor casa: " +  0.6 * this.precio;
+            aux += "\n       -Valor piscina: " + 0.4 * this.precio;
+            aux += "\n       -Valor pista de deporte: " + 1.25 * this.precio;
+            aux += "\n       -alquiler una casa: " +  5 * this.alquiler;
+            aux += "\n       -alquiler dos casas: " + 15 * this.alquiler;
+            aux += "\n       -alquiler tres casas: " + 35 * this.alquiler;
+            aux += "\n       -alquiler cuatro casas: " + 50 * this.alquiler;
+            aux += "\n       -alquiler hotel: " + 70 * this.alquiler;
+            aux += "\n       -alquiler piscina: " + 25*this.precio;
+            aux += "\n       -alquiler pista de deporte: " + 25*this.precio + "\n";
+
+
+            if(this.edificaciones.size() >0){
+                aux += "Esta propiedad tiene las siguientes edificaciones: \n";
+                for(Edificaciones ed : this.edificaciones.values()){
+                    aux += ed.toString() + "\n";
+                }
+            }
+
             if (sePuedeComprar) aux += Valores.VERDE + "\n        ->Se puede comprar\n\n" + Valores.RESET;
             else aux += Valores.ROJO + "\n        ->La propiedad no está disponible\n\n" + Valores.RESET;
+
+
             return aux;
+
         }
         else if(this.getTipo().contains("Impuesto")){
             aux = "tipo: " + this.tipo;
@@ -549,7 +556,53 @@ public class Casilla {
         return null;
     }
 
+    public String edificacionesDisponibles(){
 
+        StringBuffer str = new StringBuffer();
+        int max;
+        boolean algoMas = false;
+        if(this.grupo == 1 || this.grupo == 7) max = 2;
+        else max = 3;
 
+        System.out.println("\n- En la casilla" + this.nombre + ":");
 
+        if(this.numeroCasas<=4){
+            if(this.numeroHoteles< max){
+
+                if(this.numeroCasas==4){
+                    str.append("Se puede construir 1 hotel\n");
+                    algoMas = true;
+                }
+                if(this.numeroCasas <4){
+                    str.append("Se puede construir 1 casa\n");
+                    algoMas = true;
+                }
+            }
+            if(this.numeroHoteles == max){
+
+                if(this.numeroCasas<2){
+                    System.out.println("Se puede construir 1 casa pero ya no se pueden construir más hoteles\n");
+                    algoMas = true;
+                }
+            }
+        }
+        if(this.numeroHoteles>=1 && this.numeroCasas>=2){
+            if(this.numeroPiscinas<max){
+                str.append("Se puede construir 1 piscina\n");
+                algoMas = true;
+            }
+        }
+        if(this.numeroHoteles>=2){
+            if(this.numeroPistasDep<max){
+               str.append("Se puede construir 1 pista de deporte\n");
+                algoMas = true;
+            }
+        }
+
+        if(algoMas == false){
+            str.append("Ya no se puede consturir nada más\n");
+        }
+
+        return str.toString();
+    }
 }

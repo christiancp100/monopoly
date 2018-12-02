@@ -286,31 +286,6 @@ public class Jugador {
         }
     }
 
-    @Override
-    public String toString() {
-        String aux;
-
-        aux = "{\n    Nombre: " + this.nombreJugador + "\n";
-        //aux += "Avatar del Jugador: " + this.avatar + "\n";
-        aux += "    Fortuna: " + Valores.VERDE + this.fortuna + " Trillones de euro\n"+ Valores.RESET;
-        aux += "    Casilla actual: " + this.casillaActual.getNombre() + "\n";
-
-        if(this.propiedades.size() != 0){
-            aux += "Propiedades: [";
-            for(int i=0; i<this.propiedades.size();i++){
-                aux += " "+ this.propiedades.get(i).getNombre().toString()+ " ";
-            }
-            aux += "]";
-        }
-        
-        //Hipotecas
-        //Edificios
-        else aux +=Valores.ROJO + "-> El usuario no tiene propiedades, debería ponerse las pilas...\n" + Valores.RESET;
-
-        aux += "\n}\n";
-        return aux;
-    }
-
     public void pagar(Jugador jugadorRecibe, double cantidad){
         this.setFortuna(cantidad, -1);
         jugadorRecibe.setFortuna(cantidad, 1);
@@ -321,7 +296,7 @@ public class Jugador {
         Scanner reader=new Scanner(System.in);  // Reading from System.in
         Edificaciones edificio = new Edificaciones(tipo, casilla);
 
-        if(casilla.getJugadorQueTieneLaCasilla().equals(this)){
+        if(casilla.getJugadorQueTieneLaCasilla() != null && casilla.getJugadorQueTieneLaCasilla().equals(this)){
 
             if(poseerGrupo(casilla.getGrupo()) || casilla.getVeces(this) > 2) { //Si tiene el grupo entero o estuvo mas de 2 veces en esa casilla, puede comprarla
 
@@ -395,6 +370,8 @@ public class Jugador {
             }else{
                 System.out.println("El jugador no posee todo el grupo de Casillas y tampoco estuvo más de dos veces en esta casilla. No puede edificar");
             }
+        }else{
+            System.out.println("No puedes edificar en esta casilla");
         }
     }
 
@@ -479,5 +456,38 @@ public class Jugador {
             this.fortuna+= casilla.getEdificaciones().get(edKey).getPrecioHipoteca();
             casilla.getEdificaciones().remove(edKey);
         }
+    }
+
+    @Override
+    public String toString() {
+        String aux;
+
+        aux = "{\n    Nombre: " + this.nombreJugador + "\n";
+        //aux += "Avatar del Jugador: " + this.avatar + "\n";
+        aux += "    Fortuna: " + Valores.VERDE + this.fortuna + " Trillones de euro\n"+ Valores.RESET;
+        aux += "    Casilla actual: " + this.casillaActual.getNombre() + "\n";
+
+        if(this.propiedades.size() != 0){
+            aux += "Propiedades: [";
+            for(int i=0; i<this.propiedades.size();i++){
+                aux += " "+ this.propiedades.get(i).getNombre().toString()+ " ";
+            }
+            aux += "]";
+            for(Casilla prop : this.propiedades){
+                if(prop.getNumeroEdificaciones()>0){
+                    aux += "\nLa casilla " + prop.getNombre() + " tiene: \n";
+                    for( Edificaciones ed : prop.getEdificaciones().values()){
+                        aux += ed.toString() + "\n";
+                    }
+                }
+            }
+        }
+
+        //Hipotecas
+        //Edificios
+        else aux +=Valores.ROJO + "-> El usuario no tiene propiedades, debería ponerse las pilas...\n" + Valores.RESET;
+
+        aux += "\n}\n";
+        return aux;
     }
 }
