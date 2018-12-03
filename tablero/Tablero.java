@@ -31,7 +31,14 @@ public class Tablero {
     private Casilla masVecesPagos;
     private double fortunaGrupo;
     private int numeroGrupo;
-    private ArrayList<Double> g;
+    private double gr[];
+    
+    //varTarjetas
+    private int casas;
+    private int hoteles;
+    private int piscinas;
+    private int pistasDep;
+
 
 
     //Constructores
@@ -480,7 +487,7 @@ public class Tablero {
                                 //this.avatares.get(i).getJugador().getCasillaActual().setVecesPagadas(1);
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
-                            if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador())) {
+                            if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(2).get(2).getPropietario(this.avatares).getNombreJugador())) {
                                 this.avatares.get(i).getJugador().setPagoAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), 10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
@@ -704,11 +711,15 @@ public class Tablero {
 
         } else if (i == 8) {
 
-            int casas=0,hoteles=0,piscinas=0,pistasDep=0;
-            
+            casas=0;
+            hoteles=0;
+            piscinas=0;
+            pistasDep=0;
+    
             for(int j=0;j<4;j++){
                 for(int k=0;k<10;k++){
-                    if(this.getCasilla(j,k).getJugadorQueTieneLaCasilla().equals(this.avatares.get(this.turno.getTurno()).getJugador())){
+                    if(this.getCasilla(j,k).getJugadorQueTieneLaCasilla().equals(this.avatares.get(this.turno.getTurno()).getJugador())
+                            && !this.getCasilla(j,k).getEdificaciones().isEmpty()){
                         casas+=this.getCasilla(j,k).getNumeroCasas();
                         hoteles+=this.getCasilla(j,k).getNumeroHoteles();
                         piscinas+=this.getCasilla(j,k).getNumeroPiscinas();
@@ -914,8 +925,8 @@ public class Tablero {
         masVecesPagos=new Casilla();
         fortunaGrupo=0;
         numeroGrupo=0;
-        g=new ArrayList();
-        double cantAux=0;
+        
+        gr=new double[8];
         
         //casilla más rentable (receptora de más alquileres)
         for(int i=0;i<4;i++){
@@ -952,17 +963,16 @@ public class Tablero {
                     for(int k=0;k<8;k++){//hay 8 grupos
                         //tenemos un vector en el que cada posicion almacena la cant.total de un grupo
                         if(this.getCasilla(i,j).getGrupo()==(k+1) && this.getCasilla(i,j).getVecesPagadas()!=0){
-                            cantAux=g.get(k);
-                            g.set(k,cantAux+this.getCasilla(i,j).getVecesPagadas());
+                            gr[k]+=this.getCasilla(i,j).getVecesPagadas();
                         }
                     }
                 }
             }
         }
         
-        for(int i=0;i<g.size();i++){
-            if(fortunaGrupo<g.get(i)){
-                fortunaGrupo=g.get(i);
+        for(int i=0;i<8;i++){
+            if(fortunaGrupo<gr[i]){
+                fortunaGrupo=gr[i];
                 numeroGrupo=(i+1);
             }
         }
