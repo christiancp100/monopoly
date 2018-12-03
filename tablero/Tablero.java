@@ -957,17 +957,18 @@ public class Tablero {
         System.out.println(".");
         
         //grupo más rentable (suma de la rentabilidad de sus casillas)
-        for(int i=0;i<4;i++){
-            for(int j=0;j<10;j++){
-                if(this.getCasilla(i,j).getTipo().equals("Solar")){
-                    for(int k=0;k<8;k++){//hay 8 grupos
-                        //tenemos un vector en el que cada posicion almacena la cant.total de un grupo
-                        if(this.getCasilla(i,j).getGrupo()==(k+1) && this.getCasilla(i,j).getVecesPagadas()!=0){
-                            gr[k]+=this.getCasilla(i,j).getVecesPagadas();
+        for(int k=0;k<8;k++){//hay 8 grupos
+
+            for(int i=0;i<4;i++){
+                for(int j=0;j<10;j++){
+                    if(this.getCasilla(i,j).getTipo().equals("Solar")){
+                            //tenemos un vector en el que cada posicion almacena la cant.total de un grupo
+                            if(this.getCasilla(i,j).getGrupo()==(k+1) && this.getCasilla(i,j).getVecesPagadas()!=0){
+                                gr[k]+=this.getCasilla(i,j).getVecesPagadas();
+                            }
                         }
                     }
                 }
-            }
         }
         
         for(int i=0;i<8;i++){
