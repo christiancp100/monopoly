@@ -88,6 +88,10 @@ public class Menu {
                         "   -ver tablero\n"+
                         "   -edificar {tipo edificación}\n"+
                         "   -cambiar modo\n"+
+                        "   -listar edificios\n"+
+                        "   -listar edificios {grupo}\n"+
+                        "   -estadisticas {jugador}\n"+
+                        "   -estadisticas\n"+
                         "   -acabar turno\n");
 
             }else{

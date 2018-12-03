@@ -254,7 +254,10 @@
                      !aux[1].equals("Salida")){
 
                      tablero.comprarPropiedad(aux[1]);
-                     this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(true);
+                     if(this.avatares.get(this.turno.getTurno()).getTipo().equals("coche") 
+                             && this.avatares.get(this.turno.getTurno()).getTipoEspecial()){
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(true);
+                     }
              }
              else{
                  System.out.println("Esta casilla no se puede comprar");
@@ -351,6 +354,10 @@
                  this.avatares.get(this.turno.getTurno()).setTipoEspecial(true);
              }
          }
+         
+         else if(eleccion.contains("nada")){
+             System.out.println(" ");
+         }
 
          else if(eleccion.contains("listar edificios")){
 
@@ -428,6 +435,7 @@
 
              else{
                   // ________________________ESTADISTICAS GLOBALES________________________
+                  this.tablero.estadisticasGlobales();
              }
          }
      }
@@ -475,6 +483,17 @@
                          this.eleccion("comprar "+this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
                      }
 
+                 }else if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Solar") ||
+                         this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Servicio") ||
+                         this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().contains("Transporte")) 
+                         && this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(avatares)
+                                 .equals(this.avatares.get(this.turno.getTurno()).getJugador())){
+                     System.out.println("Esta casilla es de su propiedad. (Si no quiere realizar ninguna accion en ella escriba nada)");
+                     Scanner opcion = new Scanner(System.in);  // Reading from System.in
+                             System.out.println("\n->");
+                             String n = opcion.nextLine(); // Scans the next token of the input as an int.
+                             eleccion(n);
+                             opcion.reset();
                  }
 
                  if(this.dados.getRepetidos() == 3){
@@ -533,7 +552,7 @@
                      System.out.println("Se han pagado " + Valores.OPERACIONTRANSPORTE * factor + " de alquiler.\n");
                  }
                  //SERVICIOS
-                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicios")
+                 if (this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicio")
                          && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getDisponibilidad()
                          && !this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).getNombreJugador().equals(
                          this.avatares.get(this.turno.getTurno()).getJugador().getNombreJugador())) {
@@ -545,7 +564,12 @@
                      }
                  }
                  if (dados.getValorDados().get(0) == dados.getValorDados().get(1)) {
-                     this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
+                     //comprobamos que esté como un jugador normal para que no le afecten las modificaciones
+                    if(this.avatares.get(this.turno.getTurno()).getTipo().equals("coche") 
+                            && !this.avatares.get(this.turno.getTurno()).getTipoEspecial()){
+                        this.avatares.get(this.turno.getTurno()).getJugador().setCompraEfectuada(false);
+                    }
+                    this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(true);
                  } else this.avatares.get(this.turno.getTurno()).getJugador().setPuedeTirarOtraVez(false);
              } else {
                  System.out.println("El usuario está en la cárcel. Escriba 'salir carcel' o 'acabar turno'");
@@ -581,12 +605,15 @@
                          imprimirLanzarDados(this.dados.getValorSuma());
                      }
                  }
-                    if(this.numTiradas!=4 || this.avatares.get(this.turno.getTurno()).getTipo().equals("pelota")
-                            && this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez()){
+                   /* if(this.numTiradas!=4 || (this.avatares.get(this.turno.getTurno()).getTipo().equals("coche")
+                            && this.avatares.get(this.turno.getTurno()).getJugador().getPuedeTirarOtraVez())){
                         if(this.avatares.get(this.turno.getTurno()).getTipoEspecial()){
                             imprimirLanzarDados(this.dados.getValorSuma());
                     }
-                 }
+                 }*/
+                 else {
+                    System.out.println("El usuario está en la cárcel. Escriba 'salir carcel' o 'acabar turno'");
+                }
              }
          }else{
              System.out.println(Valores.ROJO +"¡El jugador no puede lanzar los dados!" + Valores.RESET);
@@ -604,13 +631,12 @@
                  int j=0; //variable auxiliar para restar la posicion del avatar
 
                  for(int i=1;i<=this.dados.getValorSuma();i++){
-                     if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
-                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
-                     }else{
+                     if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
                          if((i>4 && (i%2)!=0) || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
 
                              System.out.println(" ");
-                             System.out.println("El jugador ha avanzado "+i+" posiciones desde la casilla de origen.");
+                             System.out.println("El jugador lleva "+i+" posiciones desde la casilla de origen.");
+                             this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
                              this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),(i-j));
                              imprimirLanzarDados(i-j);
                              j=i;
@@ -623,13 +649,12 @@
                  int j=0; //variable auxiliar para restar la posicion del avatar
 
                  for(int i=1;i<=this.dados.getValorSuma();i++){
-                     if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
-                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
-                     }else{
+                     if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==false){
                          if(i%2!=0 || (i==this.dados.getValorSuma()) ){//comprobamos que sea impar o el ultimo valor
 
                              System.out.println(" ");
                              System.out.println("El jugador ha retrocedido "+i+" posiciones desde la casilla de origen.");
+                             this.avatares.get(this.turno.getTurno()).getJugador().setNombreCasillaAnterior(this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getNombre());
                              this.tablero.desplazarAvatar(this.avatares.get(this.turno.getTurno()),-(i-j));
                              if(i!=this.dados.getValorSuma()){//en este caso se imprime en lanzarDados
                                  imprimirLanzarDados(i-j);
@@ -639,6 +664,11 @@
                      }
                  }
              }
+             
+            if(this.avatares.get(this.turno.getTurno()).getJugador().getEstarCarcel()==true){
+                             System.out.println("El jugador está en la cárcel, no se puede seguir moviendo.");
+            }
+             
          }
 
          if(this.avatares.get(this.turno.getTurno()).getTipo().contains("coche")){

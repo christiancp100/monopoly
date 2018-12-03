@@ -49,6 +49,9 @@ public class Casilla {
     private int permisoHoteles;
     private int permisoPiscinas;
     private int permisoPistas;
+    
+    private int vecesCasilla;
+    private double vecesPagadas;
 
     Random rand;
 
@@ -110,6 +113,14 @@ public class Casilla {
 
     public HashMap<String, Edificaciones> getEdificaciones() {
         return this.edificaciones;
+    }
+    
+    public int getVecesCasilla(){
+        return this.vecesCasilla;
+    }
+    
+    public double getVecesPagadas(){
+        return this.vecesPagadas;
     }
 
     public Jugador getJugadorQueTieneLaCasilla() {
@@ -205,6 +216,7 @@ public class Casilla {
     }
 
     //accedemos al precio de alquiler de esa casilla (siempre solar)
+    
     public double getAlquiler(){//hay que revisar para que no aumente el 5%
         return this.alquiler;//10% de su precio inicial
     }
@@ -252,6 +264,14 @@ public class Casilla {
         return permisoPistas;
     }
     //Setters
+    
+    public void setVecesCasilla(int veces){
+        this.vecesCasilla+=veces;
+    }
+    
+    public void setVecesPagadas(double veces){
+        this.vecesPagadas+=veces;
+    }
 
     public void setPermisoCasas(int permisoCasas) {
         this.permisoCasas += permisoCasas;

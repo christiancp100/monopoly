@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 
 public class Jugador {
@@ -27,6 +28,7 @@ public class Jugador {
     private int vecesEnCarcel;
     private double premiosInvOBote;
     private double cobroAlquileres;
+    private double fortunaTotal;
 
     public Jugador(Avatar avatar,float fortuna){
         this.avatar = avatar;
@@ -85,6 +87,10 @@ public class Jugador {
 
     public double getCobroAlquileres(){
         return this.cobroAlquileres;
+    }
+    
+    public double getFortunaTotal(){
+        return this.fortunaTotal;
     }
 
     public double getPremiosInversionesBote() {
@@ -154,6 +160,10 @@ public class Jugador {
 
     public void setCobroAlquileres(double cobroAlquileres){
         this.cobroAlquileres = cobroAlquileres;
+    }
+    
+    public void setFortunaTotal(double dinero){
+        this.fortunaTotal+=dinero;
     }
 
     public void setVecesEnCarcel(){
@@ -296,7 +306,8 @@ public class Jugador {
         Scanner reader=new Scanner(System.in);  // Reading from System.in
         Edificaciones edificio = new Edificaciones(tipo, casilla);
 
-        if(casilla.getJugadorQueTieneLaCasilla() != null && casilla.getJugadorQueTieneLaCasilla().equals(this)){
+        if(casilla.getJugadorQueTieneLaCasilla() != null && casilla.getJugadorQueTieneLaCasilla().equals(this)
+                && !casilla.getHipotecada()){
 
             if(poseerGrupo(casilla.getGrupo()) || casilla.getVeces(this) > 2) { //Si tiene el grupo entero o estuvo mas de 2 veces en esa casilla, puede comprarla
 
@@ -449,13 +460,19 @@ public class Jugador {
 
     public void venderTodosEdificios(Casilla casilla){
 
-        Iterator it = casilla.getEdificaciones().keySet().iterator();
+        Iterator<String> it = casilla.getEdificaciones().keySet().iterator();
 
         while(it.hasNext()){
-            String edKey = it.next().toString();
+            String edKey = it.next();
             this.fortuna+= casilla.getEdificaciones().get(edKey).getPrecioHipoteca();
-            casilla.getEdificaciones().remove(edKey);
+            it.remove();
         }
+        
+        casilla.setNumeroCasas(-casilla.getNumeroCasas());
+        casilla.setNumeroHoteles(-casilla.getNumeroHoteles());
+        casilla.setNumeroPistasDep(-casilla.getNumeroPistasDep());
+        casilla.setNumeroPiscinas(-casilla.getNumeroPiscinas());
+        
     }
 
     @Override

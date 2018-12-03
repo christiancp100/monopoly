@@ -19,6 +19,19 @@ public class Tablero {
     private boolean partidaIniciada;
 
     private int incrementosRealizados;
+    
+    //variables estadisticasGlobales
+    private int casillaMasVisitada;
+    private int mayorNumVueltas;
+    private double mayorPagoAlquileres;
+    private double fortunaMaxima;
+    private Jugador masActivo;
+    private Jugador masVueltasTablero;
+    private Casilla masFrecuentada;
+    private Casilla masVecesPagos;
+    private double fortunaGrupo;
+    private int numeroGrupo;
+    private ArrayList<Double> g;
 
 
     //Constructores
@@ -186,12 +199,12 @@ public class Tablero {
         //CREAMOS LOS MAZOS DE LAS CARTAS SUERTE Y CAJA COMUNIDAD
         //número de tarjetas de cada mazo fijo
         for (int i = 0; i < 14; i++) {
-            Tarjeta tarjeta = new Tarjeta("Suerte", i);
+            Tarjeta tarjeta = new Tarjeta("Suerte", i+1);
             tarjeta.setMensajeSuerte(i);
             this.Suerte.add(tarjeta);
         }
         for (int i = 0; i < 10; i++) {
-            Tarjeta tarjeta = new Tarjeta("Caja", i);
+            Tarjeta tarjeta = new Tarjeta("Caja", i+1);
             tarjeta.setMensajeCaja(i);
             this.Caja.add(tarjeta);
         }
@@ -364,6 +377,8 @@ public class Tablero {
                         coordenadaMovida = coordenada % 4;
                         //Aumentamos el numero de  veces que estuvo en esta casilla
                         this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
+                        //para las estadisticas de juego
+                        this.avatares.get(i).getJugador().getCasillaActual().setVecesCasilla(1);
                     }
                     else if(cantidadDesplazamiento<0){
                         
@@ -389,6 +404,7 @@ public class Tablero {
                         
                         //Aumentamos el numero de  veces que estuvo en esta casilla
                         this.avatares.get(i).getJugador().getCasillaActual().setVeces(this.avatares.get(i).getJugador());
+                        this.avatares.get(i).getJugador().getCasillaActual().setVecesCasilla(1);
 
                     }
 
@@ -431,7 +447,7 @@ public class Tablero {
                         int n = reader.nextInt();
                         reader.reset();
 
-                        cogerTarjetaSuerte(this.Suerte.get(n));//el indice del array no tiene pq coincidir con el numero de la tarjeta
+                        cogerTarjetaSuerte(this.Suerte.get(n-1));//el indice del array no tiene pq coincidir con el numero de la tarjeta
                     } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().contains("Caja")) {
                         barajar(Caja);
                         //elegir una aleatoria entre las disponibles
@@ -442,7 +458,7 @@ public class Tablero {
                         int n = reader.nextInt();
                         reader.reset();
 
-                        cogerTarjetaCaja(this.Caja.get(n));
+                        cogerTarjetaCaja(this.Caja.get(n-1));
                     }
 
 
@@ -455,22 +471,26 @@ public class Tablero {
                                 this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
                                 this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), this.avatares.get(i).getJugador().getCasillaActual().getAlquiler() * 2);
+                                //this.avatares.get(i).getJugador().getCasillaActual().setVecesPagadas(1);
 
                             } else {
                                 this.avatares.get(i).getJugador().setPagoAlquileres( this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
                                 this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), this.avatares.get(i).getJugador().getCasillaActual().getAlquiler());
+                                //this.avatares.get(i).getJugador().getCasillaActual().setVecesPagadas(1);
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Servicio")) {
                             if (this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador().equals(this.casillas.get(1).get(2).getPropietario(this.avatares).getNombreJugador())) {
                                 this.avatares.get(i).getJugador().setPagoAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), 10 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                //this.avatares.get(i).getJugador().getCasillaActual().setVecesPagadas(1);
 
                             } else {
                                 this.avatares.get(i).getJugador().setPagoAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares).setCobroAlquileres(4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
                                 this.pagar(this.avatares.get(i).getJugador(),this.avatares.get(i).getJugador().getCasillaActual().getPropietario(this.avatares), 4 * Valores.FACTORSERVICIO * this.dados.getValorSuma());
+                                //this.avatares.get(i).getJugador().getCasillaActual().setVecesPagadas(1);
                             }
                         } else if (this.avatares.get(i).getJugador().getCasillaActual().getTipo().equals("Transportes")) {
                             //comprobamos cuantas casillas de transporte posee el jugador que tiene la casilla en la que cae el jugador actual
@@ -628,13 +648,13 @@ public class Tablero {
 
     public void cogerTarjetaSuerte(Tarjeta tarjeta) {
 
-        int i = tarjeta.getNumero();
+        int i= tarjeta.getNumero();
 
         //simepre imprimimos el mensaje de la tarjeta
         System.out.println(tarjeta.getMensaje());
 
 
-        if (i == 0) {
+        if (i == 1) {
 
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
@@ -646,15 +666,15 @@ public class Tablero {
             }
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(2, 5));//cooredenadas aeropuerto
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 1) {
+        } else if (i == 2) {
             //situamos al avatar en EEUU
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(1, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 2) {
+        } else if (i == 3) {
             //recibe 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(5000);
-        } else if (i == 3) {
+        } else if (i == 4) {
 
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
@@ -669,20 +689,40 @@ public class Tablero {
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(2, 6));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
 
-        } else if (i == 4) {
+        } else if (i == 5) {
             //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 5) {
+        } else if (i == 6) {
             //recibes 100.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(100000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(100000);
-        } else if (i == 6) {
+        } else if (i == 7) {
             //pagas 15.000€
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 15000);
-        } else if (i == 7) {
-            //hacer cuando tengamos las construcciones
+            this.casillas.get(2).get(0).setBote(15000);
+
         } else if (i == 8) {
+
+            int casas=0,hoteles=0,piscinas=0,pistasDep=0;
+            
+            for(int j=0;j<4;j++){
+                for(int k=0;k<10;k++){
+                    if(this.getCasilla(j,k).getJugadorQueTieneLaCasilla().equals(this.avatares.get(this.turno.getTurno()).getJugador())){
+                        casas+=this.getCasilla(j,k).getNumeroCasas();
+                        hoteles+=this.getCasilla(j,k).getNumeroHoteles();
+                        piscinas+=this.getCasilla(j,k).getNumeroPiscinas();
+                        pistasDep+=this.getCasilla(j,k).getNumeroPistasDep();
+                    }
+                }
+            }
+            
+            //el usuario paga 400€ por casita, 1.150€ por hotel, 600€ por piscina y 800€ por pista de deporte AL PARKING
+            pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 
+                    (casas*400)+(hoteles*1150)+(piscinas*600)+(800*pistasDep));
+            this.casillas.get(2).get(0).setBote((casas*400)+(hoteles*1150)+(piscinas*600)+(800*pistasDep));
+
+        } else if (i == 9) {
 
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
@@ -695,7 +735,7 @@ public class Tablero {
             //situamos al jugador en Kenia
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 9) {
+        } else if (i == 10) {
             //le damos 2.500 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
             for (int j = 0; j < this.avatares.size(); j++) {
                 if (j != this.turno.getTurno()) {
@@ -703,19 +743,22 @@ public class Tablero {
                 }
             }
             //le restamos al usuario la cantidad por el numero de jugadores
+            //ponemos de destinatario la banca pq la funcion necesita un receptor, pero no es relevante
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, (2500) * (this.avatares.size() - 1));
 
-        } else if (i == 10) {
+        } else if (i == 11) {
             //retrocede 3 casillas
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), -3);
-        } else if (i == 11) {
+        } else if (i == 12) {
             //paga 15.000€
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 15000);
-        } else if (i == 12) {
+            this.casillas.get(2).get(0).setBote(15000);
+            
+        } else if (i == 13) {
             //recibe 150.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(150000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(150000);
-        } else if (i == 13) {
+        } else if (i == 14) {
             //desplazar a la casilla de transporte mas cercana
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
@@ -741,34 +784,35 @@ public class Tablero {
         //simepre imprimimos el mensaje de la tarjeta
         System.out.println(tarjeta.getMensaje());
 
-        if (i == 0) {
+        if (i == 1) {
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 5000);
-        } else if (i == 1) {
+        } else if (i == 2) {
             //mandamos al jugador a la carcel (va a Ir Carcel para que se apliquen las condiciones
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 0));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 2) {
+        } else if (i == 3) {
             //va a la salida
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(0, 0));
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(Valores.PRECIOJUGADORVUELTA, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setNumeroVueltas(1);
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);//invocamos a desplazar para hacer las comprobraciones de la nueva casilla
-        } else if (i == 3) {
+        } else if (i == 4) {
             //cobra 200.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(200000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(200000);
-        } else if (i == 4) {
+        } else if (i == 5) {
             //paga 10.000€
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, 10000);
-        } else if (i == 5) {
+            this.casillas.get(2).get(0).setBote(10000);
+        } else if (i == 6) {
             //recibes 5.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(5000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(5000);
-        } else if (i == 6) {
+        } else if (i == 7) {
             //retrocede hasta E.Árabes
             this.avatares.get(this.turno.getTurno()).getJugador().setCasillaActual(this.getCasilla(3, 8));
             desplazarAvatar(this.avatares.get(this.turno.getTurno()), 0);
-        } else if (i == 7) {
+        } else if (i == 8) {
             //le damos 2.000 a todos los jugadores menos el mismo (en caso de darlo no cambiaría la situación)
             for (int j = 0; j < this.avatares.size(); j++) {
                 if (j != this.turno.getTurno()) {
@@ -776,11 +820,11 @@ public class Tablero {
                 }
             }
             pagar(this.avatares.get(this.turno.getTurno()).getJugador(), banca, (2000) * (this.avatares.size() - 1));
-        } else if (i == 8) {
+        } else if (i == 9) {
             //recibe 10.000€
             this.avatares.get(this.turno.getTurno()).getJugador().setFortuna(10000, 1);
             this.avatares.get(this.turno.getTurno()).getJugador().setPremiosInversionesBote(10000);
-        } else if (i == 9) {
+        } else if (i == 10) {
             for (int k = 0; k < 4; k++) {
                 for (int j = 0; j < 10; j++) {
                     if ((i == 2 && j > 6) || (i == 3)) {//si el jugador esta entre las casillas (2,7) y (3,9) => pasas por la salida
@@ -802,13 +846,27 @@ public class Tablero {
         if(deuda <= elQuePaga.getFortuna()){
             elQuePaga.setFortuna(deuda, -1);
             elQueCobra.setFortuna(deuda, 1);
+            if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
+                    ||this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicio")
+                    ||this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes"))
+                    && this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).equals(elQueCobra)){
+                this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setVecesPagadas(deuda);
+            }
         }else{
             if(elQuePaga.getPropiedades().size() >0){
                 for(Casilla cas: elQuePaga.getPropiedades()){
-                    elQuePaga.hipotecar(cas);
+                    if(!cas.getHipotecada()){
+                        elQuePaga.hipotecar(cas);
+                    }
                     if(deuda <= elQuePaga.getFortuna()){
                         elQuePaga.setFortuna(deuda, -1);
                         elQueCobra.setFortuna(deuda, 1);
+                        if((this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Solar")
+                                ||this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Servicio")
+                                ||this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getTipo().equals("Transportes"))
+                                && this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().getPropietario(this.avatares).equals(elQueCobra)){
+                            this.avatares.get(this.turno.getTurno()).getJugador().getCasillaActual().setVecesPagadas(deuda);
+                        }
                         break;
                     }
                 }
@@ -842,5 +900,166 @@ public class Tablero {
             }
         }
         return null;
+    }
+    
+    public void estadisticasGlobales(){
+        
+        casillaMasVisitada=0;
+        mayorNumVueltas=0;
+        mayorPagoAlquileres=0;
+        fortunaMaxima=0;
+        masActivo=new Jugador();
+        masVueltasTablero=new Jugador();
+        masFrecuentada=new Casilla();
+        masVecesPagos=new Casilla();
+        fortunaGrupo=0;
+        numeroGrupo=0;
+        g=new ArrayList();
+        double cantAux=0;
+        
+        //casilla más rentable (receptora de más alquileres)
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+               if(this.getCasilla(i,j).getTipo().contains("Solar")||this.getCasilla(i,j).getTipo().contains("Transportes")
+                       ||this.getCasilla(i,j).getTipo().contains("Servicio")){
+                    if(mayorPagoAlquileres<this.getCasilla(i,j).getVecesPagadas()){
+                        mayorPagoAlquileres=this.getCasilla(i,j).getVecesPagadas();
+                        masVecesPagos=this.getCasilla(i,j);
+                    }
+               }
+            }
+        }
+        System.out.print("Casilla más rentable: "+masVecesPagos.getNombre());
+        if(mayorPagoAlquileres!=0){
+            for(int i=0;i<4;i++){
+                for(int j=0;j<10;j++){
+                   if(this.getCasilla(i,j).getTipo().contains("Solar")||this.getCasilla(i,j).getTipo().contains("Transportes")
+                           ||this.getCasilla(i,j).getTipo().contains("Servicio")){
+                        if(mayorPagoAlquileres==this.getCasilla(i,j).getVecesPagadas() 
+                                && !this.getCasilla(i,j).equals(masVecesPagos)){
+                            System.out.println(", "+this.getCasilla(i,j).getNombre());
+                        }
+                   }
+                }
+            }
+        }
+        System.out.println(".");
+        
+        //grupo más rentable (suma de la rentabilidad de sus casillas)
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(this.getCasilla(i,j).getTipo().equals("Solar")){
+                    for(int k=0;k<8;k++){//hay 8 grupos
+                        //tenemos un vector en el que cada posicion almacena la cant.total de un grupo
+                        if(this.getCasilla(i,j).getGrupo()==(k+1) && this.getCasilla(i,j).getVecesPagadas()!=0){
+                            cantAux=g.get(k);
+                            g.set(k,cantAux+this.getCasilla(i,j).getVecesPagadas());
+                        }
+                    }
+                }
+            }
+        }
+        
+        for(int i=0;i<g.size();i++){
+            if(fortunaGrupo<g.get(i)){
+                fortunaGrupo=g.get(i);
+                numeroGrupo=(i+1);
+            }
+        }
+        System.out.print("El grupo más rentable es: ");
+        if(numeroGrupo==1){
+            System.out.print("Negro");
+        }else if(numeroGrupo==2){
+            System.out.print("Cian");
+        }else if(numeroGrupo==3){
+            System.out.print("Magenta");
+        }else if(numeroGrupo==4){
+            System.out.print("Amarillo");
+        }else if(numeroGrupo==5){
+            System.out.print("Rojo");
+        }else if(numeroGrupo==6){
+            System.out.print("Blanco");
+        }else if(numeroGrupo==7){
+            System.out.print("Verde");
+        }else if(numeroGrupo==8){
+            System.out.print("Azul");
+        }
+        System.out.println(".");
+
+                
+        //casilla más frecuentada
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                if(casillaMasVisitada<this.getCasilla(i,j).getVecesCasilla()){
+                  casillaMasVisitada=this.getCasilla(i,j).getVecesCasilla();
+                  masFrecuentada=this.getCasilla(i,j);
+                }
+            }
+        }
+        System.out.print("Casilla más frecuentada: "+masFrecuentada.getNombre());
+
+        for(int i=0;i<4;i++){
+            for(int j=0;j<10;j++){
+                    if(casillaMasVisitada==this.getCasilla(i,j).getVecesCasilla() && !this.getCasilla(i,j).equals(masFrecuentada)){
+                        System.out.print(", "+this.getCasilla(i,j).getNombre());
+                    }
+            }
+        }
+        System.out.println(".");
+
+        //jugador que dió más vueltas al tablero
+        for(int i=0;i<this.avatares.size();i++){
+            if(mayorNumVueltas<this.avatares.get(i).getJugador().getNumeroVueltas()){
+                mayorNumVueltas=this.avatares.get(i).getJugador().getNumeroVueltas();
+                masVueltasTablero=this.avatares.get(i).getJugador();
+            }
+        }
+        System.out.print("Jugador que ha dado más vueltas al tablero: "+masVueltasTablero.getNombreJugador());
+
+        for(int i=0;i<this.avatares.size();i++){
+            if(mayorNumVueltas==this.avatares.get(i).getJugador().getNumeroVueltas() && !this.avatares.get(i).getJugador().equals(masVueltasTablero)){
+                System.out.println(", "+this.avatares.get(i).getJugador().getNombreJugador());
+            }
+        }
+        System.out.println(".");
+
+        //jugador con la mayor fortuna (dinero+valor propiedades+valor edificios)
+        for(int i=0;i<this.avatares.size();i++){
+            //dinero del que dispone
+            this.avatares.get(i).getJugador().setFortunaTotal(this.avatares.get(i).getJugador().getFortuna());
+            
+            //valor de las propiedades y de sus edificios
+            for(int j=0;j<this.avatares.get(i).getJugador().getPropiedades().size();j++){
+                
+                //precio propiedad
+                this.avatares.get(i).getJugador().setFortunaTotal(
+                        this.avatares.get(i).getJugador().getPropiedades().get(j).getPrecio());
+                
+                //precio edificaciones
+                if(!this.avatares.get(i).getJugador().getPropiedades().get(j).getEdificaciones().isEmpty()){
+                    
+                    for(Edificaciones ed : this.avatares.get(i).getJugador().getPropiedades().get(j).getEdificaciones().values()){
+                        this.avatares.get(i).getJugador().setFortunaTotal(ed.getPrecio());
+                    }
+                }
+                
+                if(fortunaMaxima<this.avatares.get(i).getJugador().getFortunaTotal()){
+                    fortunaMaxima=this.avatares.get(i).getJugador().getFortunaTotal();
+                    masActivo=this.avatares.get(i).getJugador();
+                }
+            }
+                   
+        }
+        
+        System.out.print("El jugador más activo es:"+masActivo.getNombreJugador());
+        
+        for(int i=0;i<this.avatares.size();i++){
+            if(fortunaMaxima==this.avatares.get(i).getJugador().getFortunaTotal() && !this.avatares.get(i).getJugador().equals(masActivo)){
+                System.out.println(", "+this.avatares.get(i).getJugador().getNombreJugador());
+            }
+        }
+        System.out.println(".");
+
+
     }
 }
